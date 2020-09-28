@@ -15,6 +15,10 @@ transition: height 1s;
 @media (max-width: 770px) {
   height: 180px;
 }
+
+@media (max-width: 580px) {
+  height: 140px;
+}
 `;
 
 function HeaderBar() {
@@ -31,7 +35,7 @@ function HeaderBar() {
       margin-bottom: 200px;
       transition-property: font-size, margin-bottom;
       transition-duration: 1s;
-      font-family: "Uni Sans";
+      font-family: "Uni Sans", "Hind", "Arial", sans-serif;
 
       @media (max-width: 770px) {
         margin-bottom: 100px;
