@@ -4,6 +4,8 @@ import { css, jsx } from "@emotion/core";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+import Tag from "./Tag";
+
 import colors from "../colors";
 
 interface FormListingProps {
@@ -30,16 +32,7 @@ function FormListing(props: FormListingProps) {
   let closedTag;
 
   if (!props.open) {
-    closedTag = <span css={css`
-      font-size: 0.75em;
-      background-color: ${colors.error};
-      border-radius: 5px;
-      margin: 0;
-      padding-top: 3px;
-      margin-right: 5px;
-      padding-left: 5px;
-      padding-right: 5px;
-    `}>CLOSED</span>;
+    closedTag = <Tag text="CLOSED" color={colors.error}/>
   };
 
   return <div css={listingStyle}>
