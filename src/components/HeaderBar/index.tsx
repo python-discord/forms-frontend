@@ -45,6 +45,12 @@ function HeaderBar() {
       @media (max-width: 580px) {
         font-size: 2em;
       }
+
+      @media (max-width: 400px) {
+        font-size: 1.5em;
+        text-align: center;
+        margin-left: 0;
+      }
     `}>
       Python Discord Forms
     </h1>
