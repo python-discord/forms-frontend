@@ -17,15 +17,15 @@ interface FormListingProps {
 function FormListing(props: FormListingProps) {
   const listingStyle = css`
     background-color: ${props.open ? colors.success : colors.darkButNotBlack};
-    width: 80%;
+    width: 60%;
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    transition: filter 100ms;
+    transition: transform 100ms;
 
     &:hover {
-      filter: brightness(110%);
+      transform: scale(1.01);
     }
   `;
 
