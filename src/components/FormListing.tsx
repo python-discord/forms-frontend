@@ -21,7 +21,7 @@ function FormListing(props: FormListingProps) {
     padding: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     transition: filter 100ms;
 
     &:hover {
