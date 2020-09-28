@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_SHA=$COMMIT_REF REACT_APP_BRANCH=$BRANCH react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
