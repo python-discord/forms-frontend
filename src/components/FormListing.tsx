@@ -22,7 +22,12 @@ function FormListing(props: FormListingProps) {
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    transition: transform 100ms;
+    transition-property: transform, width;
+    transition-duration: 500ms;
+
+    @media (max-width: 575px) {
+      width: 80%;
+    }
 
     &:hover {
       transform: scale(1.01);
