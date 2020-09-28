@@ -12,7 +12,11 @@ position: absolute;
 width: 100%;
 transition: height 1s;
 
-@media (max-width: 660px) {
+@media (max-width: 770px) {
+  height: 180px;
+}
+
+@media (max-width: 580px) {
   height: 140px;
 }
 `;
@@ -26,18 +30,19 @@ function HeaderBar() {
     <h1 css={css`
       font-size: 4em;
       margin: 0;
-      margin-top: 10px;
+      margin-top: 30px;
       margin-left: 30px;
       margin-bottom: 200px;
       transition-property: font-size, margin-bottom;
       transition-duration: 1s;
+      font-family: "Uni Sans", "Hind", "Arial", sans-serif;
 
-      @media (max-width: 660px) {
+      @media (max-width: 770px) {
         margin-bottom: 100px;
         font-size: 3em;
       }
 
-      @media (max-width: 510px) {
+      @media (max-width: 580px) {
         font-size: 2em;
       }
     `}>

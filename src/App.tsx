@@ -7,6 +7,11 @@ import colors from "./colors";
 const globalStyles = css`
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@700&display=swap');
 
+@font-face {
+  font-family: 'Uni Sans';
+  src: url(fonts/unisans.otf) format('opentype');
+}
+
 body {
   background-color: ${colors.notQuiteBlack};
   color: white;
