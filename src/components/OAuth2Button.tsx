@@ -33,7 +33,7 @@ span {
 `;
 
 function OAuth2Button() {
-  return <button css={buttonStyling}>
+  return <button onClick={() => alert("Clicked!")} css={buttonStyling}>
     <span css={{marginRight: "10px"}}><FontAwesomeIcon icon={faDiscord} css={{fontSize: "2em", marginTop: "3px"}}/></span>
     <span>Sign in with Discord</span>
   </button>;
