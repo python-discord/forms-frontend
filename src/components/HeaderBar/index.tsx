@@ -43,7 +43,7 @@ function HeaderBar() {
     `}>
       Python Discord Forms
     </h1>
-   </div>
+  </div>
 }
 
 export default HeaderBar;
