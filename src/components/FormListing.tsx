@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -24,6 +25,8 @@ function FormListing(props: FormListingProps) {
     border-radius: 10px;
     transition-property: transform, width;
     transition-duration: 500ms;
+    text-decoration: none;
+    color: inherit;
 
     @media (max-width: 575px) {
       width: 80%;
@@ -40,10 +43,12 @@ function FormListing(props: FormListingProps) {
     closedTag = <Tag text="CLOSED" color={colors.error}/>
   };
 
-  return <div css={listingStyle}>
-    <h3 css={{fontSize: "1.5em", marginBottom: "0"}}>{closedTag}{props.title} <FontAwesomeIcon icon={faArrowRight} css={{fontSize: "0.75em", paddingBottom: "1px"}}/></h3>
-    <p css={{marginTop: "5px"}}>{props.description}</p>
-  </div>
+  return <Link to="/form" css={listingStyle}>
+    <div>
+      <h3 css={{fontSize: "1.5em", marginBottom: "0"}}>{closedTag}{props.title} <FontAwesomeIcon icon={faArrowRight} css={{fontSize: "0.75em", paddingBottom: "1px"}}/></h3>
+      <p css={{marginTop: "5px"}}>{props.description}</p>
+    </div>
+  </Link>
 }
 
 export default FormListing;
