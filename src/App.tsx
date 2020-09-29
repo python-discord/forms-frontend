@@ -41,7 +41,7 @@ body {
 .fade-enter,
 .fade-exit-active {
   opacity: 0;
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .fade-enter-active {
