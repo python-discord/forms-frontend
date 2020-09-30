@@ -4,6 +4,8 @@ import { css, jsx } from "@emotion/core";
 import HeaderBar from "../components/HeaderBar";
 import FormListing from "../components/FormListing";
 
+import { getForms } from "../api/forms";
+
 function LandingPage() {
   return <div>
     <HeaderBar/>
@@ -15,8 +17,11 @@ function LandingPage() {
         flex-direction: column;
       `}>
         <h1>Available Forms</h1>
-        <FormListing title="Ban Appeals" description="Appealing bans from the Discord server" open={true}/>
-        <FormListing title="Insights 2020" description="Insights about the Python Discord community" open={false}/>
+        
+
+        {getForms().map(form => (
+          <FormListing form={form}/>
+        ))}
       </div>
     </div>
   </div>

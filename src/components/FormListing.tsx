@@ -9,15 +9,15 @@ import Tag from "./Tag";
 
 import colors from "../colors";
 
+import { Form } from "../api/forms";
+
 interface FormListingProps {
-  title: string,
-  description: string,
-  open: boolean
+  form: Form
 }
 
-function FormListing(props: FormListingProps) {
+function FormListing({ form }: FormListingProps) {
   const listingStyle = css`
-    background-color: ${props.open ? colors.success : colors.darkButNotBlack};
+    background-color: ${form.open ? colors.success : colors.darkButNotBlack};
     width: 60%;
     padding: 20px;
     margin-top: 20px;
@@ -39,14 +39,14 @@ function FormListing(props: FormListingProps) {
 
   let closedTag;
 
-  if (!props.open) {
+  if (!form.open) {
     closedTag = <Tag text="CLOSED" color={colors.error}/>
   };
 
   return <Link to="/form" css={listingStyle}>
     <div>
-      <h3 css={{fontSize: "1.5em", marginBottom: "0"}}>{closedTag}{props.title} <FontAwesomeIcon icon={faArrowRight} css={{fontSize: "0.75em", paddingBottom: "1px"}}/></h3>
-      <p css={{marginTop: "5px"}}>{props.description}</p>
+      <h3 css={{fontSize: "1.5em", marginBottom: "0"}}>{closedTag}{form.title} <FontAwesomeIcon icon={faArrowRight} css={{fontSize: "0.75em", paddingBottom: "1px"}}/></h3>
+      <p css={{marginTop: "5px"}}>{form.description}</p>
     </div>
   </Link>
 }
