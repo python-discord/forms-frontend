@@ -17,8 +17,8 @@ export function getForms(): Form[] {
             open: false
         },
         {
-            name: "Code Jam Sign Ups",
-            description: "Insights about the Python Discord community",
+            name: "Code Jam 2099 Sign Ups",
+            description: "Signing up for Python Discord's millionth code jam!",
             open: false
         }
     ]
