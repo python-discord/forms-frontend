@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
 
-import { DotLoader } from "react-spinners";
+import { HashLoader } from "react-spinners";
 
 import { useParams } from "react-router";
 import HeaderBar from "../components/HeaderBar";
@@ -17,7 +17,7 @@ function Loading() {
     return <div>
         <HeaderBar title={"Loading..."}/>
         <div css={{display: "flex", justifyContent: "center"}}>
-            <DotLoader color="white"/>
+            <HashLoader color="white"/>
         </div>
     </div>
 }
