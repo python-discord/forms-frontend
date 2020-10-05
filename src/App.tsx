@@ -34,7 +34,7 @@ function App() {
             >
               <Switch location={location}>
                 {routes.map(({path, Component}) => (
-                  <Route exact path={path} component={Component}/>
+                  <Route key={path} exact path={path} component={Component}/>
                 ))}
               </Switch>
             </CSSTransition>
