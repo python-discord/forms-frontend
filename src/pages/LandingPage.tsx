@@ -20,7 +20,7 @@ function LandingPage() {
         
 
         {getForms().map(form => (
-          <FormListing form={form}/>
+          <FormListing key={form.id} form={form}/>
         ))}
       </div>
     </div>
