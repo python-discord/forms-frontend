@@ -22,6 +22,7 @@
     "react-inlinesvg": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-spinners": "^0.9.0",
     "react-transition-group": "^4.4.1",
     "typescript": "~3.7.2"
   },
