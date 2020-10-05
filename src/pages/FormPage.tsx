@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
 
-import { DotLoader, HashLoader, RotateLoader } from "react-spinners";
+import { HashLoader } from "react-spinners";
 
 import { useParams } from "react-router";
 import HeaderBar from "../components/HeaderBar";
@@ -13,18 +13,11 @@ interface PathParams {
     id: string
 }
 
-const loaders: Record<string, any> = {
-    "dot": DotLoader,
-    "hash": HashLoader,
-    "rotate": RotateLoader
-}
-
 function Loading() {
-    let Loader = loaders[localStorage.loader ? localStorage.loader : "dot"];
     return <div>
         <HeaderBar title={"Loading..."}/>
         <div css={{display: "flex", justifyContent: "center"}}>
-            <Loader color="white"/>
+            <HashLoader color="white"/>
         </div>
     </div>
 }
