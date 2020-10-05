@@ -3,16 +3,18 @@ import { render } from '@testing-library/react';
 import FormListing from "../../components/FormListing";
 
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Form } from '../../api/forms';
+import { AllFormsForm } from '../../api/forms';
 
-const openFormListing: Form = {
+const openFormListing: AllFormsForm = {
     title: "Example form listing",
+    id: "example-form-listing",
     description: "My form listing",
     open: true
 }
 
-const closedFormListing: Form = {
+const closedFormListing: AllFormsForm = {
     title: "Example form listing",
+    id: "example-form-listing",
     description: "My form listing",
     open: false
 }
