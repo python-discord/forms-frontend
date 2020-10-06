@@ -58,7 +58,7 @@ function doLogin(disableFunction: (newState: boolean) => void) {
   }, 500)
 
   window.onmessage = (code: MessageEvent) => {
-    if (code.data.hello) {
+    if (code.data.source) {
       // React DevTools has a habit of sending messages, ignore them.
       return;
     }
