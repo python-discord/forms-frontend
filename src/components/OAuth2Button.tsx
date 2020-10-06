@@ -50,6 +50,13 @@ function doLogin(disableFunction: (newState: boolean) => void) {
     "height=700,width=500,location=no,menubar=no,resizable=no,status=no,titlebar=no,left=300,top=300"
   )
 
+  const interval = setInterval(() => {
+    if (windowRef?.closed) {
+      clearInterval(interval);
+      disableFunction(false);
+    }
+  }, 500)
+
   window.onmessage = (code: MessageEvent) => {
     if (code.data.hello) {
       // React DevTools has a habit of sending messages, ignore them.
@@ -62,6 +69,7 @@ function doLogin(disableFunction: (newState: boolean) => void) {
       console.log("Code received:", code.data);
 
       disableFunction(false);
+      clearInterval(interval);
 
       window.onmessage = null;
     }
