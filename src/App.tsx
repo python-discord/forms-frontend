@@ -12,12 +12,14 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import LandingPage from "./pages/LandingPage";
 import FormPage from "./pages/FormPage";
+import CallbackPage from "./pages/CallbackPage";
 
 import globalStyles from "./globalStyles";
 
 const routes = [
   { path: "/", Component: LandingPage },
-  { path: "/form/:id", Component: FormPage}
+  { path: "/form/:id", Component: FormPage},
+  { path: "/callback", Component: CallbackPage }
 ]
 
 function App() {
