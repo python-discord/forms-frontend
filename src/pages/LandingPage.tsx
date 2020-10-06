@@ -5,6 +5,7 @@ import HeaderBar from "../components/HeaderBar";
 import FormListing from "../components/FormListing";
 
 import { getForms } from "../api/forms";
+import OAuth2Button from "../components/OAuth2Button";
 
 function LandingPage() {
   return <div>
@@ -17,7 +18,9 @@ function LandingPage() {
         flex-direction: column;
       `}>
         <h1>Available Forms</h1>
-        
+
+        <OAuth2Button/>
+
 
         {getForms().map(form => (
           <FormListing key={form.id} form={form}/>

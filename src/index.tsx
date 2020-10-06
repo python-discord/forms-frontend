@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 
 import colors from "./colors";
 
-console.log("%c  Python Discord Forms  ", `font-size: 8em; font-family: "Hind", "Arial"; font-weight: 900; background-color: ${colors.blurple}; border-radius: 10px;`)
+console.log("%c  Python Discord Forms  ", `font-size: 6em; font-family: "Hind", "Arial"; font-weight: 900; background-color: ${colors.blurple}; border-radius: 10px;`)
 console.log("%cWelcome to Python Discord Forms", `font-size: 3em; font-family: "Hind", "Arial";`)
 
 console.log(`   Environment: %c ${process.env.NODE_ENV} `, `padding: 2px; border-radius: 5px; background-color: ${process.env.NODE_ENV === "production" ? colors.success : colors.error}`)
