@@ -32,3 +32,4 @@ jobs:
         with:
           environment: production
           sourcemaps: ./build/static/js/
+          version_prefix: forms-frontend@
