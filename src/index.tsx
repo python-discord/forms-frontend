@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "production") {
       new Integrations.BrowserTracing(),
     ],
     tracesSampleRate: 0.25,
+    release: `forms-frontend@${process.env.REACT_APP_SHA}`
   });
 }
 
