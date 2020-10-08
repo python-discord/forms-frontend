@@ -1,0 +1,34 @@
+name: Create Sentry release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: EgorDm/gha-yarn-node-cache@v1
+      
+      - name: Install dependencies
+        run: yarn install
+      
+      - name: Install dependencies
+        run: yarn build
+        env:
+          REACT_APP_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          REACT_APP_SHA: ${{ github.sha }}
+          REACT_APP_BRANCH: main
+          REACT_APP_OAUTH2_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1.0.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: python-discord
+          SENTRY_PROJECT: forms-frontend
+        with:
+          environment: production
+          sourcemaps: ./build/static/js/
