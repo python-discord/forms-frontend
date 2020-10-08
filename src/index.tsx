@@ -31,7 +31,15 @@ console.log("%cCome join us on Discord! https://discord.gg/python", `font-size: 
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Sentry.ErrorBoundary
+      fallback={<p>An error has occurred with Python Discord Forms. Please let us know in the Discord server at <a href="https://discord.gg/python">discord.gg/python</a></p>}
+      showDialog={true}
+      dialogOptions={{
+        title: "You've found a bug in PyDis forms!"
+      }}
+    >
+      <App />
+    </Sentry.ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 );
