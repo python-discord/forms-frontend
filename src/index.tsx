@@ -4,16 +4,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
 
 import colors from "./colors";
 
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
-    integrations: [
-      new Integrations.BrowserTracing(),
-    ],
     tracesSampleRate: 0.25,
     release: `forms-frontend@${process.env.REACT_APP_SHA}`
   });
