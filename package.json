@@ -78,7 +78,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack serve",
     "build": "REACT_APP_SHA=$COMMIT_REF REACT_APP_BRANCH=$BRANCH webpack",
-    "test": "node scripts/test.js"
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
