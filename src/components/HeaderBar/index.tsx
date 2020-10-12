@@ -14,10 +14,6 @@ top: 0;
 position: absolute;
 width: 100%;
 transition: height 1s;
-
-@media (max-width: 770px) {
-  height: 140px;
-}
 `;
 
 function HeaderBar({ title }: HeaderBarProps) {
