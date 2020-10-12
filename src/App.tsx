@@ -1,5 +1,6 @@
 /** @jsx jsx */
 /** @global location */
+import React, { Suspense } from "react";
 import { jsx, Global } from "@emotion/core";
 
 import {
@@ -8,13 +9,15 @@ import {
   Switch
 } from "react-router-dom";
 
+import { HashLoader } from "react-spinners";
+
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import LandingPage from "./pages/LandingPage";
-import FormPage from "./pages/FormPage";
-import CallbackPage from "./pages/CallbackPage";
-
 import globalStyles from "./globalStyles";
+
+const LandingPage = React.lazy(() => import("./pages/LandingPage"));
+const FormPage = React.lazy(() => import("./pages/FormPage"));
+const CallbackPage = React.lazy(() => import("./pages/CallbackPage"));
 
 const routes = [
   { path: "/", Component: LandingPage },
@@ -36,7 +39,11 @@ function App() {
             >
               <Switch location={location}>
                 {routes.map(({path, Component}) => (
-                  <Route key={path} exact path={path} component={Component}/>
+                  <Route exact key={path} path={path}>
+                    <Suspense fallback={<HashLoader color="white"/>}>
+                      <Component/>
+                    </Suspense>
+                  </Route>
                 ))}
               </Switch>
             </CSSTransition>
