@@ -74,7 +74,7 @@ module.exports = (env) => {
     plugins: [
       new CopyPlugin({
         patterns: [
-          { from: 'public', to: 'build' },
+          { from: 'public', to: '.' },
         ],
       }),
       new webpack.EnvironmentPlugin({
