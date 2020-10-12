@@ -1,5 +1,6 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require("webpack")
 
 module.exports = (env) => {
@@ -71,9 +72,10 @@ module.exports = (env) => {
       historyApiFallback: true,
     },
     plugins: [
-      new HtmlWebpackPlugin({
-        inject: true,
-        template: 'public/index.html'
+      new CopyPlugin({
+        patterns: [
+          { from: 'public', to: 'build' },
+        ],
       }),
       new webpack.EnvironmentPlugin({
         NODE_ENV: "production",
@@ -81,6 +83,10 @@ module.exports = (env) => {
         REACT_APP_SENTRY_DSN: "development",
         REACT_APP_BRANCH: "development",
         REACT_APP_OAUTH2_CLIENT_ID: "0"
+      }),
+      new HtmlWebpackPlugin({
+        inject: true,
+        template: 'public/index.html'
       })
     ]
   }
