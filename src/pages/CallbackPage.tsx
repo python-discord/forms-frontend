@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function CallbackPage() {
     const [hasSent, setHasSent] = useState(false);
-    const params = new URLSearchParams(document.location.search);
+    const params = new URLSearchParams(location.search);
 
     const code = params.get("code");
 
