@@ -38,6 +38,10 @@ ReactDOM.render(
       dialogOptions={{
         title: "You've found a bug in PyDis forms!"
       }}
+      onError={(err) => {
+        if(process.env.NODE_ENV === "development")
+          console.log(err)
+      }}
     >
       <App />
     </Sentry.ErrorBoundary>

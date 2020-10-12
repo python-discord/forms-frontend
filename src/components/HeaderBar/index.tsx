@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
-import SVG from "react-inlinesvg";
 
-import header1 from "./header_1.svg";
-import header2 from "./header_2.svg";
+import Header1 from "./header_1.svg";
+import Header2 from "./header_2.svg";
 
 interface HeaderBarProps {
   title?: string
@@ -28,8 +27,8 @@ function HeaderBar({ title }: HeaderBarProps) {
   
   return <div>
     <div>
-      <SVG src={header1} css={headerImageStyles}/>
-      <SVG src={header2} css={headerImageStyles}/>
+      <Header1 css={headerImageStyles}/>
+      <Header2 css={headerImageStyles}/>
     </div>
     <h1 css={css`
       font-size: 4vw;
