@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @global location */
 import React, { Suspense } from "react";
-import { jsx, Global } from "@emotion/core";
+import { jsx, css, Global } from "@emotion/core";
 
 import {
   BrowserRouter as Router,
@@ -25,6 +25,16 @@ const routes = [
   { path: "/callback", Component: CallbackPage }
 ]
 
+function PageLoading() {
+  return <div css={css`
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+  `}>
+    <HashLoader color="white" size={100}/>
+  </div>
+}
+
 function App() {
   return (
     <div>
@@ -40,7 +50,7 @@ function App() {
               <Switch location={location}>
                 {routes.map(({path, Component}) => (
                   <Route exact key={path} path={path}>
-                    <Suspense fallback={<HashLoader color="white"/>}>
+                    <Suspense fallback={<PageLoading/>}>
                       <Component/>
                     </Suspense>
                   </Route>
