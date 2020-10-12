@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import OAuth2Button from "../../components/OAuth2Button";
 
 test('renders oauth2 sign in button text', () => {
