@@ -7,7 +7,7 @@ module.exports = (env) => {
     entry: "./src/index.tsx",
     mode: env,
     output: {
-      path: path.resolve(__dirname, "../build/js"),
+      path: path.resolve(__dirname, "build/js"),
       filename: "[name].bundle.js",
       publicPath: "/",
       devtoolModuleFilenameTemplate: "file:///" + path.resolve(__dirname, "[resource-path]?[loaders]")
