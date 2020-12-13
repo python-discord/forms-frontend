@@ -1,17 +1,22 @@
 import { Question, QuestionType } from "./question"
 
-export interface AllFormsForm {
-    title: string,
+export enum FormFeatures {
+    Discoverable = "DISCOVERABLE",
+    RequiresLogin = "REQUIRES_LOGIN",
+    Open = "OPEN",
+    CollectEmail = "COLLECT_EMAIL",
+    DisableAntispam = "DISABLE_ANTISPAM"
+}
+
+export interface Form {
     id: string,
-    description: string,
-    open: boolean
+    features: Array<FormFeatures>,
+    questions: Array<Question>,
+    name: string,
+    description: string
 }
 
-export interface Form extends AllFormsForm {
-    questions: Array<Question>
-}
-
-export function getForms(): AllFormsForm[] {
+export function getForms(): Form[] {
     return [
         {
             title: "Ban Appeals",
@@ -36,14 +41,16 @@ export function getForms(): AllFormsForm[] {
 
 export function getForm(id: string): Promise<Form> {
     const data: Form = {
-        title: "Ban Appeals",
+        name: "Ban Appeals",
         id: "ban-appeals",
         description: "Appealing bans from the Discord server",
-        open: true,
+        features: [FormFeatures.Discoverable, FormFeatures.Open],
         questions: [
             {
+                id: "how-spanish-are-you",
                 name: "How Spanish are you?",
-                type: QuestionType.Text
+                type: QuestionType.ShortText,
+                data: {}
             }
         ]
     }
