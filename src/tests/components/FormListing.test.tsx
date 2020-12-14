@@ -4,20 +4,37 @@ import '@testing-library/jest-dom/extend-expect';
 import FormListing from "../../components/FormListing";
 
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AllFormsForm } from '../../api/forms';
+import { Form, FormFeatures } from '../../api/forms';
+import { QuestionType } from '../../api/question';
 
-const openFormListing: AllFormsForm = {
-    title: "Example form listing",
+const openFormListing: Form = {
+    name: "Example form listing",
     id: "example-form-listing",
     description: "My form listing",
-    open: true
+    features: [FormFeatures.Discoverable, FormFeatures.Open],
+    questions: [
+        {
+            "id": "my-question",
+            "name": "My question",
+            "type": QuestionType.ShortText,
+            "data": {}
+        }
+    ]
 }
 
-const closedFormListing: AllFormsForm = {
-    title: "Example form listing",
+const closedFormListing: Form = {
+    name: "Example form listing",
     id: "example-form-listing",
     description: "My form listing",
-    open: false
+    features: [FormFeatures.Discoverable],
+    questions: [
+        {
+            "id": "what-should-i-ask",
+            "name": "What should I ask?",
+            "type": QuestionType.ShortText,
+            "data": {}
+        }
+    ]
 }
 
 test('renders form listing with specified title', () => {

@@ -1,49 +1,39 @@
 import { Question, QuestionType } from "./question"
+import ApiClient from "./client";
 
-export interface AllFormsForm {
-    title: string,
+export enum FormFeatures {
+    Discoverable = "DISCOVERABLE",
+    RequiresLogin = "REQUIRES_LOGIN",
+    Open = "OPEN",
+    CollectEmail = "COLLECT_EMAIL",
+    DisableAntispam = "DISABLE_ANTISPAM"
+}
+
+export interface Form {
     id: string,
-    description: string,
-    open: boolean
+    features: Array<FormFeatures>,
+    questions: Array<Question>,
+    name: string,
+    description: string
 }
 
-export interface Form extends AllFormsForm {
-    questions: Array<Question>
-}
-
-export function getForms(): AllFormsForm[] {
-    return [
-        {
-            title: "Ban Appeals",
-            id: "ban-appeals",
-            description: "Appealing bans from the Discord server",
-            open: true
-        },
-        {
-            title: "Insights 2020",
-            id: "insights-2020",
-            description: "Insights about the Python Discord community",
-            open: false
-        },
-        {
-            title: "Code Jam 2099 Sign Ups",
-            id: "code-jam-2099-sign-up",
-            description: "Signing up for Python Discord's millionth code jam!",
-            open: false
-        }
-    ]
+export async function getForms(): Promise<Form[]> {
+    const resp = await ApiClient.get("forms/discoverable");
+    return resp.data;
 }
 
 export function getForm(id: string): Promise<Form> {
     const data: Form = {
-        title: "Ban Appeals",
+        name: "Ban Appeals",
         id: "ban-appeals",
         description: "Appealing bans from the Discord server",
-        open: true,
+        features: [FormFeatures.Discoverable, FormFeatures.Open],
         questions: [
             {
+                id: "how-spanish-are-you",
                 name: "How Spanish are you?",
-                type: QuestionType.Text
+                type: QuestionType.ShortText,
+                data: {}
             }
         ]
     }

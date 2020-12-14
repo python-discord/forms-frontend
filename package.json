@@ -23,6 +23,7 @@
     "@types/react-transition-group": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
+    "axios": "^0.21.0",
     "copy-webpack-plugin": "^6.2.1",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.2.1",

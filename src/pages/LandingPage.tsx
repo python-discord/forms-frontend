@@ -1,13 +1,28 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import { useEffect, useState } from "react";
 
 import HeaderBar from "../components/HeaderBar";
 import FormListing from "../components/FormListing";
 
-import { getForms } from "../api/forms";
+import { getForms, Form } from "../api/forms";
 import OAuth2Button from "../components/OAuth2Button";
+import Loading from "../components/Loading";
 
 function LandingPage() {
+  const [forms, setForms] = useState<Form[]>();
+
+  useEffect(() => {
+    const fetchForms = async () => {
+      setForms(await getForms());
+    }
+    fetchForms();
+  });
+
+  if (!forms) {
+    return <Loading/>;
+  }
+
   return <div>
     <HeaderBar/>
     <div>
@@ -22,7 +37,7 @@ function LandingPage() {
         <OAuth2Button/>
 
 
-        {getForms().map(form => (
+        {forms.map(form => (
           <FormListing key={form.id} form={form}/>
         ))}
       </div>
