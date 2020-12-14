@@ -2,24 +2,14 @@
 import { jsx } from "@emotion/core";
 import { Link } from "react-router-dom";
 
-import { HashLoader } from "react-spinners";
-
 import { useParams } from "react-router";
 import HeaderBar from "../components/HeaderBar";
 import { useEffect, useState } from "react";
 import { Form, getForm } from "../api/forms";
+import Loading from "../components/Loading";
 
 interface PathParams {
     id: string
-}
-
-function Loading() {
-    return <div>
-        <HeaderBar title={"Loading..."}/>
-        <div css={{display: "flex", justifyContent: "center"}}>
-            <HashLoader color="white"/>
-        </div>
-    </div>
 }
 
 function FormPage() {
@@ -38,7 +28,7 @@ function FormPage() {
     }
 
     return <div>
-        <HeaderBar title={form.title}/>
+        <HeaderBar title={form.name}/>
         <div css={{marginLeft: "20px"}}>
             <h1>{form.description}</h1>
             <Link to="/" css={{color: "white"}}>Return home</Link>
