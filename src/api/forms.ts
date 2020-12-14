@@ -1,4 +1,5 @@
 import { Question, QuestionType } from "./question"
+import ApiClient from "./client";
 
 export enum FormFeatures {
     Discoverable = "DISCOVERABLE",
@@ -16,27 +17,9 @@ export interface Form {
     description: string
 }
 
-export function getForms(): Form[] {
-    return [
-        {
-            title: "Ban Appeals",
-            id: "ban-appeals",
-            description: "Appealing bans from the Discord server",
-            open: true
-        },
-        {
-            title: "Insights 2020",
-            id: "insights-2020",
-            description: "Insights about the Python Discord community",
-            open: false
-        },
-        {
-            title: "Code Jam 2099 Sign Ups",
-            id: "code-jam-2099-sign-up",
-            description: "Signing up for Python Discord's millionth code jam!",
-            open: false
-        }
-    ]
+export async function getForms(): Promise<Form[]> {
+    const resp = await ApiClient.get("forms/discoverable");
+    return resp.data;
 }
 
 export function getForm(id: string): Promise<Form> {
