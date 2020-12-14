@@ -88,7 +88,8 @@ module.exports = (env) => {
         REACT_APP_SHA: "development",
         REACT_APP_SENTRY_DSN: "https://false@notreal.ingest.sentry.io/1234",
         REACT_APP_BRANCH: "development",
-        REACT_APP_OAUTH2_CLIENT_ID: "0"
+        REACT_APP_OAUTH2_CLIENT_ID: "0",
+        BACKEND_URL: "https://forms-api.pythondiscord.com/"
       }),
       new HtmlWebpackPlugin({
         inject: true,
