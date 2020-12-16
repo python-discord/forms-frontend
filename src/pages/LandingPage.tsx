@@ -17,7 +17,7 @@ function LandingPage() {
       setForms(await getForms());
     }
     fetchForms();
-  });
+  }, []);
 
   if (!forms) {
     return <Loading/>;
