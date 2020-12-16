@@ -1,4 +1,5 @@
 {
-  "groupName": "all",
-  "separateMajorMinor": false
+  "extends": [
+    "config:base"
+  ]
 }
