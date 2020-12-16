@@ -9,7 +9,7 @@ import {
   Switch
 } from "react-router-dom";
 
-import { HashLoader } from "react-spinners";
+import { RingLoader } from "react-spinners";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -31,7 +31,7 @@ function PageLoading() {
     justify-content: center;
     margin-top: 50px;
   `}>
-    <HashLoader color="white" size={100}/>
+    <RingLoader color="white" size={100}/>
   </div>
 }
 
