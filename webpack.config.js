@@ -5,7 +5,7 @@ const webpack = require("webpack")
 
 module.exports = {
     entry: "./src/index.tsx",
-    mode: process.env.NODE_ENV ? process.env.NODE_ENV : "none",
+    mode: process.env.NODE_ENV,
     output: {
         path: path.resolve(__dirname, "build"),
         filename: "[name].[contenthash].bundle.js",
