@@ -25,6 +25,7 @@
     "@typescript-eslint/parser": "4.10.0",
     "axios": "0.21.0",
     "copy-webpack-plugin": "7.0.0",
+    "cross-env": "7.0.3",
     "eslint": "7.15.0",
     "eslint-config-react-app": "6.0.0",
     "eslint-loader": "4.0.2",
@@ -56,9 +57,9 @@
     "workbox-webpack-plugin": "6.0.2"
   },
   "scripts": {
-    "start": "NODE_ENV=development webpack serve",
-    "build": "REACT_APP_SHA=$COMMIT_REF REACT_APP_BRANCH=$BRANCH webpack",
-    "test": "jest"
+    "start": "cross-env NODE_ENV=development webpack serve",
+    "build": "cross-env REACT_APP_SHA=$COMMIT_REF REACT_APP_BRANCH=$BRANCH webpack",
+    "test": "cross-env jest"
   },
   "eslintConfig": {
     "extends": "react-app"
