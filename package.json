@@ -8,7 +8,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.1",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.13",
-    "@sentry/react": "5.29.0",
+    "@sentry/react": "5.29.1",
     "@svgr/webpack": "5.5.0",
     "@swc/core": "1.2.40",
     "@swc/jest": "0.1.2",
