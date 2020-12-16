@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 
 import HeaderBar from "../components/HeaderBar";

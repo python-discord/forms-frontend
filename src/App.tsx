@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @global location */
 import React, { Suspense } from "react";
-import { jsx, css, Global } from "@emotion/core";
+import { jsx, css, Global } from "@emotion/react";
 
 import {
   BrowserRouter as Router,

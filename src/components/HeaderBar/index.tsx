@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from "@emotion/core";
+import { css, jsx } from "@emotion/react";
 
 import Header1 from "./header_1.svg";
 import Header2 from "./header_2.svg";
