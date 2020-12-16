@@ -2,5 +2,5 @@
 *                              @jb3
 
 # Request ks129 for CI and API related PRs.
-.github/workflows/**           @ks129
-src/api/**                     @ks129
+.github/workflows/**           @ks129 @jb3
+src/api/**                     @ks129 @jb3
