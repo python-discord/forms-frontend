@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Notion task board
+    url: https://www.notion.so/pythondiscord/2c44f303ec36425da23494f606973f14?v=39e0f16a1ffe4152b3dccb9d5bce9301
+    about: Staff-only Notion task board for feature requests and bug reports.
+  - name: Public GitHub Discussions
+    url: https://github.com/python-discord/forms-frontend/discussions
+    about: GitHub Discussions from external collaborators.
