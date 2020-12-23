@@ -30,47 +30,47 @@ export async function getForms(): Promise<Form[]> {
 }
 
 export async function getForm(id: string): Promise<Form> {
-    const data: Form = {
-        name: "Ban Appeals",
-        id: "ban-appeals",
-        description: "Appealing bans from the Discord server",
-        features: [FormFeatures.Discoverable, FormFeatures.Open],
-        questions: [
-            {
-                id: "how-spanish-are-you",
-                name: "How Spanish are you?",
-                type: QuestionType.ShortText,
-                data: {}
-            },
-            {
-                id: "check-box-thing",
-                name: "Enter what you want",
-                type: QuestionType.Checkbox,
-                data: {
-                    "options": [
-                        "United Kingdom",
-                        "United States"
-                    ]
-                }
-            },
-            {
-                id: "range",
-                name: "This is a range",
-                type: QuestionType.Range,
-                data: {
-                    "options": {
-
-                    }
-                }
-            }
-        ],
-        webhook: {
-            url: "",
-            message: null
-        },
-    }
-    // const fetch_response = await ApiClient.get(`forms/${id}`);
-    // const data: Form = fetch_response.data;
+    // const data: Form = {
+    //     name: "Ban Appeals",
+    //     id: "ban-appeals",
+    //     description: "Appealing bans from the Discord server",
+    //     features: [FormFeatures.Discoverable, FormFeatures.Open],
+    //     questions: [
+    //         {
+    //             id: "how-spanish-are-you",
+    //             name: "How Spanish are you?",
+    //             type: QuestionType.ShortText,
+    //             data: {}
+    //         },
+    //         {
+    //             id: "check-box-thing",
+    //             name: "Enter what you want",
+    //             type: QuestionType.Checkbox,
+    //             data: {
+    //                 "options": [
+    //                     "United Kingdom",
+    //                     "United States"
+    //                 ]
+    //             }
+    //         },
+    //         {
+    //             id: "range",
+    //             name: "This is a range",
+    //             type: QuestionType.Range,
+    //             data: {
+    //                 "options": {
+    //
+    //                 }
+    //             }
+    //         }
+    //     ],
+    //     webhook: {
+    //         url: "",
+    //         message: null
+    //     },
+    // }
+    const fetch_response = await ApiClient.get(`forms/${id}`);
+    const data: Form = fetch_response.data;
 
     return new Promise((resolve) => {
         setTimeout(() => resolve(data), 0)
