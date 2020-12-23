@@ -3,7 +3,6 @@ import { jsx } from "@emotion/react"
 import { Link } from "react-router-dom";
 
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import { ChangeEvent } from "react";
 import { useParams } from "react-router";
 
 import HeaderBar from "../components/HeaderBar";
@@ -32,15 +31,20 @@ function FormPage() {
         return <Loading/>
     }
 
-    // const values: Map<string, string | boolean> = new Map();
-
     const questions = form.questions.map((question, index) => {
-        return <RenderedQuestion question={question} key={index}/>
+        return <RenderedQuestion question={question} public_state={new Map()} key={index}/>
     });
 
     function handleSubmit(event: SyntheticEvent) {
-        console.log(event);
-        console.log(event.target);
+        questions.forEach(prop => {
+            const question = prop.props.question;
+
+            // TODO: Parse input from each question, and submit
+            switch (question.type) {
+                default:
+                    console.log(question.name, prop.props.public_state);
+            }
+        });
 
         event.preventDefault();
     }
@@ -55,6 +59,7 @@ function FormPage() {
             <div css={{marginLeft: "2rem", marginTop: "2rem"}}>
                 <button form="form" type="submit">Submit</button>
             </div>
+
             <div css={{marginLeft: "2rem", marginTop: "2rem"}}>
                 <Link to="/" css={{color: "white"}}>Return home</Link>
             </div>

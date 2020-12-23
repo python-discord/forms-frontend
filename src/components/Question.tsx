@@ -1,80 +1,88 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react"
+import { jsx } from "@emotion/react";
+import JSX = jsx.JSX;
+
 import React, { ChangeEvent } from "react";
 import { Question, QuestionType } from "../api/question";
 
-interface QuestionProp {
+type QuestionProp = {
     question: Question,
+    public_state: Map<string, any>;
 }
 
-class RenderedQuestion extends React.Component {
+// TODO: Create Input Fields for each type below
+// TODO: Create custom styles for each type, check ticket for reference
+function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
+    let result: JSX.Element | JSX.Element[];
+    const options: Array<string> = question.data["options"]
+
+    switch (question.type) {
+        case QuestionType.TextArea:
+            result = <div/>
+            break;
+
+        case QuestionType.Checkbox:
+            result = options.map((option, index) =>
+                <div key={index}>
+                    <label>
+                        <input type="checkbox" value={option} id={question.id + index}
+                               name={`${option}`} onChange={handler}
+                        />
+                        {option}
+                    </label><br/>
+                </div>
+            );
+
+            break;
+
+        case QuestionType.Radio:
+            result = <input type="radio" id={question.id} name="0" onChange={handler}/>;
+            break;
+
+        case QuestionType.Code:
+            result = <div/>
+            break;
+
+        case QuestionType.Select:
+            result = <div/>
+            break;
+
+        case QuestionType.ShortText:
+            result = <input type="text" id={question.id} name="0" onChange={handler}/>
+            break;
+
+        case QuestionType.Range:
+            result = <input type="range" min={1} max={options.length} step={1} name="0"
+                            id={question.id} onChange={handler}
+            />
+
+            break;
+
+        case QuestionType.Section:
+        default:
+            result = <div/>
+    }
+
+    return result;
+}
+
+class RenderedQuestion extends React.Component<QuestionProp> {
     constructor(props: QuestionProp) {
         super(props);
-
         this.handler = this.handler.bind(this);
     }
 
     handler(event: ChangeEvent<HTMLInputElement>): void {
         const target = event.target;
-        const name: string = target.name;
-        let value = target.type == "checkbox" ? target.checked : target.value;
+        const value = target.type == "checkbox" ? target.checked : target.value;
 
-        this.setState({
-            [name]: value
-        });
-
-        event.preventDefault();
+        this.setState({[target.name]: value});
+        this.props.public_state.set(target.name, value);
     }
 
     render() {
         const question = this.props.question;
-        let question_input;
-
-        const options: Array<string> = question.data["options"]
-
-        switch (question.type) {
-            // Direct Mappings
-            case QuestionType.Radio:
-                question_input = <input type={question.type} id={question.id}/>;
-                break;
-
-            case QuestionType.ShortText:
-                question_input = <input type="text" id={question.id}/>;
-                break;
-
-            // Custom Logic
-            case QuestionType.Checkbox:
-                question_input = options.map((option, index) =>
-                    <div key={index}>
-                        <label>
-                            <input type="checkbox" value={option} onChange={this.handler}/> {option}
-                        </label><br/>
-                    </div>
-                )
-
-                break;
-
-            case QuestionType.Range:
-                question_input = <input type="range" min={1} max={options.length} step={1}/>
-                break;
-
-            case QuestionType.TextArea:
-            case QuestionType.Code:
-            case QuestionType.Select:
-                question_input = <input type="text" id={question.id}/>;
-                break;
-
-            // Not Input
-            case QuestionType.Section:
-            default:
-                return <div/>;
-        }
-
-        return (
-            <div>
-                <label>{question.name}<br/>{question_input}</label>
-            </div>
-        )
+        return <label>{question.name}<br/>{create_input(this.props, this.handler)}<br/></label>
     }
 }
 
