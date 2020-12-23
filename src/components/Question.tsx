@@ -17,10 +17,6 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
     const options: Array<string> = question.data["options"]
 
     switch (question.type) {
-        case QuestionType.TextArea:
-            result = <div/>
-            break;
-
         case QuestionType.Checkbox:
             result = options.map((option, index) =>
                 <div key={index}>
@@ -39,14 +35,6 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
             result = <input type="radio" id={question.id} name="0" onChange={handler}/>;
             break;
 
-        case QuestionType.Code:
-            result = <div/>
-            break;
-
-        case QuestionType.Select:
-            result = <div/>
-            break;
-
         case QuestionType.ShortText:
             result = <input type="text" id={question.id} name="0" onChange={handler}/>
             break;
@@ -58,9 +46,12 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
 
             break;
 
+        case QuestionType.Code:
+        case QuestionType.Select:
         case QuestionType.Section:
+        case QuestionType.TextArea:
         default:
-            result = <div/>
+            result = <input type="text" id={question.id} name="0" onChange={handler}/>
     }
 
     return result;
