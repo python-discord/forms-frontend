@@ -26,7 +26,7 @@ function FormPage() {
         getForm(id).then(form => {
             setForm(form);
         })
-    })
+    }, []);
 
     if (!form) {
         return <Loading/>
