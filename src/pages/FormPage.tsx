@@ -10,7 +10,8 @@ import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
 
 import { Form, getForm } from "../api/forms";
-const styles = require("./css/FormPage.css");
+// @ts-ignore
+import styles from "./css/FormPage.css";
 
 
 import gray_circle from "!url-loader!./css/gray-circle.svg";
