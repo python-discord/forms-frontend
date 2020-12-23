@@ -45,12 +45,36 @@ export async function getForm(id: string): Promise<Form> {
                     data: {}
                 }, {
                     id: "check-box-thing",
-                    name: "This is a chcekbox",
+                    name: "This is a checkbox",
                     type: QuestionType.Checkbox,
                     data: {
                         "options": [
                             "United Kingdom",
-                            "United States"
+                            "United States",
+                            "United States",
+                            "Other Country That Starts With United",
+                            "United Kingdom",
+                            "Other Country That Starts With United",
+                            "Other Country That Starts With United",
+                            "United States",
+                            "United Kingdom",
+                        ]
+                    }
+                }, {
+                    id: "check-box-round-thing",
+                    name: "This is a round checkbox",
+                    type: QuestionType.RoundCheckbox,
+                    data: {
+                        "options": [
+                            "United Kingdom",
+                            "United States",
+                            "United States",
+                            "Other Country That Starts With United",
+                            "United Kingdom",
+                            "Other Country That Starts With United",
+                            "Other Country That Starts With United",
+                            "United States",
+                            "United Kingdom",
                         ]
                     }
                 }, {

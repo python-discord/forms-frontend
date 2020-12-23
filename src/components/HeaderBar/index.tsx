@@ -35,13 +35,13 @@ function HeaderBar({ title, description }: HeaderBarProps) {
   }
 
   return (
-      <div css={css`margin-bottom: 1rem;`}>
+      <div>
         <div>
           <Header1 css={headerImageStyles}/>
           <Header2 css={headerImageStyles}/>
         </div>
 
-        <div css={headerTextStyles}>
+        <div css={css`${headerTextStyles}; margin-bottom: 12.5%;`}>
           <h1 css={css`font-size: 3vmax;
             margin-bottom: 0;`}>{title}</h1>
           <h1 css={css`font-size: 1.5vmax;`}>{description}</h1>

@@ -10,7 +10,20 @@ import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
 
 import { Form, getForm } from "../api/forms";
-const styles = require("./css/Form.css");
+const styles = require("./css/FormPage.css");
+
+
+import gray_circle from "!url-loader!./css/gray-circle.svg";
+import green_checkmark from "!url-loader!./css/green-checkmark.svg";
+const form_css_extra = css`
+  #unselected_checkbox_label {
+    background: no-repeat center / 100% url(${gray_circle});
+  }
+
+  #selected_checkbox_label {
+    background: no-repeat center / 100% url(${green_checkmark});
+  }
+`;
 
 interface PathParams {
     id: string
@@ -52,8 +65,8 @@ function FormPage() {
     return (
         <div>
             <HeaderBar title={form.name} description={form.description} key={2}/>
-            <div css={css`${styles}`}>
-                <form id="form" onSubmit={handleSubmit}>
+            <div css={css`${styles}; ${form_css_extra}`}>
+                <form id="form" onSubmit={handleSubmit} className="unselectable">
                     {questions}
                 </form>
             </div>
