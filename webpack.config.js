@@ -64,6 +64,12 @@ module.exports = {
         }, {
             test: /\.svg$/,
             loader: '@svgr/webpack'
+        }, {
+            test: /\.css$/,
+            loader: 'raw-loader',
+            options: {
+                esModule: false
+            }
         }]
     },
     devServer: {

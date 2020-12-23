@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react"
+import { jsx, css } from "@emotion/react"
 import { Link } from "react-router-dom";
 
 import React, { SyntheticEvent, useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
 
 import { Form, getForm } from "../api/forms";
-
+const styles = require("./css/Form.css");
 
 interface PathParams {
     id: string
@@ -52,9 +52,11 @@ function FormPage() {
     return (
         <div>
             <HeaderBar title={form.name} description={form.description} key={2}/>
-            <form css={{marginLeft: "2rem"}} id="form" onSubmit={handleSubmit}>
-                {questions}
-            </form>
+            <div css={css`${styles}`}>
+                <form id="form" onSubmit={handleSubmit}>
+                    {questions}
+                </form>
+            </div>
 
             <div css={{marginLeft: "2rem", marginTop: "2rem"}}>
                 <button form="form" type="submit">Submit</button>

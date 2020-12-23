@@ -12,6 +12,7 @@ type QuestionProp = {
 
 // TODO: Create Input Fields for each type below
 // TODO: Create custom styles for each type, check ticket for reference
+// TODO: Input validation
 function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
     const options: Array<string> = question.data["options"]

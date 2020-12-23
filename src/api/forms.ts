@@ -1,4 +1,4 @@
-import {Question, QuestionType} from "./question"
+import { Question, QuestionType } from "./question"
 import ApiClient from "./client";
 
 export enum FormFeatures {
