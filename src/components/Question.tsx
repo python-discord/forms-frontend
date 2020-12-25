@@ -20,39 +20,28 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
     switch (question.type) {
         case QuestionType.Checkbox:
             result = options.map((option, index) =>
-                <label className="checkbox_label selectable" key={index}>
-                    <label id="unselected_checkbox_label" className="unselectable checkbox_direct">
-                        <input type="checkbox" value={option} className="regular_checkbox"
-                               name={`${("000" + index).slice(-4)}. ${option}`} onChange={handler}
-                        />
-                    </label>  {option}<br/>
-                </label>
-            );
-
-            break;
-
-        case QuestionType.RoundCheckbox:
-            result = options.map((option, index) =>
-                <label id="unselected_round_checkbox_label" className="round_checkbox_label" key={index}>
-                    <input type="checkbox" value={option} className="round_checkbox"
-                           name={`${("000" + index).slice(-4)}. ${option}`} onChange={handler}
-                    />
-                    {option}
+                <label key={index}>
+                    <label className="unselected_checkbox_label checkbox_label unselectable">
+                        <input type="checkbox" value={option}
+                               name={`${("000" + index).slice(-4)}. ${option}`} onChange={handler}/>
+                        <span className="checkmark_span"/>
+                    </label>
+                    {option}<br/>
                 </label>
             );
 
             break;
 
         case QuestionType.Radio:
-            result = <input type="radio" id="radio" name="value" onChange={handler}/>;
+            result = <input type="radio" className="radio" name="value" onChange={handler}/>;
             break;
 
         case QuestionType.ShortText:
-            result = <input type="text" id="text" name="value" onChange={handler}/>
+            result = <input type="text" className="text" name="value" onChange={handler}/>
             break;
 
         case QuestionType.Range:
-            result = <input type="range" min={1} max={options.length} step={1} name="value" id="range" onChange={handler}/>
+            result = <input type="range" min={1} max={options.length} step={1} name="value" className="range" onChange={handler}/>
             break;
 
         case QuestionType.Code:
@@ -60,7 +49,7 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
         case QuestionType.Section:
         case QuestionType.TextArea:
         default:
-            result = <input type="text" id="text" name="value" onChange={handler}/>
+            result = <input type="text" className="text" name="value" onChange={handler}/>
     }
 
     return result;
@@ -88,13 +77,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         this._setState(target.name, value);
 
-        // Toggle checkbox ID
+        // Toggle checkbox class
         if (target.type == "checkbox" && target.parentElement !== null) {
-            if (target.className.endsWith("round_checkbox")) {
-                target.parentElement.id = (value ? "" : "un") + "selected_round_checkbox_label";
-            } else {
-                target.parentElement.id = (value ? "" : "un") + "selected_checkbox_label";
-            }
+            target.parentElement.className = (value ? "" : "un") + "selected_checkbox_label checkbox_label unselectable";
         }
     }
 

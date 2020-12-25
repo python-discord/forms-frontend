@@ -1,7 +1,6 @@
 export enum QuestionType {
     TextArea = "textarea",
     Checkbox = "checkbox",
-    RoundCheckbox = "roundcheckbox", // Temp
     Radio = "radio",
     Code = "code",
     Select = "select",

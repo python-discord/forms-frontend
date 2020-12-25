@@ -3,6 +3,13 @@ form {
     width: 50%;
 }
 
+@media (max-width: 800px) {
+    /* Make form larger on mobile and tablet screens */
+    form {
+        width: 80%;
+    }
+}
+
 hr {
     color: gray;
     margin: 3rem 0 3rem 0;
@@ -26,48 +33,55 @@ h2 {
     user-select: text;
 }
 
-
-/* Round Checkboxes */
-input[type="checkbox"].round_checkbox {
-    display: none;
-}
-
-.round_checkbox_label {
+/* Checkboxes */
+.checkbox_label {
     display: inline-block;
-    border-radius: 2rem;
+    position: relative;
+    top: 0.25em;
 
-    padding: 0.75rem;
-    margin: 0.5rem;
-
-    transition: background-color 300ms;
-}
-
-#unselected_round_checkbox_label {
-    background: gray no-repeat left center;
-}
-
-#selected_round_checkbox_label {
-    background: green no-repeat left center;
-}
-
-
-/* Regular Checkboxes */
-input[type="checkbox"].regular_checkbox {
-    display: none;
-}
-
-.checkbox_direct {
     width: 1em;
     height: 1em;
 
-    display: inline-block;
-    margin: 0.5rem 0.5rem 0 0;
+    margin: 1rem 0.5rem 0 0;
+    border: whitesmoke 0.2rem solid;
+    border-radius: 25%;
 
-    -webkit-transition: background-image 1s ease-in-out;
-    transition: background-image 300ms ease-in-out;
+    -webkit-transition: background-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out;
 }
 
-.checkbox_label {
-    margin: 10rem 2rem 10rem 0;
+.checkbox_label input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
 }
 
+.unselected_checkbox_label {
+    background-color: white;
+}
+
+.unselected_checkbox_label:hover {
+    background-color: lightgray;
+}
+
+.selected_checkbox_label {
+    background-color: #7289DA; /* Blurple */
+}
+
+.checkmark_span {
+    position: absolute;
+}
+
+.selected_checkbox_label .checkmark_span {
+    width: 0.30rem;
+    height: 0.60rem;
+    left: 0.25em;
+
+    border: solid white;
+    border-width: 0 0.2rem 0.2rem 0;
+
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
