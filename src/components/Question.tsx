@@ -11,6 +11,9 @@ type QuestionProp = {
     public_state: Map<string, any>,
 }
 
+const _require_options: Array<QuestionType> = [QuestionType.Radio, QuestionType.Checkbox, QuestionType.Select];
+const _skip_normal_state: Array<QuestionType> = [QuestionType.Radio, QuestionType.Checkbox, QuestionType.Select];
+
 // TODO: Create Input Fields for each type below
 // TODO: Create custom styles for each type, check ticket for reference
 // TODO: Input validation
@@ -19,7 +22,7 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
     let options: Array<string> = question.data["options"];
 
     // Catch input types that require options but don't have any
-    if (options === undefined && [QuestionType.Radio, QuestionType.Checkbox].includes(question.type)) {
+    if (options === undefined && _require_options.includes(question.type)) {
         // TODO: Implement some sort of warning here
         options = [];
     }
@@ -57,7 +60,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         super(props);
         this.handler = this.handler.bind(this);
 
-        if (![QuestionType.Checkbox, QuestionType.Radio].includes(props.question.type)) {
+        if (!_skip_normal_state.includes(props.question.type)) {
             this._setState("value", "");
         }
     }
@@ -107,6 +110,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     break;
 
                 case QuestionType.Radio:
+                case QuestionType.Select:
                     this._setState(this.props.question.name, null)
                     break;
             }
