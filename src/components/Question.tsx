@@ -4,6 +4,7 @@ import JSX = jsx.JSX;
 
 import React, { ChangeEvent } from "react";
 import { Question, QuestionType } from "../api/question";
+import InputTypes from "./InputTypes/Index"
 
 type QuestionProp = {
     question: Question,
@@ -19,29 +20,19 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
 
     switch (question.type) {
         case QuestionType.Checkbox:
-            result = options.map((option, index) =>
-                <label key={index}>
-                    <label className="unselected_checkbox_label checkbox_label unselectable">
-                        <input type="checkbox" value={option}
-                               name={`${("000" + index).slice(-4)}. ${option}`} onChange={handler}/>
-                        <span className="checkmark_span"/>
-                    </label>
-                    {option}<br/>
-                </label>
-            );
-
+            result = options.map((option, index) => <InputTypes.Checkbox index={index} option={option} handler={handler} key={index}/>);
             break;
 
         case QuestionType.Radio:
-            result = <input type="radio" className="radio" name="value" onChange={handler}/>;
+            result = <InputTypes.Radio handler={handler}/>;
             break;
 
         case QuestionType.ShortText:
-            result = <input type="text" className="text" name="value" onChange={handler}/>
+            result = <InputTypes.ShortText handler={handler}/>;
             break;
 
         case QuestionType.Range:
-            result = <input type="range" min={1} max={options.length} step={1} name="value" className="range" onChange={handler}/>
+            result = <InputTypes.Range options={options} handler={handler}/>;
             break;
 
         case QuestionType.Code:
@@ -49,7 +40,7 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
         case QuestionType.Section:
         case QuestionType.TextArea:
         default:
-            result = <input type="text" className="text" name="value" onChange={handler}/>
+            result = <InputTypes.ShortText handler={handler}/>;
     }
 
     return result;
