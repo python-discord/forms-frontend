@@ -73,7 +73,15 @@ export async function getForm(id: string): Promise<Form> {
                     id: "radio",
                     name: "This is a radio",
                     type: QuestionType.Radio,
-                    data: {}
+                    data: {
+                        options: [
+                            "Option 1",
+                            "Option 2",
+                            "Option 3",
+                            "Option 1",
+                            "Yes option one is repeated twice, I do it to prevent the usage of values as keys or any other weird practices like that. This was a really long option to test text wrapping."
+                        ]
+                    }
                 }, {
                     id: "code",
                     name: "This is code (skipped for now)",

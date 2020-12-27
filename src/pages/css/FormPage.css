@@ -85,3 +85,9 @@ h2 {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+/* Radio */
+input[type="radio"] {
+    margin: 1rem 0.5rem 0 0;
+    size: 20rem;
+}

@@ -16,7 +16,13 @@ type QuestionProp = {
 // TODO: Input validation
 function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
-    const options: Array<string> = question.data["options"]
+    let options: Array<string> = question.data["options"];
+
+    // Catch input types that require options but don't have any
+    if (options === undefined && [QuestionType.Radio, QuestionType.Checkbox].includes(question.type)) {
+        // TODO: Implement some sort of warning here
+        options = [];
+    }
 
     switch (question.type) {
         case QuestionType.Checkbox:
@@ -24,7 +30,7 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
             break;
 
         case QuestionType.Radio:
-            result = <InputTypes.Radio handler={handler}/>;
+            result = options.map((option, index) => <InputTypes.Radio option={option} name={question.name} handler={handler} key={index}/>);
             break;
 
         case QuestionType.ShortText:
@@ -51,9 +57,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         super(props);
         this.handler = this.handler.bind(this);
 
-        if (props.question.type !== QuestionType.Checkbox) {
-            this.setState({["value"]: ""});
-            this.props.public_state.set("value", "");
+        if (![QuestionType.Checkbox, QuestionType.Radio].includes(props.question.type)) {
+            this._setState("value", "");
         }
     }
 
@@ -64,7 +69,24 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     handler(event: ChangeEvent<HTMLInputElement>): void {
         const target = event.target;
-        const value = target.type == "checkbox" ? target.checked : target.value;
+
+        let value: string | boolean;
+        switch (target.type) {
+            case QuestionType.Checkbox:
+                value = target.checked;
+                break;
+
+            case QuestionType.Radio:
+                if (target.parentElement) {
+                    value = target.parentElement.innerText.trimEnd();
+                } else {
+                    value = target.value;
+                }
+                break;
+
+            default:
+                value = target.value;
+        }
 
         this._setState(target.name, value);
 
@@ -82,6 +104,11 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     for (const [index, option] of this.props.question.data["options"].entries()) {
                         this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
                     }
+                    break;
+
+                case QuestionType.Radio:
+                    this._setState(this.props.question.name, null)
+                    break;
             }
         }
     }
