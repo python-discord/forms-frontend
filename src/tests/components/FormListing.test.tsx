@@ -19,7 +19,8 @@ const openFormListing: Form = {
             "type": QuestionType.ShortText,
             "data": {}
         }
-    ]
+    ],
+    webhook: null
 }
 
 const closedFormListing: Form = {
@@ -34,7 +35,8 @@ const closedFormListing: Form = {
             "type": QuestionType.ShortText,
             "data": {}
         }
-    ]
+    ],
+    webhook: null
 }
 
 test('renders form listing with specified title', () => {

@@ -19,7 +19,8 @@ const testingForm: forms.Form = {
             "type": QuestionType.ShortText,
             "data": {}
         }
-    ]
+    ],
+    "webhook": null
 }
 
 test('renders landing page', () => {

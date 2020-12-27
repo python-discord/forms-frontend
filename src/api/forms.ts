@@ -13,7 +13,7 @@ export enum FormFeatures {
 export interface Form {
     id: string,
     features: Array<FormFeatures>,
-    webhook: WebHook,
+    webhook: WebHook | null,
     questions: Array<Question>,
     name: string,
     description: string
