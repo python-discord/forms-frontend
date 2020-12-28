@@ -97,11 +97,11 @@ input[type="radio"] {
     display: inline-block;
     width: min(20rem, 90%);
     height: 100%;
+    min-height: 2rem;
 
     background: whitesmoke;
 
     color: black;
-    text-indent: 1rem;
 
     margin-bottom: 0;
 
@@ -112,14 +112,15 @@ input[type="radio"] {
     transition: border-radius 400ms;
 }
 
-.select_container:hover {
+.active_select_container {
     height: auto;
     border-bottom: none;
 }
 
 .selected_option {
     position: relative;
-    top: 0.1rem;
+    top: 0.3rem;
+    padding: 0 2rem 0.5rem 1rem;
 }
 
 .select_arrow {
@@ -130,7 +131,7 @@ input[type="radio"] {
     position: relative;
     float: right;
     right: 1em;
-    top: 0.2rem;
+    top: 0.35rem;
 
     border: solid black;
     border-width: 0 0.2rem 0.2rem 0;
@@ -143,7 +144,7 @@ input[type="radio"] {
     transition: transform 400ms;
 }
 
-.select_container:hover .select_arrow {
+.active_select_container .select_arrow {
     -webkit-transform: translateY(40%) rotate(225deg);
     -ms-transform: translateY(40%) rotate(225deg);
     transform: translateY(40%) rotate(225deg);
@@ -172,18 +173,21 @@ input[type="radio"] {
     transition: visibility 0ms, opacity 400ms linear;
 }
 
-.select_container:hover .select_options {
+.active_select_container .select_options {
     height: auto;
-
     visibility: visible;
     opacity: 1;
 }
 
 .select_options label {
     display: block;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0.75rem 1rem;
 }
 
 .select_options label:hover {
     background-color: lightgray;
+}
+
+.select_options hr {
+    margin: 0 1rem;
 }

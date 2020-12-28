@@ -18,12 +18,18 @@ function option_handler(this: option_handler_args, event: React.MouseEvent<HTMLL
     // as that is the only element that should use this handler.
     // @ts-ignore
     const target: HTMLLabelElement = event.target;
+    const active: HTMLLabelElement = this.ref.current!;
 
-    const button: HTMLLabelElement = this.ref.current!;
-    // TODO: Close menu on click
+    const selected_content: string = target.textContent!;
 
-    button.textContent = target.textContent;
-    this.props.state_dict.set(this.props.name, target.textContent);
+    if (active.textContent === "...") {
+        target.parentElement!.remove();
+    } else {
+        target.textContent = active.textContent;
+    }
+
+    active.textContent = selected_content;
+    this.props.state_dict.set(this.props.name, active.textContent);
 
     event.preventDefault();
 }
@@ -32,13 +38,19 @@ export default function Select(props: SelectProps) {
     const ref: React.RefObject<HTMLLabelElement> = React.createRef();
     const handler = option_handler.bind({ props, ref });
 
+    const top_ref: React.Ref<HTMLDivElement> = React.createRef();
+
     return (
-        <div className="select_container">
-            <label className="selected_option" ref={ref}>...</label>
+        <div className="select_container" ref={top_ref} onClick={ () => top_ref.current!.classList.toggle("active_select_container") }>
             <span className="select_arrow"/>
+            <div className="selected_option"><label ref={ref}>...</label></div>
             <span className="select_options">
-                <br/>
-                { props.options.map((option, index) => <label key={index} onClick={handler}>{option}</label>) }
+                { props.options.map((option, index) => (
+                    <div key={index}>
+                        <hr/>
+                        <label onClick={handler}>{option}</label>
+                    </div>
+                )) }
             </span>
         </div>
     );
