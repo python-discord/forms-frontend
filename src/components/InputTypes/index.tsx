@@ -41,7 +41,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select name={question.id} options={options} state_dict={public_state}/>
+            result = <Select options={options} state_dict={public_state}/>
             break;
 
         case QuestionType.ShortText:

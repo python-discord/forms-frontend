@@ -3,7 +3,6 @@ import { jsx } from "@emotion/react";
 import React from "react";
 
 interface SelectProps {
-    name: string,
     options: Array<string>,
     state_dict: Map<string, any>
 }
