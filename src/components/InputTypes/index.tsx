@@ -53,11 +53,10 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Code:
-            result = <Code handler={handler}/>
-            break;
+            // TODO: Implement
 
         default:
-            result = <ShortText handler={handler}/>;
+            result = <TextArea handler={handler}/>;
     }
 
     return result;
