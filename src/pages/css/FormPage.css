@@ -131,7 +131,7 @@ input[type="radio"] {
     position: relative;
     float: right;
     right: 1em;
-    top: 0.35rem;
+    top: 0.5rem;
 
     border: solid black;
     border-width: 0 0.2rem 0.2rem 0;
