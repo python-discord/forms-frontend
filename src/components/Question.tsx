@@ -1,66 +1,30 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import JSX = jsx.JSX;
-
 import React, { ChangeEvent } from "react";
-import { Question, QuestionType } from "../api/question";
-import InputTypes from "./InputTypes/Index"
 
-type QuestionProp = {
+import { Question, QuestionType } from "../api/question";
+import create_input from "./InputTypes"
+
+const _skip_normal_state: Array<QuestionType> = [
+    QuestionType.Radio,
+    QuestionType.Checkbox,
+    QuestionType.Select,
+    QuestionType.Section
+];
+
+export type QuestionProp = {
     question: Question,
     public_state: Map<string, any>,
-}
-
-const _require_options: Array<QuestionType> = [QuestionType.Radio, QuestionType.Checkbox, QuestionType.Select];
-const _skip_normal_state: Array<QuestionType> = [QuestionType.Radio, QuestionType.Checkbox, QuestionType.Select];
-
-// TODO: Create Input Fields for each type below
-// TODO: Create custom styles for each type, check ticket for reference
-// TODO: Input validation
-function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
-    let result: JSX.Element | JSX.Element[];
-    let options: Array<string> = question.data["options"];
-
-    // Catch input types that require options but don't have any
-    if (options === undefined && _require_options.includes(question.type)) {
-        // TODO: Implement some sort of warning here
-        options = [];
-    }
-
-    switch (question.type) {
-        case QuestionType.Checkbox:
-            result = options.map((option, index) => <InputTypes.Checkbox index={index} option={option} handler={handler} key={index}/>);
-            break;
-
-        case QuestionType.Radio:
-            result = options.map((option, index) => <InputTypes.Radio option={option} name={question.id} handler={handler} key={index}/>);
-            break;
-
-        case QuestionType.Select:
-            result = <InputTypes.Select name={question.id} options={options} state_dict={public_state}/>
-            break;
-
-        case QuestionType.ShortText:
-            result = <InputTypes.ShortText handler={handler}/>;
-            break;
-
-        case QuestionType.Range:
-            result = <InputTypes.Range options={options} handler={handler}/>;
-            break;
-
-        case QuestionType.Code:
-        case QuestionType.TextArea:
-        default:
-            result = <InputTypes.ShortText handler={handler}/>;
-    }
-
-    return result;
 }
 
 class RenderedQuestion extends React.Component<QuestionProp> {
     constructor(props: QuestionProp) {
         super(props);
-        this.handler = this.handler.bind(this);
+        if (props.question.type === QuestionType.TextArea) {
+            this.handler = this.text_area_handler.bind(this);
+        } else {
+            this.handler = this.normal_handler.bind(this);
+        }
 
         if (!_skip_normal_state.includes(props.question.type)) {
             this._setState("value", "");
@@ -72,20 +36,24 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.props.public_state.set(target, value);
     }
 
-    handler(event: ChangeEvent<HTMLInputElement>): void {
-        const target = event.target;
+    handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {}
 
+    normal_handler(event: ChangeEvent<HTMLInputElement>): void {
+        let target: string;
         let value: string | boolean;
-        switch (target.type) {
+
+        switch (event.target.type) {
             case QuestionType.Checkbox:
-                value = target.checked;
+                target = this.props.question.id;
+                value = event.target.checked;
                 break;
 
             case QuestionType.Radio:
-                if (target.parentElement) {
-                    value = target.parentElement.innerText.trimEnd();
+                target = "value";
+                if (event.target.parentElement) {
+                    value = event.target.parentElement.innerText.trimEnd();
                 } else {
-                    value = target.value;
+                    value = event.target.value;
                 }
                 break;
 
@@ -94,16 +62,21 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 return;
 
             default:
-                value = target.value;
+                target = "value";
+                value = event.target.value;
         }
 
-        this._setState(this.props.question.id, value);
+        this._setState(target, value);
 
         // Toggle checkbox class
-        if (target.type == "checkbox" && target.parentElement !== null) {
-            target.parentElement.classList.toggle("unselected_checkbox_label");
-            target.parentElement.classList.toggle("selected_checkbox_label");
+        if (event.target.type == "checkbox" && event.target.parentElement !== null) {
+            event.target.parentElement.classList.toggle("unselected_checkbox_label");
+            event.target.parentElement.classList.toggle("selected_checkbox_label");
         }
+    }
+
+    text_area_handler(event: ChangeEvent<HTMLTextAreaElement>) {
+        this._setState("value", event.target.value);
     }
 
     componentDidMount() {
@@ -118,7 +91,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
                 case QuestionType.Radio:
                 case QuestionType.Select:
-                    this._setState(this.props.question.id, null)
+                    this._setState("value", null)
                     break;
             }
         }
@@ -136,7 +109,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         } else {
             return <div>
                 <h2 className="selectable">{question.name}</h2>
-                {create_input(this.props, this.handler)}<br/><hr/>
+                { create_input(this.props, this.handler) }<br/><hr/>
             </div>
         }
     }

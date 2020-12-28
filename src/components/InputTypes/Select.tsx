@@ -29,7 +29,7 @@ function option_handler(this: option_handler_args, event: React.MouseEvent<HTMLL
     }
 
     active.textContent = selected_content;
-    this.props.state_dict.set(this.props.name, active.textContent);
+    this.props.state_dict.set("value", active.textContent);
 
     event.preventDefault();
 }

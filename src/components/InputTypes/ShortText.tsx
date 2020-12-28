@@ -7,5 +7,5 @@ interface ShortTextProps {
 }
 
 export default function ShortText(props: ShortTextProps) {
-    return <input type="text" className="text" name="value" onChange={props.handler}/>;
+    return <input type="text" className="short_text" placeholder="Enter Text..." onChange={props.handler}/>;
 }
