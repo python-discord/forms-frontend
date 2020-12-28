@@ -10,11 +10,13 @@ interface HeaderBarProps {
 }
 
 const headerImageStyles = css`
-  z-index: -1;
-  top: 0;
-  position: absolute;
-  width: 100%;
-  transition: height 1s;
+  * {
+    z-index: -1;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    transition: height 1s;
+  }
 `;
 
 const headerTextStyles = css`
@@ -36,9 +38,9 @@ function HeaderBar({ title, description }: HeaderBarProps) {
 
   return (
       <div>
-        <div>
-          <Header1 css={headerImageStyles}/>
-          <Header2 css={headerImageStyles}/>
+        <div css={headerImageStyles}>
+          <Header1/>
+          <Header2/>
         </div>
 
         <div css={css`${headerTextStyles}; margin-bottom: 12.5%;`}>

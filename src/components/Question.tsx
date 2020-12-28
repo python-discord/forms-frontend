@@ -49,7 +49,6 @@ function create_input({ question, public_state }: QuestionProp, handler: (event:
             break;
 
         case QuestionType.Code:
-        case QuestionType.Section:
         case QuestionType.TextArea:
         default:
             result = <InputTypes.ShortText handler={handler}/>;
@@ -127,10 +126,19 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     render() {
         const question = this.props.question;
-        return <div>
-            <h2 className="selectable">{question.name}</h2>
-            {create_input(this.props, this.handler)}<br/><hr/>
-        </div>
+
+        if (question.type === QuestionType.Section) {
+            return <div>
+                <h1 className="selectable">{question.name}</h1>
+                { question.data["text"] ? <h3>{question.data["text"]}</h3> : "" }
+                <hr className="section_header"/>
+            </div>
+        } else {
+            return <div>
+                <h2 className="selectable">{question.name}</h2>
+                {create_input(this.props, this.handler)}<br/><hr/>
+            </div>
+        }
     }
 }
 

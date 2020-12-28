@@ -46,6 +46,11 @@ export async function getForm(id: string): Promise<Form> {
                     type: QuestionType.ShortText,
                     data: {}
                 }, {
+                    id: "section",
+                    name: "This is a section",
+                    type: QuestionType.Section,
+                    data: {}
+                }, {
                     id: "check-box-thing",
                     name: "This is a checkbox",
                     type: QuestionType.Checkbox,
@@ -71,6 +76,13 @@ export async function getForm(id: string): Promise<Form> {
                     name: "This is a textarea",
                     type: QuestionType.TextArea,
                     data: {}
+                },{
+                    id: "section-with-byline",
+                    name: "This is a section with an optional byline",
+                    type: QuestionType.Section,
+                    data: {
+                        "text": "How come 'hello world' became the de facto beginner print statement, instead of something like \"test\" or \"here\"?"
+                    }
                 }, {
                     id: "radio",
                     name: "This is a radio",
@@ -102,12 +114,7 @@ export async function getForm(id: string): Promise<Form> {
                             "Yes option one is repeated twice, I do it to prevent the usage of values as keys or any other weird practices like that. This was a really long option to test text wrapping."
                         ]
                     }
-                }, {
-                    id: "section",
-                    name: "This is a section",
-                    type: QuestionType.Section,
-                    data: {}
-                },
+                }
             ],
             webhook: {
                 url: "",
