@@ -224,4 +224,6 @@ input[type="radio"] {
 .text_area {
     min-height: 20rem;
     min-width: min(20rem, 90%);
+
+    padding-top: 0.2rem;
 }
