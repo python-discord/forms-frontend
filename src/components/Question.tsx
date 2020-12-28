@@ -33,11 +33,11 @@ function create_input({ question, public_state }: QuestionProp, handler: (event:
             break;
 
         case QuestionType.Radio:
-            result = options.map((option, index) => <InputTypes.Radio option={option} name={question.name} handler={handler} key={index}/>);
+            result = options.map((option, index) => <InputTypes.Radio option={option} name={question.id} handler={handler} key={index}/>);
             break;
 
         case QuestionType.Select:
-            result = <InputTypes.Select name={question.name} options={options} state_dict={public_state}/>
+            result = <InputTypes.Select name={question.id} options={options} state_dict={public_state}/>
             break;
 
         case QuestionType.ShortText:
@@ -98,7 +98,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 value = target.value;
         }
 
-        this._setState(target.name, value);
+        this._setState(this.props.question.id, value);
 
         // Toggle checkbox class
         if (target.type == "checkbox" && target.parentElement !== null) {
@@ -119,7 +119,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
                 case QuestionType.Radio:
                 case QuestionType.Select:
-                    this._setState(this.props.question.name, null)
+                    this._setState(this.props.question.id, null)
                     break;
             }
         }
