@@ -17,7 +17,7 @@ const _skip_normal_state: Array<QuestionType> = [QuestionType.Radio, QuestionTyp
 // TODO: Create Input Fields for each type below
 // TODO: Create custom styles for each type, check ticket for reference
 // TODO: Input validation
-function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
+function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement>) => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
     let options: Array<string> = question.data["options"];
 
@@ -36,6 +36,10 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
             result = options.map((option, index) => <InputTypes.Radio option={option} name={question.name} handler={handler} key={index}/>);
             break;
 
+        case QuestionType.Select:
+            result = <InputTypes.Select name={question.name} options={options} state_dict={public_state}/>
+            break;
+
         case QuestionType.ShortText:
             result = <InputTypes.ShortText handler={handler}/>;
             break;
@@ -45,7 +49,6 @@ function create_input({ question }: QuestionProp, handler: (event: ChangeEvent<H
             break;
 
         case QuestionType.Code:
-        case QuestionType.Select:
         case QuestionType.Section:
         case QuestionType.TextArea:
         default:
@@ -87,6 +90,10 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 }
                 break;
 
+            case QuestionType.Select:
+                // Handled by component
+                return;
+
             default:
                 value = target.value;
         }
@@ -95,7 +102,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         // Toggle checkbox class
         if (target.type == "checkbox" && target.parentElement !== null) {
-            target.parentElement.className = (value ? "" : "un") + "selected_checkbox_label checkbox_label unselectable";
+            target.parentElement.classList.toggle("unselected_checkbox_label");
+            target.parentElement.classList.toggle("selected_checkbox_label");
         }
     }
 

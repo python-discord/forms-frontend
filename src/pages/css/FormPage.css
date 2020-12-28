@@ -91,3 +91,99 @@ input[type="radio"] {
     margin: 1rem 0.5rem 0 0;
     size: 20rem;
 }
+
+/* Select*/
+.select_container {
+    display: inline-block;
+    width: min(20rem, 90%);
+    height: 100%;
+
+    background: whitesmoke;
+
+    color: black;
+    text-indent: 1rem;
+
+    margin-bottom: 0;
+
+    border: 0.1rem solid black;
+    border-radius: 0.75rem;
+
+    -webkit-transition: border-radius 400ms;
+    transition: border-radius 400ms;
+}
+
+.select_container:hover {
+    height: auto;
+    border-bottom: none;
+}
+
+.selected_option {
+    position: relative;
+    top: 0.1rem;
+}
+
+.select_arrow {
+    display: inline-block;
+    height: 0.5rem;
+    width: 0.5rem;
+
+    position: relative;
+    float: right;
+    right: 1em;
+    top: 0.2rem;
+
+    border: solid black;
+    border-width: 0 0.2rem 0.2rem 0;
+
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+
+    -webkit-transition: transform 400ms;
+    transition: transform 400ms;
+}
+
+.select_container:hover .select_arrow {
+    -webkit-transform: translateY(40%) rotate(225deg);
+    -ms-transform: translateY(40%) rotate(225deg);
+    transform: translateY(40%) rotate(225deg);
+}
+
+.select_options {
+    display: block;
+    width: 100%;
+    height: 0;
+
+    position: relative;
+    right: 0.1rem;
+
+    background: whitesmoke;
+    margin-top: 0;
+
+    border: 0.1rem solid black;
+    border-top: none;
+    border-radius: 0 0 0.75rem 0.75rem;
+
+    text-indent: 0;
+    overflow: hidden;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0ms, opacity 400ms linear;
+}
+
+.select_container:hover .select_options {
+    height: auto;
+
+    visibility: visible;
+    opacity: 1;
+}
+
+.select_options label {
+    display: block;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.select_options label:hover {
+    background-color: lightgray;
+}
