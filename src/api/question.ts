@@ -13,5 +13,6 @@ export interface Question {
     id: string,
     name: string,
     type: QuestionType,
-    data: { [key: string]: any }
+    data: { [key: string]: any },
+    required: boolean
 }
