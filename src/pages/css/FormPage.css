@@ -244,6 +244,8 @@ input[type="radio"] {
     display: inline-block;
     transform: translateX(-50%);
     margin: 0 50%;
+
+    white-space: nowrap;
 }
 
 .range_dot {
