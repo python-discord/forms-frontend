@@ -9,7 +9,8 @@ const _skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
     QuestionType.Checkbox,
     QuestionType.Select,
-    QuestionType.Section
+    QuestionType.Section,
+    QuestionType.Range
 ];
 
 export type QuestionProp = {
@@ -89,6 +90,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     }
                     break;
 
+                case QuestionType.Range:
                 case QuestionType.Radio:
                 case QuestionType.Select:
                     this._setState("value", null)

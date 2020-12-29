@@ -227,3 +227,53 @@ input[type="radio"] {
 
     padding-top: 0.2rem;
 }
+
+/* Range */
+.range {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.range label {
+    width: 1rem;
+}
+
+.range label span {
+    display: inline-block;
+    transform: translateX(-50%);
+    margin: 0 50%;
+}
+
+.range_dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: whitesmoke;
+
+    border: 0.2rem solid whitesmoke;
+    border-radius: 50%;
+
+    transition: background-color 300ms;
+}
+
+.range_dot.selected {
+    background-color: #7289DA; /* Blurple */
+}
+
+.range_slider_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    position: absolute;
+    z-index: -1;
+
+    top: -1.1rem;
+}
+
+.range_slider {
+    width: 98%; /* Needs to be slightly smaller than container to work on all devices */
+    height: 0.5rem;
+    background-color: whitesmoke;
+}

@@ -68,7 +68,7 @@ export async function getForm(id: string): Promise<Form> {
                     type: QuestionType.Range,
                     data: {
                         "options": [
-                            "A", "B", "C"
+                            "A", "B", "C", "Option 1", "Option 2"
                         ]
                     }
                 }, {
@@ -97,11 +97,6 @@ export async function getForm(id: string): Promise<Form> {
                         ]
                     }
                 }, {
-                    id: "code",
-                    name: "This is code (skipped for now)",
-                    type: QuestionType.Code,
-                    data: {}
-                }, {
                     id: "select",
                     name: "This is a select",
                     type: QuestionType.Select,
@@ -114,6 +109,11 @@ export async function getForm(id: string): Promise<Form> {
                             "Yes option one is repeated twice, I do it to prevent the usage of values as keys or any other weird practices like that. This was a really long option to test text wrapping."
                         ]
                     }
+                }, {
+                    id: "code",
+                    name: "This is code (skipped for now)",
+                    type: QuestionType.Code,
+                    data: {}
                 }
             ],
             webhook: {

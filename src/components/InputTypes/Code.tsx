@@ -7,5 +7,5 @@ interface CodeProps {
 }
 
 export default function Code(props: CodeProps) {
-    return <input type="text" className="text" name="value" onChange={props.handler}/>;
+    return <input type="text" className="text" onChange={props.handler}/>;
 }

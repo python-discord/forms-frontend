@@ -14,7 +14,8 @@ import { QuestionProp } from "../Question"
 const _require_options: Array<QuestionType> = [
     QuestionType.Radio,
     QuestionType.Checkbox,
-    QuestionType.Select
+    QuestionType.Select,
+    QuestionType.Range
 ];
 
 export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void): JSX.Element | JSX.Element[] {
@@ -37,7 +38,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Radio:
-            result = options.map((option, index) => <Radio option={option} name={question.id} handler={handler} key={index}/>);
+            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index}/>);
             break;
 
         case QuestionType.Select:
@@ -49,7 +50,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Range:
-            result = <Range options={options} handler={handler}/>;
+            result = <Range question_id={question.id} options={options} state_dict={public_state}/>;
             break;
 
         case QuestionType.Code:
