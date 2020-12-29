@@ -28,12 +28,13 @@ export async function getForms(): Promise<Form[]> {
     const resp = await ApiClient.get("forms/discoverable");
     const data: Array<Form> = Array.from(resp.data);
     data.push({ description: "", features: [], name: "Demo", questions: [], webhook: null, id: "demo" });
+    data.push({ description: "", features: [], name: "Demo Closed", questions: [], webhook: null, id: "demo-closed" });
     return data; // FIXME: Revert this
 }
 
 export async function getForm(id: string): Promise<Form> {
     let data: Form;
-    if (id === "demo") {
+    if (id.startsWith("demo")) {
         data = {
             name: "Ban Appeals",
             id: "ban-appeals",
@@ -41,15 +42,15 @@ export async function getForm(id: string): Promise<Form> {
             features: [FormFeatures.Discoverable, FormFeatures.Open],
             questions: [
                 {
-                    id: "short-text",
-                    name: "This is short text",
-                    type: QuestionType.ShortText,
-                    data: {},
-                    required: false
-                }, {
                     id: "section",
                     name: "This is a section",
                     type: QuestionType.Section,
+                    data: {},
+                    required: false
+                }, {
+                    id: "short-text",
+                    name: "This is short text",
+                    type: QuestionType.ShortText,
                     data: {},
                     required: false
                 }, {
@@ -129,6 +130,10 @@ export async function getForm(id: string): Promise<Form> {
                 url: "",
                 message: null
             },
+        }
+
+        if (id === "demo-closed") {
+            data.features.pop();
         }
     } else {
         const fetch_response = await ApiClient.get(`forms/${id}`);

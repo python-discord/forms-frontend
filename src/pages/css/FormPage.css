@@ -17,7 +17,6 @@ hr {
 
 h1 {
     font-size: 2.5rem;
-    margin-top: 10rem;
     margin-bottom: 0;
 }
 
@@ -27,6 +26,19 @@ h4 {
 
 .section_header {
     margin-top: 1rem;
+}
+
+.closed_header {
+    margin-bottom: 10rem;
+    text-align: center;
+}
+
+.closed_header div {
+    font-size: 1.5rem;
+    background-color: #f04747;
+
+    padding: 1rem 4rem;
+    border-radius: 0.75rem;
 }
 
 .unselectable {
@@ -300,6 +312,10 @@ input[type="radio"] {
     text-align: left;
 }
 
+.nav_buttons.closed {
+    text-align: center;
+}
+
 .submit_form {
     text-align: right;
 }
@@ -307,7 +323,7 @@ input[type="radio"] {
 /* Tile Buttons Vertically On Smaller Devices */
 @media (max-width: 850px) {
     .nav {
-        width: 80%;
+        width: 100%;
     }
 
     .nav > div{
@@ -320,6 +336,12 @@ input[type="radio"] {
 
     .submit_form {
         text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav > div {
+        margin: 2rem;
     }
 }
 

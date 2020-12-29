@@ -9,7 +9,7 @@ import HeaderBar from "../components/HeaderBar";
 import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
 
-import { Form, getForm } from "../api/forms";
+import { Form, FormFeatures, getForm } from "../api/forms";
 
 
 interface PathParams {
@@ -49,20 +49,39 @@ function FormPage() {
         event.preventDefault();
     }
 
+    const open: boolean = form.features.includes(FormFeatures.Open)
+
+    let closed_header = null;
+    let submit = null;
+
+    if (open) {
+        submit = (
+            <div className="submit_form">
+                <button form="form" type="submit">Submit</button>
+            </div>
+        )
+    } else {
+        closed_header = (
+            <div className="closed_header">
+                <div>This form is now closed. You will not be able to submit your response.</div>
+            </div>
+        )
+    }
+
+
     return (
         <div>
             <HeaderBar title={form.name} description={form.description} key={2}/>
             <div css={css`${require("./css/FormPage.css")};`}>
                 <form id="form" onSubmit={handleSubmit} className="unselectable">
+                    { closed_header }
                     {questions}
                 </form>
                 <div className="nav unselectable">
-                    <div className="nav_buttons">
+                    <div className={ "nav_buttons" + (open ? "" : " closed") }>
                         <Link to="/" className="return_home">Return Home</Link>
                     </div>
-                    <div className="submit_form">
-                        <button form="form" type="submit">Submit</button>
-                    </div>
+                    { submit }
                 </div>
             </div>
             <div css={css`margin-bottom: 10rem`}/>
