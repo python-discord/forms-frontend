@@ -44,12 +44,14 @@ export async function getForm(id: string): Promise<Form> {
                     id: "short-text",
                     name: "This is short text",
                     type: QuestionType.ShortText,
-                    data: {}
+                    data: {},
+                    required: false
                 }, {
                     id: "section",
                     name: "This is a section",
                     type: QuestionType.Section,
-                    data: {}
+                    data: {},
+                    required: false
                 }, {
                     id: "check-box-thing",
                     name: "This is a checkbox",
@@ -61,7 +63,8 @@ export async function getForm(id: string): Promise<Form> {
                             "United States",
                             "Other Country That Starts With United",
                         ]
-                    }
+                    },
+                    required: false
                 }, {
                     id: "range",
                     name: "This is a range",
@@ -70,19 +73,22 @@ export async function getForm(id: string): Promise<Form> {
                         "options": [
                             "A", "B", "C", "Option 1", "Option 2"
                         ]
-                    }
+                    },
+                    required: false
                 }, {
                     id: "textarea",
                     name: "This is a textarea",
                     type: QuestionType.TextArea,
-                    data: {}
+                    data: {},
+                    required: false
                 },{
                     id: "section-with-byline",
                     name: "This is a section with an optional byline",
                     type: QuestionType.Section,
                     data: {
                         "text": "How come 'hello world' became the de facto beginner print statement, instead of something like \"test\" or \"here\"?"
-                    }
+                    },
+                    required: false
                 }, {
                     id: "radio",
                     name: "This is a radio",
@@ -95,7 +101,8 @@ export async function getForm(id: string): Promise<Form> {
                             "Option 1",
                             "Yes option one is repeated twice, I do it to prevent the usage of values as keys or any other weird practices like that. This was a really long option to test text wrapping."
                         ]
-                    }
+                    },
+                    required: false
                 }, {
                     id: "select",
                     name: "This is a select",
@@ -108,12 +115,14 @@ export async function getForm(id: string): Promise<Form> {
                             "Option 1",
                             "Yes option one is repeated twice, I do it to prevent the usage of values as keys or any other weird practices like that. This was a really long option to test text wrapping."
                         ]
-                    }
+                    },
+                    required: false
                 }, {
                     id: "code",
                     name: "This is code (skipped for now)",
                     type: QuestionType.Code,
-                    data: {}
+                    data: {},
+                    required: false
                 }
             ],
             webhook: {

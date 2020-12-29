@@ -17,7 +17,8 @@ const testingForm: forms.Form = {
             "id": "my-question",
             "name": "My Question",
             "type": QuestionType.ShortText,
-            "data": {}
+            "data": {},
+            required: true
         }
     ],
     "webhook": null
