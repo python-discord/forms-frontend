@@ -56,15 +56,16 @@ function FormPage() {
                 <form id="form" onSubmit={handleSubmit} className="unselectable">
                     {questions}
                 </form>
+                <div className="nav unselectable">
+                    <div className="nav_buttons">
+                        <Link to="/" className="return_home">Return Home</Link>
+                    </div>
+                    <div className="submit_form">
+                        <button form="form" type="submit">Submit</button>
+                    </div>
+                </div>
             </div>
-
-            <div css={{marginLeft: "2rem", marginTop: "2rem"}}>
-                <button form="form" type="submit">Submit</button>
-            </div>
-
-            <div css={{marginLeft: "2rem", marginTop: "2rem"}}>
-                <Link to="/" css={{color: "white"}}>Return home</Link>
-            </div>
+            <div css={css`margin-bottom: 10rem`}/>
         </div>
     )
 }

@@ -279,3 +279,79 @@ input[type="radio"] {
     height: 0.5rem;
     background-color: whitesmoke;
 }
+
+/* Navigation */
+.nav {
+    margin: auto;
+    width: 50%;
+
+    text-align: center;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+.nav > div {
+    display: inline-block;
+    margin: 2rem auto;
+    width: 50%;
+}
+
+.nav_buttons {
+    text-align: left;
+}
+
+.submit_form {
+    text-align: right;
+}
+
+/* Tile Buttons Vertically On Smaller Devices */
+@media (max-width: 850px) {
+    .nav {
+        width: 80%;
+    }
+
+    .nav > div{
+        display: block;
+    }
+
+    .nav_buttons {
+        text-align: center;
+    }
+
+    .submit_form {
+        text-align: center;
+    }
+}
+
+.return_home {
+    padding: 0.5rem 2rem;
+    border-radius: 8px;
+
+    color: white;
+    text-decoration: none;
+
+    background-color: #99AAB5; /* Gray-ish */
+    transition: background-color 300ms;
+}
+
+.return_home:hover {
+    background-color: #6E7D88; /* Darker gray-ish */
+}
+
+.submit_form button {
+    padding: 0.5rem 4rem;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+    font: inherit;
+
+    background-color: #7289DA; /* Blurple */
+    transition: background-color 300ms;
+}
+
+.submit_form button:hover {
+    background-color: #4E609C; /* Darker blurple */
+}
