@@ -111,7 +111,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         } else {
             return <div>
                 <h2 className="selectable">{question.name}</h2>
-                { create_input(this.props, this.handler) }<br/><hr/>
+                { create_input(this.props, this.handler) }<hr/>
             </div>
         }
     }

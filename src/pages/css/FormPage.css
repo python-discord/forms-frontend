@@ -350,10 +350,6 @@ input[type="radio"] {
     .range_slider {
         display: none;
     }
-
-    .range ~ br {
-        display: none;
-    }
 }
 
 /* Navigation */
