@@ -2,7 +2,9 @@ name: Create Sentry release
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -23,7 +25,8 @@ jobs:
           REACT_APP_BRANCH: main
           REACT_APP_OAUTH2_CLIENT_ID: ${{ secrets.CLIENT_ID }}
 
-      - name: Create Sentry release
+      - name: Create Sentry release (production)
+        if: github.ref == 'refs/heads/main'
         uses: getsentry/action-release@v1.1.5
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -31,5 +34,17 @@ jobs:
           SENTRY_PROJECT: forms-frontend
         with:
           environment: production
+          sourcemaps: ./build/static/js/
+          version_prefix: forms-frontend@
+
+      - name: Create Sentry release (deploy preview)
+        if: github.ref != 'refs/heads/main'
+        uses: getsentry/action-release@v1.1.5
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: python-discord
+          SENTRY_PROJECT: forms-frontend
+        with:
+          environment: deploy-preview
           sourcemaps: ./build/static/js/
           version_prefix: forms-frontend@
