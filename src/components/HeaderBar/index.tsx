@@ -3,10 +3,13 @@ import { css, jsx } from "@emotion/react";
 
 import Header1 from "./header_1.svg";
 import Header2 from "./header_2.svg";
+import Logo from "./logo.svg"
+
+import { Link } from "react-router-dom"
 
 interface HeaderBarProps {
-  title?: string
-  description?: string
+    title?: string
+    description?: string
 }
 
 const headerImageStyles = css`
@@ -23,33 +26,66 @@ const headerTextStyles = css`
   transition-property: font-size, margin-bottom;
   transition-duration: 1s;
   font-family: "Uni Sans", "Hind", "Arial", sans-serif;
-  
+
   margin: 0 2rem 10rem 2rem;
 
-  @media (max-width: 450px) {
+  @media (max-width: 480px) {
+    margin-top: 7rem;
     text-align: center;
   }
 `;
 
-function HeaderBar({ title, description }: HeaderBarProps) {
-  if (!title) {
-    title = "Python Discord Forms";
+const homeButtonStyles = css`
+  svg {
+    transform: scale(0.25);
+    transition: top 300ms, transform 300ms;
+
+    @media (max-width: 480px) {
+      transform: scale(0.15);
+    }
   }
+  
+  * {
+    position: absolute;
+    top: -10rem;
+    right: 1rem;
 
-  return (
-      <div>
-        <div css={headerImageStyles}>
-          <Header1/>
-          <Header2/>
-        </div>
+    z-index: 0;
+    transform-origin: right;
 
-        <div css={css`${headerTextStyles}; margin-bottom: 12.5%;`}>
-          <h1 css={css`font-size: 3vmax;
-            margin-bottom: 0;`}>{title}</h1>
-          <h1 css={css`font-size: 1.5vmax;`}>{description}</h1>
+    @media (max-width: 700px) {
+      top: -11.5rem;
+    }
+
+    @media (max-width: 480px) {
+      top: -12.7rem;
+    }
+  }
+`;
+
+function HeaderBar({ title, description }: HeaderBarProps) {
+    if (!title) {
+        title = "Python Discord Forms";
+    }
+
+    return (
+        <div>
+            <div css={headerImageStyles}>
+                <Header1/>
+                <Header2/>
+            </div>
+
+            <div css={css`${headerTextStyles}; margin-bottom: 12.5%;`}>
+                <h1 css={css`font-size: 3vmax;
+                  margin-bottom: 0;`}>{title}</h1>
+                <h1 css={css`font-size: 1.5vmax;`}>{description}</h1>
+            </div>
+
+            <Link to="/" css={homeButtonStyles}>
+                <Logo/>
+            </Link>
         </div>
-      </div>
-  )
+    )
 }
 
 export default HeaderBar;
