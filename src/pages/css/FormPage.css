@@ -385,9 +385,7 @@ input[type="radio"] {
     text-align: right;
 }
 
-/* ------------------------------------------------------------- */
-/*          Tile Buttons Vertically On Smaller Devices           */
-/* ------------------------------------------------------------- */
+/* Tile Buttons Vertically On Smaller Devices */
 @media (max-width: 850px) {
     .nav {
         width: 100%;
@@ -405,6 +403,9 @@ input[type="radio"] {
     }
 }
 
+/* ------------------------------------------------------------- */
+/*                          Navigation                           */
+/* ------------------------------------------------------------- */
 .return_home {
     padding: 0.5rem 2rem;
     border-radius: 8px;
