@@ -11,7 +11,8 @@ if (process.env.NODE_ENV === "production") {
   Sentry.init({
     dsn: process.env.REACT_APP_SENTRY_DSN,
     tracesSampleRate: 0.25,
-    release: `forms-frontend@${process.env.REACT_APP_SHA}`
+    release: `forms-frontend@${process.env.REACT_APP_SHA}`,
+    environment: process.env.CONTEXT
   });
 }
 
