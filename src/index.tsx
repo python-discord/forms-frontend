@@ -20,6 +20,7 @@ console.log("%c  Python Discord Forms  ", `font-size: 6em; font-family: "Hind", 
 console.log("%cWelcome to Python Discord Forms", `font-size: 3em; font-family: "Hind", "Arial";`)
 
 console.log(`   Environment: %c ${process.env.NODE_ENV} `, `padding: 2px; border-radius: 5px; background-color: ${process.env.NODE_ENV === "production" ? colors.success : colors.error}`)
+console.log(`   Context: %c ${process.env.CONTEXT} `, `padding: 2px; border-radius: 5px; background-color: ${process.env.CONTEXT === "production" ? colors.success : colors.error}`)
 console.log(`   Location: %c ${document.location.pathname + document.location.search + document.location.hash} `, `padding: 2px; border-radius: 5px; background-color: ${colors.success}`)
 console.log(`   User Agent: %c ${navigator.userAgent} `, `padding: 2px; border-radius: 5px; background-color: ${colors.success}`)
 console.log(`   Branch: %c ${process.env.REACT_APP_BRANCH} `, `padding: 2px; border-radius: 5px; background-color: ${process.env.REACT_APP_BRANCH === "main" ? colors.success : colors.error}`)
