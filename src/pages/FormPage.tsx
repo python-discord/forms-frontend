@@ -8,6 +8,7 @@ import { useParams } from "react-router";
 import HeaderBar from "../components/HeaderBar";
 import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
+import BackToTop from "../components/BackToTop";
 
 import { Form, FormFeatures, getForm } from "../api/forms";
 
@@ -86,6 +87,7 @@ function FormPage() {
                 </div>
             </div>
             <div css={css`margin-bottom: 10rem`}/>
+            <BackToTop/>
         </div>
     )
 }
