@@ -81,6 +81,7 @@ function FormPage() {
                     <div className={ "nav_buttons" + (open ? "" : " closed") }>
                         <Link to="/" className="return_home">Return Home</Link>
                     </div>
+                    <br className="nav_separator"/>
                     { submit }
                 </div>
             </div>

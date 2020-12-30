@@ -372,22 +372,15 @@ input[type="radio"] {
         width: 100%;
     }
 
-    .nav > div{
+    .nav_separator {
         display: block;
     }
 
-    .nav_buttons {
-        text-align: center;
-    }
-
-    .submit_form {
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
     .nav > div {
-        margin: 2rem;
+        display: flex;
+        justify-content: center;
+
+        margin: 0 auto;
     }
 }
 
