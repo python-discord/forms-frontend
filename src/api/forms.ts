@@ -27,7 +27,7 @@ export interface WebHook {
 export async function getForms(): Promise<Form[]> {
     const resp = await ApiClient.get("forms/discoverable");
     const data: Array<Form> = Array.from(resp.data);
-    data.push({ description: "", features: [], name: "Demo", questions: [], webhook: null, id: "demo" });
+    data.push({ description: "", features: [FormFeatures.Open], name: "Demo", questions: [], webhook: null, id: "demo" });
     data.push({ description: "", features: [], name: "Demo Closed", questions: [], webhook: null, id: "demo-closed" });
     return data; // FIXME: Revert this
 }
