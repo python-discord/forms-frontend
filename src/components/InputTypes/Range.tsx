@@ -28,19 +28,22 @@ function handler(this: handler_props, _: any): void {
 }
 
 export default function Range(this: any, props: RangeProps) {
+    const range = props.options.map((option, index) => {
+        const ref: React.RefObject<HTMLLabelElement> = React.createRef();
+        return (
+            <label key={index} ref={ref} onClick={handler.bind({state_dict: props.state_dict, ref: ref})}>
+                <span>{option}</span><
+                div className="range_dot"/>
+            </label>
+        )
+    });
+
     return (
         <div className="range">
-            { props.options.map((option, index) => {
-                const ref: React.RefObject<HTMLLabelElement> = React.createRef();
-                return (
-                    <label key={index} ref={ref} onClick={handler.bind({ state_dict: props.state_dict, ref: ref })}>
-                        <span>{option}</span>
-                        <div className="range_dot"/>
-                    </label>
-                )
-            }) }
+            { range }
+
             <div className="range_slider_container">
-                <hr className="range_slider"/>
+                <div className="range_slider"/>
             </div>
         </div>
     );
