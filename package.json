@@ -10,7 +10,7 @@
     "@fortawesome/react-fontawesome": "0.1.14",
     "@sentry/react": "5.29.2",
     "@svgr/webpack": "5.5.0",
-    "@swc/core": "1.2.40",
+    "@swc/core": "1.2.43",
     "@swc/jest": "0.1.2",
     "@testing-library/jest-dom": "5.11.8",
     "@testing-library/react": "11.2.2",
