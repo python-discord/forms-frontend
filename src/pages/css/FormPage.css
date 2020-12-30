@@ -38,7 +38,7 @@ h4 {
     background-color: #f04747;
 
     padding: 1rem 4rem;
-    border-radius: 0.75rem;
+    border-radius: 8px;
 }
 
 .unselectable {
@@ -55,7 +55,15 @@ h4 {
     user-select: text;
 }
 
-/* Checkboxes */
+/* ------------------------------------------------------------- */
+/*                          Checkboxes                           */
+/* ------------------------------------------------------------- */
+.checkbox {
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 .checkbox_label {
     display: inline-block;
     position: relative;
@@ -108,13 +116,22 @@ h4 {
     transform: rotate(45deg);
 }
 
-/* Radio */
-input[type="radio"] {
-    margin: 1rem 0.5rem 0 0;
-    size: 20rem;
+/* ------------------------------------------------------------- */
+/*                             Radio                             */
+/* ------------------------------------------------------------- */
+.radio_label {
+    display:block;
+    /*padding-left: 0.5rem;*/
+    padding-right: 0.5rem;
 }
 
-/* Select*/
+input[type="radio"] {
+    margin: 1rem 0.5rem 0 0;
+}
+
+/* ------------------------------------------------------------- */
+/*                            Select                             */
+/* ------------------------------------------------------------- */
 .select_container {
     display: inline-block;
     width: min(20rem, 90%);
@@ -128,7 +145,7 @@ input[type="radio"] {
     margin-bottom: 0;
 
     border: 0.1rem solid black;
-    border-radius: 0.75rem;
+    border-radius: 8px;
 
     -webkit-transition: border-radius 400ms;
     transition: border-radius 400ms;
@@ -185,7 +202,7 @@ input[type="radio"] {
 
     border: 0.1rem solid black;
     border-top: none;
-    border-radius: 0 0 0.75rem 0.75rem;
+    border-radius: 0 0 8px 8px;
 
     text-indent: 0;
     overflow: hidden;
@@ -214,7 +231,9 @@ input[type="radio"] {
     margin: 0 1rem;
 }
 
-/* Text Types */
+/* ------------------------------------------------------------- */
+/*                          Text Types                           */
+/* ------------------------------------------------------------- */
 .short_text, .text_area {
     display: inline-block;
     width: min(20rem, 90%);
@@ -230,7 +249,7 @@ input[type="radio"] {
     margin-bottom: 0;
 
     border: 0.1rem solid black;
-    border-radius: 0.75rem;
+    border-radius: 8px;
 }
 
 .text_area {
@@ -240,7 +259,9 @@ input[type="radio"] {
     padding-top: 0.2rem;
 }
 
-/* Range */
+/* ------------------------------------------------------------- */
+/*                            Range                              */
+/* ------------------------------------------------------------- */
 .range {
     display: flex;
     justify-content: space-between;
@@ -298,7 +319,9 @@ input[type="radio"] {
     transition: transform 300ms;
 }
 
-/* Mobile Range */
+/* ------------------------------------------------------------- */
+/*                         Mobile Range                          */
+/* ------------------------------------------------------------- */
 @media (max-width: 800px){
     .range {
         width: 20%;
@@ -366,7 +389,9 @@ input[type="radio"] {
     text-align: right;
 }
 
-/* Tile Buttons Vertically On Smaller Devices */
+/* ------------------------------------------------------------- */
+/*          Tile Buttons Vertically On Smaller Devices           */
+/* ------------------------------------------------------------- */
 @media (max-width: 850px) {
     .nav {
         width: 100%;
