@@ -10,7 +10,7 @@ interface RadioProps {
 
 export default function Radio(props: RadioProps) {
     return (
-        <label className="radio_label">
+        <label>
             <input type="radio" name={props.question_id} className="radio" onChange={props.handler}/>
             {props.option}<br/>
         </label>

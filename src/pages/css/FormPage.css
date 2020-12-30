@@ -18,10 +18,12 @@ hr {
 h1 {
     font-size: 2.5rem;
     margin-bottom: 0;
+    text-align: center;
 }
 
-h4 {
+h3 {
     margin-top: 0;
+    text-align: center;
 }
 
 .section_header {
@@ -58,12 +60,6 @@ h4 {
 /* ------------------------------------------------------------- */
 /*                          Checkboxes                           */
 /* ------------------------------------------------------------- */
-.checkbox {
-    display: block;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
 .checkbox_label {
     display: inline-block;
     position: relative;
@@ -119,12 +115,6 @@ h4 {
 /* ------------------------------------------------------------- */
 /*                             Radio                             */
 /* ------------------------------------------------------------- */
-.radio_label {
-    display:block;
-    /*padding-left: 0.5rem;*/
-    padding-right: 0.5rem;
-}
-
 input[type="radio"] {
     margin: 1rem 0.5rem 0 0;
 }
@@ -191,14 +181,13 @@ input[type="radio"] {
 
 .select_options {
     display: block;
-    width: 100%;
+    width: min(20rem, 72%);
     height: 0;
 
-    position: relative;
-    right: 0.1rem;
+    position: absolute;
 
     background: whitesmoke;
-    margin-top: 0;
+    margin: 0 auto;
 
     border: 0.1rem solid black;
     border-top: none;
@@ -243,7 +232,7 @@ input[type="radio"] {
     background: whitesmoke;
 
     color: black;
-    padding: 0 1rem;
+    padding-left: 1rem;
     font: inherit;
 
     margin-bottom: 0;
@@ -254,7 +243,9 @@ input[type="radio"] {
 
 .text_area {
     min-height: 20rem;
-    min-width: min(20rem, 90%);
+    min-width: 40%;
+    width: 100%;
+    box-sizing: border-box;
 
     padding-top: 0.2rem;
 }

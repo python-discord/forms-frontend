@@ -105,7 +105,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         if (question.type === QuestionType.Section) {
             return <div>
                 <h1 className="selectable">{question.name}</h1>
-                { question.data["text"] ? <h3>{question.data["text"]}</h3> : "" }
+                { question.data["text"] ? <h3 className="selectable">{question.data["text"]}</h3> : "" }
                 <hr className="section_header"/>
             </div>
         } else {
