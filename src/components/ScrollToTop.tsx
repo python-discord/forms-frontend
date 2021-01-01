@@ -42,28 +42,44 @@ const styles = css`
   }
 `;
 
-class BackToTop extends React.Component {
-    handleScroll(this: React.RefObject<HTMLDivElement>) {
+let last_ref: React.RefObject<HTMLDivElement>;
+
+class ScrollToTop extends React.Component {
+    constructor(props: any) {
+        super(props);
+        last_ref = React.createRef();
+    }
+
+    handleScroll() {
         if (window.pageYOffset > 250) {
-            this.current!.style.opacity = "1";
+            last_ref.current!.style.opacity = "1";
         } else {
-            this.current!.style.opacity = "0";
+            last_ref.current!.style.opacity = "0";
         }
     }
 
     componentDidMount() {
-        window.addEventListener("scroll", this.handleScroll, true);
+        // Register event handler
+        window.addEventListener("scroll", this.handleScroll);
+    }
+
+    componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any) {
+        // Hide previous iterations, and register handler for current one
+        if (last_ref.current) {
+            last_ref.current.style.opacity = "0";
+        }
+
+        window.addEventListener("scroll", this.handleScroll);
     }
 
     componentWillUnmount() {
+        // Unregister handler
         window.removeEventListener("scroll", this.handleScroll);
     }
 
     render() {
-        const ref: React.RefObject<HTMLDivElement> = React.createRef();
-        this.handleScroll = this.handleScroll.bind(ref);
-        return <div css={styles} ref={ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>
+        return <div css={styles} ref={last_ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>
     }
 }
 
-export default BackToTop;
+export default ScrollToTop;

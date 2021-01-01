@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 
 import HeaderBar from "../components/HeaderBar";
 import FormListing from "../components/FormListing";
-
-import { getForms, Form } from "../api/forms";
 import OAuth2Button from "../components/OAuth2Button";
 import Loading from "../components/Loading";
+import ScrollToTop from "../components/ScrollToTop";
+
+import { getForms, Form } from "../api/forms";
 
 function LandingPage() {
   const [forms, setForms] = useState<Form[]>();
@@ -25,8 +26,8 @@ function LandingPage() {
 
   return <div>
     <HeaderBar/>
+    <ScrollToTop/>
     <div>
-
       <div css={css`
         display: flex;
         align-items: center;
