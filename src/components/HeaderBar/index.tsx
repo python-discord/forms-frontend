@@ -23,15 +23,35 @@ const headerImageStyles = css`
 `;
 
 const headerTextStyles = css`
-  transition-property: font-size, margin-bottom;
-  transition-duration: 1s;
+  transition: margin 1s;
   font-family: "Uni Sans", "Hind", "Arial", sans-serif;
 
   margin: 0 2rem 10rem 2rem;
+  
+  .title {
+    font-size: 3vmax;
+    margin-bottom: 0;
+  }
+  
+  .description {
+    font-size: 1.5vmax;
+  }
+  
+  .title, .description {
+    transition: font-size 1s;
+  }
 
   @media (max-width: 480px) {
     margin-top: 7rem;
     text-align: center;
+
+    .title {
+      font-size: 5vmax;
+    }
+
+    .description {
+      font-size: 2vmax;
+    }
   }
 `;
 
@@ -76,9 +96,8 @@ function HeaderBar({ title, description }: HeaderBarProps) {
             </div>
 
             <div css={css`${headerTextStyles}; margin-bottom: 12.5%;`}>
-                <h1 css={css`font-size: 3vmax;
-                  margin-bottom: 0;`}>{title}</h1>
-                <h1 css={css`font-size: 1.5vmax;`}>{description}</h1>
+                <h1 className="title" css={css``}>{title}</h1>
+                <h1 className="description">{description}</h1>
             </div>
 
             <Link to="/" css={homeButtonStyles}>
