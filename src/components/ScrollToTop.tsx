@@ -69,7 +69,7 @@ class ScrollToTop extends React.Component {
             last_ref.current.style.opacity = "0";
         }
 
-        window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener("scroll", this.handleScroll, {passive: true});
     }
 
     componentWillUnmount() {
