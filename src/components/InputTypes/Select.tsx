@@ -7,50 +7,55 @@ interface SelectProps {
     state_dict: Map<string, any>
 }
 
-interface option_handler_args {
+interface HandlerProps {
     props: SelectProps,
-    ref: React.RefObject<HTMLLabelElement>
+    ref: React.RefObject<HTMLDivElement>
 }
 
-function option_handler(this: option_handler_args, event: React.MouseEvent<HTMLLabelElement, MouseEvent>): void {
-    // The target element should always point to a label,
-    // as that is the only element that should use this handler.
-    // @ts-ignore
-    const target: HTMLLabelElement = event.target;
-    const active: HTMLLabelElement = this.ref.current!;
-
-    const selected_content: string = target.textContent!;
-
-    if (active.textContent === "...") {
-        target.parentElement!.remove();
-    } else {
-        target.textContent = active.textContent;
+class Select extends React.Component<SelectProps> {
+    constructor(props: SelectProps) {
+        super(props);
     }
 
-    active.textContent = selected_content;
-    this.props.state_dict.set("value", active.textContent);
+    click_handler(this: HandlerProps, event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        if (!this.ref.current) {
+            return;
+        }
 
-    event.preventDefault();
-}
+        this.ref.current.classList.toggle("active");
 
-export default function Select(props: SelectProps) {
-    const ref: React.RefObject<HTMLLabelElement> = React.createRef();
-    const handler = option_handler.bind({ props, ref });
+        // @ts-ignore
+        const target: Element = event.target;
+        if (target.id === "option") {
+            const selected_option: Element = this.ref.current.getElementsByClassName("selected_option")![0];
+            const new_option_text: string = target.textContent!;
 
-    const top_ref: React.Ref<HTMLDivElement> = React.createRef();
+            if (selected_option.textContent === "...") {
+                target.parentElement!.remove();
+            } else {
+                target.textContent = selected_option.textContent;
+            }
 
-    return (
-        <div className="select_container" ref={top_ref} onClick={ () => top_ref.current!.classList.toggle("active_select_container") }>
-            <span className="select_arrow"/>
-            <div className="selected_option"><label ref={ref}>...</label></div>
-            <span className="select_options">
-                { props.options.map((option, index) => (
-                    <div key={index}>
-                        <hr/>
-                        <label onClick={handler}>{option}</label>
+            selected_option.textContent = new_option_text;
+            this.props.state_dict.set("value", selected_option.textContent);
+        }
+    }
+
+    render() {
+        const container_ref: React.RefObject<HTMLDivElement> = React.createRef()
+
+        return (
+            <div className="select_container" ref={container_ref} onClick={this.click_handler.bind({ref: container_ref, props: this.props})}>
+                <span className="select_arrow"/>
+                <span className="selected_option">...</span>
+                <div className="select_options_container">
+                    <div className="select_options">
+                        { this.props.options.map((option, index) => <div key={index}><hr/><div id="option">{option}</div></div>) }
                     </div>
-                )) }
-            </span>
-        </div>
-    );
+                </div>
+            </div>
+        );
+    }
 }
+
+export default Select;

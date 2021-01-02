@@ -124,6 +124,8 @@ input[type="radio"] {
 /* ------------------------------------------------------------- */
 .select_container {
     display: inline-block;
+    position: relative;
+
     width: min(20rem, 90%);
     height: 100%;
     min-height: 2rem;
@@ -131,6 +133,7 @@ input[type="radio"] {
     background: whitesmoke;
 
     color: black;
+    text-align: center;
 
     margin-bottom: 0;
 
@@ -141,15 +144,9 @@ input[type="radio"] {
     transition: border-radius 400ms;
 }
 
-.active_select_container {
+.select_container.active {
     height: auto;
-    /*border-bottom: none;*/
-}
-
-.selected_option {
-    position: relative;
-    top: 0.3rem;
-    padding: 0 2rem 0.5rem 1rem;
+    border-radius: 8px 8px 0 0;
 }
 
 .select_arrow {
@@ -160,7 +157,7 @@ input[type="radio"] {
     position: relative;
     float: right;
     right: 1em;
-    top: 0.5rem;
+    top: 0.7rem;
 
     border: solid black;
     border-width: 0 0.2rem 0.2rem 0;
@@ -173,46 +170,54 @@ input[type="radio"] {
     transition: transform 400ms;
 }
 
-.active_select_container .select_arrow {
+.select_container.active .select_arrow {
     -webkit-transform: translateY(40%) rotate(225deg);
     -ms-transform: translateY(40%) rotate(225deg);
     transform: translateY(40%) rotate(225deg);
 }
 
+.selected_option {
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.select_options_container {
+    position: relative;
+    width: 100%;
+
+    /* Need to account for margin */
+    left: -0.1rem;
+}
+
 .select_options {
     display: block;
-    width: min(20rem, 72%);
-    height: 0;
-
     position: absolute;
-
-    background: whitesmoke;
-    margin: 0 auto;
-
-    border: 0.1rem solid black;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-
-    text-indent: 0;
-    overflow: hidden;
+    width: 100%;
 
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0ms, opacity 400ms linear;
+
+    background: whitesmoke;
+    overflow: hidden;
+
+    border: 0.1rem solid black;
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+
+    -webkit-transition: opacity 400ms, visibility 400ms;
+    transition: opacity 400ms, visibility 400ms;
 }
 
-.active_select_container .select_options {
-    height: auto;
+.select_container.active .select_options {
     visibility: visible;
     opacity: 1;
 }
 
-.select_options label {
-    display: block;
-    padding: 0.75rem 1rem;
+.select_options > div > div {
+    padding: 0.75rem;
 }
 
-.select_options label:hover {
+.select_options > div:hover {
     background-color: lightgray;
 }
 
