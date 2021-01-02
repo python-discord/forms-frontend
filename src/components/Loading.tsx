@@ -1,15 +1,15 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import { RingLoader } from "react-spinners";
+import { PropagateLoader } from "react-spinners";
 
 import HeaderBar from "../components/HeaderBar";
 
 function Loading() {
     return <div>
         <HeaderBar title={"Loading..."}/>
-        <div css={{display: "flex", justifyContent: "center"}}>
-            <RingLoader color="white"/>
+        <div css={{display: "flex", justifyContent: "center", paddingTop: "40px"}}>
+            <PropagateLoader color="white"/>
         </div>
     </div>
 }

@@ -9,7 +9,7 @@ import {
   Switch
 } from "react-router-dom";
 
-import { RingLoader } from "react-spinners";
+import { PropagateLoader } from "react-spinners";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -31,7 +31,7 @@ function PageLoading() {
     justify-content: center;
     margin-top: 50px;
   `}>
-    <RingLoader color="white" size={100}/>
+    <PropagateLoader color="white" size={100}/>
   </div>
 }
 
