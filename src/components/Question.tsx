@@ -82,12 +82,18 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     componentDidMount(): void {
         // Initialize defaults for complex and nested fields
+        const options: string | string[] = this.props.question.data["options"];
+
         if (this.props.public_state.size === 0) {
             switch (this.props.question.type) {
             case QuestionType.Checkbox:
-                for (const [index, option] of this.props.question.data["options"].entries()) {
-                    this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
+                if (typeof options === "string") {
+                    return;
                 }
+
+                options.forEach((option, index) => {
+                    this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
+                });
                 break;
 
             case QuestionType.Range:
@@ -110,7 +116,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             </div>;
         } else {
             return <div>
-                <h2 className="selectable">{question.name}</h2>
+                <h2 className="selectable">
+                    {question.name}<span id={question.required ? "required" : ""} className="required_star">*</span>
+                </h2>
                 { create_input(this.props, this.handler) }<hr/>
             </div>;
         }
