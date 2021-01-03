@@ -17,7 +17,7 @@ interface PathParams {
     id: string
 }
 
-function FormPage() {
+function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
 
     const [form, setForm] = useState<Form>();
@@ -25,11 +25,11 @@ function FormPage() {
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
-        })
+        });
     }, []);
 
     if (!form) {
-        return <Loading/>
+        return <Loading/>;
     }
 
     const questions = form.questions.map((question, index) => {
@@ -89,7 +89,7 @@ function FormPage() {
             <div css={css`margin-bottom: 10rem`}/>
             <ScrollToTop/>
         </div>
-    )
+    );
 }
 
 export default FormPage;

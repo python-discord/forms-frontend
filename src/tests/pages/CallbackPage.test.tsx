@@ -1,23 +1,23 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import React from "react";
+import { render } from "@testing-library/react";
 
-import CallbackPage from '../../pages/CallbackPage';
+import CallbackPage from "../../pages/CallbackPage";
 
-test('callback page renders provided code', () => {
+test("callback page renders provided code", () => {
     global.opener = {
         postMessage: jest.fn()
-    }
+    };
 
-    let mockLocation = new URL("https://forms.pythondiscord.com/authorize?code=abcdef");
+    const mockLocation = new URL("https://forms.pythondiscord.com/authorize?code=abcdef");
 
-    Object.defineProperty(global, "location", {value: mockLocation})
+    Object.defineProperty(global, "location", {value: mockLocation});
 
-    let comp = <CallbackPage />;
+    const comp = <CallbackPage />;
 
     const { getByText } = render(comp);
 
 
-    let codeText = getByText(/Code is abcdef/);
+    const codeText = getByText(/Code is abcdef/);
     expect(codeText).toBeInTheDocument();
-    expect(global.opener.postMessage).toBeCalledTimes(1)
+    expect(global.opener.postMessage).toBeCalledTimes(1);
 });

@@ -4,9 +4,9 @@ import React, { Suspense } from "react";
 import { jsx, css, Global } from "@emotion/react";
 
 import {
-  BrowserRouter as Router,
-  Route,
-  Switch
+    BrowserRouter as Router,
+    Route,
+    Switch
 } from "react-router-dom";
 
 import { PropagateLoader } from "react-spinners";
@@ -20,48 +20,48 @@ const FormPage = React.lazy(() => import("./pages/FormPage"));
 const CallbackPage = React.lazy(() => import("./pages/CallbackPage"));
 
 const routes = [
-  { path: "/", Component: LandingPage },
-  { path: "/form/:id", Component: FormPage},
-  { path: "/callback", Component: CallbackPage }
-]
+    { path: "/", Component: LandingPage },
+    { path: "/form/:id", Component: FormPage},
+    { path: "/callback", Component: CallbackPage }
+];
 
 function PageLoading() {
-  return <div css={css`
+    return <div css={css`
     display: flex;
     justify-content: center;
     margin-top: 50px;
   `}>
-    <PropagateLoader color="white" size={100}/>
-  </div>
+        <PropagateLoader color="white" size={100}/>
+    </div>;
 }
 
-function App() {
-  return (
-    <div>
-      <Global styles={globalStyles}/>
-      <Router>
-        <Route render={({ location }) => (
-          <TransitionGroup>
-            <CSSTransition
-              key={location.pathname}
-              classNames="fade"
-              timeout={300}
-            >
-              <Switch location={location}>
-                {routes.map(({path, Component}) => (
-                  <Route exact key={path} path={path}>
-                    <Suspense fallback={<PageLoading/>}>
-                      <Component/>
-                    </Suspense>
-                  </Route>
-                ))}
-              </Switch>
-            </CSSTransition>
-          </TransitionGroup>
-        )}/>
-      </Router>
-    </div>
-  );
-};
+function App(): JSX.Element {
+    return (
+        <div>
+            <Global styles={globalStyles}/>
+            <Router>
+                <Route render={({ location }) => (
+                    <TransitionGroup>
+                        <CSSTransition
+                            key={location.pathname}
+                            classNames="fade"
+                            timeout={300}
+                        >
+                            <Switch location={location}>
+                                {routes.map(({path, Component}) => (
+                                    <Route exact key={path} path={path}>
+                                        <Suspense fallback={<PageLoading/>}>
+                                            <Component/>
+                                        </Suspense>
+                                    </Route>
+                                ))}
+                            </Switch>
+                        </CSSTransition>
+                    </TransitionGroup>
+                )}/>
+            </Router>
+        </div>
+    );
+}
 
 export default App;

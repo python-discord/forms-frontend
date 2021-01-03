@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       
-      - name: Install dependencies
+      - name: Build application
         run: yarn build
         env:
           REACT_APP_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
