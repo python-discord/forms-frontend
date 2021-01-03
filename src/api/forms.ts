@@ -1,4 +1,4 @@
-import { Question, QuestionType } from "./question";
+import { Question } from "./question";
 import ApiClient from "./client";
 
 export enum FormFeatures {
@@ -25,26 +25,11 @@ export interface WebHook {
 }
 
 export async function getForms(): Promise<Form[]> {
-    const resp = await ApiClient.get("forms/discoverable");
-    return resp.data;
+    const fetch_response = await ApiClient.get("forms/discoverable");
+    return fetch_response.data;
 }
 
-export function getForm(id: string): Promise<Form> {
-    const data: Form = {
-        name: "Ban Appeals",
-        id: "ban-appeals",
-        description: "Appealing bans from the Discord server",
-        features: [FormFeatures.Discoverable, FormFeatures.Open],
-        questions: [
-            {
-                id: "how-spanish-are-you",
-                name: "How Spanish are you?",
-                type: QuestionType.ShortText,
-                data: {}
-            }
-        ]
-    };
-    return new Promise((resolve) => {
-        setTimeout(() => resolve(data), 1500);
-    });
-} 
+export async function getForm(id: string): Promise<Form> {
+    const fetch_response = await ApiClient.get(`forms/${id}`);
+    return fetch_response.data;
+}
