@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 import colors from "../colors";
@@ -40,49 +40,49 @@ span {
 `;
 
 function doLogin(disableFunction: (newState: boolean) => void) {
-  disableFunction(true);
+    disableFunction(true);
 
-  const redirectURI = encodeURIComponent(document.location.protocol + "//" + document.location.host + "/callback");
+    const redirectURI = encodeURIComponent(document.location.protocol + "//" + document.location.host + "/callback");
 
-  const windowRef = window.open(
-    `https://discord.com/api/oauth2/authorize?client_id=${OAUTH2_CLIENT_ID}&response_type=code&scope=identify&redirect_uri=${redirectURI}&prompt=none`,
-    "Discord_OAuth2",
-    "height=700,width=500,location=no,menubar=no,resizable=no,status=no,titlebar=no,left=300,top=300"
-  )
+    const windowRef = window.open(
+        `https://discord.com/api/oauth2/authorize?client_id=${OAUTH2_CLIENT_ID}&response_type=code&scope=identify&redirect_uri=${redirectURI}&prompt=none`,
+        "Discord_OAuth2",
+        "height=700,width=500,location=no,menubar=no,resizable=no,status=no,titlebar=no,left=300,top=300"
+    );
 
-  const interval = setInterval(() => {
-    if (windowRef?.closed) {
-      clearInterval(interval);
-      disableFunction(false);
-    }
-  }, 500)
+    const interval = setInterval(() => {
+        if (windowRef?.closed) {
+            clearInterval(interval);
+            disableFunction(false);
+        }
+    }, 500);
 
-  window.onmessage = (code: MessageEvent) => {
-    if (code.data.source) {
-      // React DevTools has a habit of sending messages, ignore them.
-      return;
-    }
+    window.onmessage = (code: MessageEvent) => {
+        if (code.data.source) {
+            // React DevTools has a habit of sending messages, ignore them.
+            return;
+        }
 
-    if (code.isTrusted) {
-      windowRef?.close();
+        if (code.isTrusted) {
+            windowRef?.close();
 
-      console.log("Code received:", code.data);
+            console.log("Code received:", code.data);
 
-      disableFunction(false);
-      clearInterval(interval);
+            disableFunction(false);
+            clearInterval(interval);
 
-      window.onmessage = null;
-    }
-  };
+            window.onmessage = null;
+        }
+    };
 }
 
-function OAuth2Button() {
-  const [disabled, setDisabled] = useState<boolean>(false);
+function OAuth2Button(): JSX.Element {
+    const [disabled, setDisabled] = useState<boolean>(false);
 
-  return <button disabled={disabled} onClick={() => doLogin(setDisabled)} css={buttonStyling}>
-    <span css={{marginRight: "10px"}}><FontAwesomeIcon icon={faDiscord} css={{fontSize: "2em", marginTop: "3px"}}/></span>
-    <span>Sign in with Discord</span>
-  </button>;
+    return <button disabled={disabled} onClick={() => doLogin(setDisabled)} css={buttonStyling}>
+        <span css={{marginRight: "10px"}}><FontAwesomeIcon icon={faDiscord} css={{fontSize: "2em", marginTop: "3px"}}/></span>
+        <span>Sign in with Discord</span>
+    </button>;
 }
 
 export default OAuth2Button;

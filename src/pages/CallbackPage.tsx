@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/react";
 import { useState } from "react";
 
-export default function CallbackPage() {
+export default function CallbackPage(): JSX.Element {
     const [hasSent, setHasSent] = useState(false);
     const params = new URLSearchParams(location.search);
 
