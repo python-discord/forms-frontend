@@ -78,7 +78,7 @@ const homeButtonStyles = css`
     }
 
     @media (max-width: 480px) {
-      top: -12.7rem;
+      top: -12.5rem;
     }
   }
 `;

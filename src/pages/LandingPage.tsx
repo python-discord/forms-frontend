@@ -43,7 +43,6 @@ function LandingPage(): JSX.Element {
                 ))}
             </div>
         </div>
-        <div css={css`margin-bottom: 200rem`}/>
     </div>;
 }
 

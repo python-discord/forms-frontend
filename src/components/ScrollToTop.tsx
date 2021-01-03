@@ -65,7 +65,6 @@ class ScrollToTop extends React.Component {
         window.addEventListener("scroll", this.handleScroll, {passive: true});
     }
 
-    // TODO: Make sure this gets registered on any link.
     componentDidUpdate(): void {
         // Hide previous iterations, and register handler for current one
         if (last_ref.current) {
@@ -81,7 +80,7 @@ class ScrollToTop extends React.Component {
     }
 
     render(): JSX.Element {
-        return <div css={styles} ref={last_ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>;
+        return <div css={styles} key={Date.now()} ref={last_ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>;
     }
 }
 

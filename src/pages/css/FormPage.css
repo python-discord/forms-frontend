@@ -254,7 +254,7 @@ input[type="radio"] {
     background: whitesmoke;
 
     color: black;
-    padding-left: 1rem;
+    padding: 0 1rem;
     font: inherit;
 
     margin-bottom: 0;
@@ -269,7 +269,7 @@ input[type="radio"] {
     width: 100%;
     box-sizing: border-box;
 
-    padding-top: 0.2rem;
+    padding: 1rem;
 }
 
 /* ------------------------------------------------------------- */
