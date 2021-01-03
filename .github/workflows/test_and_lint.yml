@@ -28,7 +28,7 @@ jobs:
       - uses: EgorDm/gha-yarn-node-cache@v1
       
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --dev
 
       - name: Run tests
         run: yarn test
