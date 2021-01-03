@@ -45,25 +45,28 @@ const styles = css`
 let last_ref: React.RefObject<HTMLDivElement>;
 
 class ScrollToTop extends React.Component {
-    constructor(props: any) {
+    constructor(props: Record<string, never>) {
         super(props);
         last_ref = React.createRef();
     }
 
-    handleScroll() {
+    handleScroll(): void {
+        if (!last_ref.current) return;
+
         if (window.pageYOffset > 250) {
-            last_ref.current!.style.opacity = "1";
+            last_ref.current.style.opacity = "1";
         } else {
-            last_ref.current!.style.opacity = "0";
+            last_ref.current.style.opacity = "0";
         }
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         // Register event handler
-        window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener("scroll", this.handleScroll, {passive: true});
     }
 
-    componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any) {
+    // TODO: Make sure this gets registered on any link.
+    componentDidUpdate(): void {
         // Hide previous iterations, and register handler for current one
         if (last_ref.current) {
             last_ref.current.style.opacity = "0";
@@ -72,13 +75,13 @@ class ScrollToTop extends React.Component {
         window.addEventListener("scroll", this.handleScroll, {passive: true});
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         // Unregister handler
         window.removeEventListener("scroll", this.handleScroll);
     }
 
-    render() {
-        return <div css={styles} ref={last_ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>
+    render(): JSX.Element {
+        return <div css={styles} ref={last_ref} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}/>;
     }
 }
 

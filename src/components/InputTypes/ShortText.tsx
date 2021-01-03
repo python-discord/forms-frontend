@@ -6,6 +6,6 @@ interface ShortTextProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function ShortText(props: ShortTextProps) {
+export default function ShortText(props: ShortTextProps): JSX.Element {
     return <input type="text" className="short_text" placeholder="Enter Text..." onChange={props.handler}/>;
 }

@@ -4,7 +4,7 @@ import React from "react";
 
 interface SelectProps {
     options: Array<string>,
-    state_dict: Map<string, any>
+    state_dict: Map<string, string | boolean | null>
 }
 
 interface HandlerProps {
@@ -17,21 +17,20 @@ class Select extends React.Component<SelectProps> {
         super(props);
     }
 
-    click_handler(this: HandlerProps, event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    click_handler(this: HandlerProps, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
         if (!this.ref.current) {
             return;
         }
 
         this.ref.current.classList.toggle("active");
 
-        // @ts-ignore
-        const target: Element = event.target;
+        const target: Element = (event.target as Element);
         if (target.id === "option") {
-            const selected_option: Element = this.ref.current.getElementsByClassName("selected_option")![0];
-            const new_option_text: string = target.textContent!;
+            const selected_option: Element = this.ref.current.getElementsByClassName("selected_option")[0];
+            const new_option_text: string = target.textContent ?? "...";
 
-            if (selected_option.textContent === "...") {
-                target.parentElement!.remove();
+            if (selected_option.textContent === "..." && target.parentElement) {
+                target.parentElement.remove();
             } else {
                 target.textContent = selected_option.textContent;
             }
@@ -41,8 +40,8 @@ class Select extends React.Component<SelectProps> {
         }
     }
 
-    render() {
-        const container_ref: React.RefObject<HTMLDivElement> = React.createRef()
+    render(): JSX.Element {
+        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
         return (
             <div className="select_container" ref={container_ref} onClick={this.click_handler.bind({ref: container_ref, props: this.props})}>

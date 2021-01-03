@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/react"
+import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
 import React, { SyntheticEvent, useEffect, useState } from "react";
@@ -33,7 +33,7 @@ function FormPage(): JSX.Element {
     }
 
     const questions = form.questions.map((question, index) => {
-        return <RenderedQuestion question={question} public_state={new Map()} key={index}/>
+        return <RenderedQuestion question={question} public_state={new Map()} key={index}/>;
     });
 
     function handleSubmit(event: SyntheticEvent) {
@@ -42,15 +42,15 @@ function FormPage(): JSX.Element {
 
             // TODO: Parse input from each question, and submit
             switch (question.type) {
-                default:
-                    console.log(question.id, prop.props.public_state);
+            default:
+                console.log(question.id, prop.props.public_state);
             }
         });
 
         event.preventDefault();
     }
 
-    const open: boolean = form.features.includes(FormFeatures.Open)
+    const open: boolean = form.features.includes(FormFeatures.Open);
 
     let closed_header = null;
     let submit = null;
@@ -60,13 +60,13 @@ function FormPage(): JSX.Element {
             <div className="submit_form">
                 <button form="form" type="submit">Submit</button>
             </div>
-        )
+        );
     } else {
         closed_header = (
             <div className="closed_header">
                 <div>This form is now closed. You will not be able to submit your response.</div>
             </div>
-        )
+        );
     }
 
 

@@ -8,12 +8,12 @@ interface CheckboxProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Checkbox(props: CheckboxProps) {
+export default function Checkbox(props: CheckboxProps): JSX.Element {
     return (
         <label>
             <label className="unselected_checkbox_label checkbox_label unselectable">
                 <input type="checkbox" value={props.option}
-                       name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler}/>
+                    name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler}/>
                 <span className="checkmark_span"/>
             </label>
             {props.option}<br/>

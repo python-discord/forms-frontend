@@ -24,11 +24,11 @@ function LandingPage(): JSX.Element {
         return <Loading/>;
     }
 
-  return <div>
-    <HeaderBar/>
-    <ScrollToTop/>
-    <div>
-      <div css={css`
+    return <div>
+        <HeaderBar/>
+        <ScrollToTop/>
+        <div>
+            <div css={css`
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -43,6 +43,7 @@ function LandingPage(): JSX.Element {
                 ))}
             </div>
         </div>
+        <div css={css`margin-bottom: 200rem`}/>
     </div>;
 }
 

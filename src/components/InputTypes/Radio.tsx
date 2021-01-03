@@ -8,7 +8,7 @@ interface RadioProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Radio(props: RadioProps) {
+export default function Radio(props: RadioProps): JSX.Element {
     return (
         <label>
             <input type="radio" name={props.question_id} className="radio" onChange={props.handler}/>

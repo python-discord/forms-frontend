@@ -3,9 +3,9 @@ import { jsx, css } from "@emotion/react";
 
 import Header1 from "./header_1.svg";
 import Header2 from "./header_2.svg";
-import Logo from "./logo.svg"
+import Logo from "./logo.svg";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 interface HeaderBarProps {
     title?: string
@@ -83,7 +83,7 @@ const homeButtonStyles = css`
   }
 `;
 
-function HeaderBar({ title, description }: HeaderBarProps) {
+function HeaderBar({ title, description }: HeaderBarProps): JSX.Element {
     if (!title) {
         title = "Python Discord Forms";
     }
@@ -104,7 +104,7 @@ function HeaderBar({ title, description }: HeaderBarProps) {
                 <Logo/>
             </Link>
         </div>
-    )
+    );
 }
 
 export default HeaderBar;
