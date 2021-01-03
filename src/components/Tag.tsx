@@ -7,7 +7,7 @@ interface TagProps {
     fontSize?: string
 }
 
-function Tag(props: TagProps) {
+function Tag(props: TagProps): JSX.Element {
     return <span css={css`
         font-size: ${props.fontSize ? props.fontSize : "0.75em"};
         background-color: ${props.color};

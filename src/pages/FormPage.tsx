@@ -12,7 +12,7 @@ interface PathParams {
     id: string
 }
 
-function FormPage() {
+function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
 
     const [form, setForm] = useState<Form>();
@@ -20,11 +20,11 @@ function FormPage() {
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
-        })
-    })
+        });
+    });
 
     if (!form) {
-        return <Loading/>
+        return <Loading/>;
     }
 
     return <div>
@@ -33,7 +33,7 @@ function FormPage() {
             <h1>{form.description}</h1>
             <Link to="/" css={{color: "white"}}>Return home</Link>
         </div>
-    </div>
+    </div>;
 }
 
 export default FormPage;

@@ -1,4 +1,4 @@
-import { Question, QuestionType } from "./question"
+import { Question, QuestionType } from "./question";
 import ApiClient from "./client";
 
 export enum FormFeatures {
@@ -36,8 +36,8 @@ export function getForm(id: string): Promise<Form> {
                 data: {}
             }
         ]
-    }
+    };
     return new Promise((resolve) => {
-        setTimeout(() => resolve(data), 1500)
-    })
+        setTimeout(() => resolve(data), 1500);
+    });
 } 

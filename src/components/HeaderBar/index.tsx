@@ -16,17 +16,17 @@ width: 100%;
 transition: height 1s;
 `;
 
-function HeaderBar({ title }: HeaderBarProps) {
-  if (!title) {
-    title = "Python Discord Forms";
-  };
+function HeaderBar({ title }: HeaderBarProps): JSX.Element {
+    if (!title) {
+        title = "Python Discord Forms";
+    }
   
-  return <div>
-    <div>
-      <Header1 css={headerImageStyles}/>
-      <Header2 css={headerImageStyles}/>
-    </div>
-    <h1 css={css`
+    return <div>
+        <div>
+            <Header1 css={headerImageStyles}/>
+            <Header2 css={headerImageStyles}/>
+        </div>
+        <h1 css={css`
       font-size: 4vw;
       margin: 0;
       margin-top: 30px;
@@ -51,9 +51,9 @@ function HeaderBar({ title }: HeaderBarProps) {
         margin-left: 0;
       }
     `}>
-      {title}
-    </h1>
-  </div>
+            {title}
+        </h1>
+    </div>;
 }
 
 export default HeaderBar;
