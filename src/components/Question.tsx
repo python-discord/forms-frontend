@@ -112,14 +112,15 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             return <div>
                 <h1 className="selectable">{question.name}</h1>
                 { question.data["text"] ? <h3 className="selectable">{question.data["text"]}</h3> : "" }
-                <hr className="section_header"/>
+                <hr/>
             </div>;
         } else {
             return <div>
                 <h2 className="selectable">
                     {question.name}<span id={question.required ? "required" : ""} className="required_star">*</span>
                 </h2>
-                { create_input(this.props, this.handler) }<hr/>
+                { create_input(this.props, this.handler) }
+                <hr/>
             </div>;
         }
     }
