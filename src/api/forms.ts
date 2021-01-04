@@ -7,7 +7,7 @@ export enum FormFeatures {
     Open = "OPEN",
     CollectEmail = "COLLECT_EMAIL",
     DisableAntispam = "DISABLE_ANTISPAM",
-    WEBHOOK_ENABLED = "WEBHOOK_ENABLED"
+    WebhookEnabled = "WEBHOOK_ENABLED"
 }
 
 export interface Form {
