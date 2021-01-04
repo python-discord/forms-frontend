@@ -1,0 +1,452 @@
+form {
+    margin: auto;
+    width: 50%;
+}
+
+@media (max-width: 800px) {
+    /* Make form larger on mobile and tablet screens */
+    form {
+        width: 80%;
+    }
+}
+
+hr {
+    color: gray;
+    margin: 3rem 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.section_header {
+    margin-top: 1rem;
+}
+
+.closed_header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.closed_header div {
+    font-size: 1.5rem;
+    background-color: #f04747;
+
+    padding: 1rem 4rem;
+    border-radius: 8px;
+}
+
+.unselectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.selectable {
+    -moz-user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* ------------------------------------------------------------- */
+/*                           Required                            */
+/* ------------------------------------------------------------- */
+.required_star {
+    display: none;
+}
+
+#required.required_star {
+    display: inline-block;
+    position: relative;
+
+    color: red;
+
+    top: -0.2rem;
+    margin-left: 0.2rem;
+}
+
+/* ------------------------------------------------------------- */
+/*                          Checkboxes                           */
+/* ------------------------------------------------------------- */
+.checkbox_label {
+    display: inline-block;
+    position: relative;
+    top: 0.25em;
+
+    width: 1em;
+    height: 1em;
+
+    margin: 1rem 0.5rem 0 0;
+    border: whitesmoke 0.2rem solid;
+    border-radius: 25%;
+
+    -webkit-transition: background-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out;
+}
+
+.checkbox_label input {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.unselected_checkbox_label {
+    background-color: white;
+}
+
+.unselected_checkbox_label:hover {
+    background-color: lightgray;
+}
+
+.selected_checkbox_label {
+    background-color: #7289DA; /* Blurple */
+}
+
+.checkmark_span {
+    position: absolute;
+}
+
+.selected_checkbox_label .checkmark_span {
+    width: 0.30rem;
+    height: 0.60rem;
+    left: 0.25em;
+
+    border: solid white;
+    border-width: 0 0.2rem 0.2rem 0;
+
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------------- */
+/*                             Radio                             */
+/* ------------------------------------------------------------- */
+input[type="radio"] {
+    margin: 1rem 0.5rem 0 0;
+}
+
+/* ------------------------------------------------------------- */
+/*                            Select                             */
+/* ------------------------------------------------------------- */
+.select_container {
+    display: inline-block;
+    position: relative;
+
+    width: min(20rem, 90%);
+    height: 100%;
+    min-height: 2rem;
+
+    background: whitesmoke;
+
+    color: black;
+    text-align: center;
+
+    margin-bottom: 0;
+
+    border: 0.1rem solid black;
+    border-radius: 8px;
+
+    -webkit-transition: border-radius 400ms;
+    transition: border-radius 400ms;
+}
+
+.select_container.active {
+    height: auto;
+    border-radius: 8px 8px 0 0;
+}
+
+.select_arrow {
+    display: inline-block;
+    height: 0.5rem;
+    width: 0.5rem;
+
+    position: relative;
+    float: right;
+    right: 1em;
+    top: 0.7rem;
+
+    border: solid black;
+    border-width: 0 0.2rem 0.2rem 0;
+
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+
+    -webkit-transition: transform 400ms;
+    transition: transform 400ms;
+}
+
+.select_container.active .select_arrow {
+    -webkit-transform: translateY(40%) rotate(225deg);
+    -ms-transform: translateY(40%) rotate(225deg);
+    transform: translateY(40%) rotate(225deg);
+}
+
+.selected_option {
+    display: block;
+    padding: 0.5rem 0;
+}
+
+.select_options_container {
+    position: relative;
+    width: 100%;
+
+    /* Need to account for margin */
+    left: -0.1rem;
+}
+
+.select_options {
+    display: block;
+    position: absolute;
+    width: 100%;
+
+    visibility: hidden;
+    opacity: 0;
+
+    background: whitesmoke;
+    overflow: hidden;
+
+    border: 0.1rem solid black;
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+
+    -webkit-transition: opacity 400ms, visibility 400ms;
+    transition: opacity 400ms, visibility 400ms;
+}
+
+.select_container.active .select_options {
+    visibility: visible;
+    opacity: 1;
+}
+
+.select_options > div > div {
+    padding: 0.75rem;
+}
+
+.select_options > div:hover {
+    background-color: lightgray;
+}
+
+.select_options hr {
+    margin: 0 1rem;
+}
+
+/* ------------------------------------------------------------- */
+/*                          Text Types                           */
+/* ------------------------------------------------------------- */
+.short_text, .text_area {
+    display: inline-block;
+    width: min(20rem, 90%);
+    height: 100%;
+    min-height: 2rem;
+
+    background: whitesmoke;
+
+    color: black;
+    padding: 0 1rem;
+    font: inherit;
+
+    margin-bottom: 0;
+
+    border: 0.1rem solid black;
+    border-radius: 8px;
+}
+
+.text_area {
+    min-height: 20rem;
+    min-width: 40%;
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 1rem;
+}
+
+/* ------------------------------------------------------------- */
+/*                            Range                              */
+/* ------------------------------------------------------------- */
+.range {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+.range label {
+    width: 1rem;
+}
+
+.range label span {
+    display: inline-block;
+    transform: translateX(-50%);
+    margin: 0 50%;
+
+    white-space: nowrap;
+
+    transition: transform 300ms;
+}
+
+.range_dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: whitesmoke;
+
+    border: 0.2rem solid whitesmoke;
+    border-radius: 50%;
+
+    transition: background-color 300ms;
+}
+
+.range_dot.selected {
+    background-color: #7289DA; /* Blurple */
+}
+
+.range_slider_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    position: absolute;
+    z-index: -1;
+
+    top: 2rem;
+
+    transition: all 300ms;
+}
+
+.range_slider {
+    width: 98%; /* Needs to be slightly smaller than container to work on all devices */
+    height: 0.5rem;
+    background-color: whitesmoke;
+
+    transition: transform 300ms;
+}
+
+/* ------------------------------------------------------------- */
+/*                         Mobile Range                          */
+/* ------------------------------------------------------------- */
+@media (max-width: 800px){
+    .range {
+        width: 20%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .range_dot {
+        margin-bottom: 1.5rem;
+    }
+
+    .range label span {
+        margin-left: 0;
+        transform: translateY(1.6rem) translateX(2rem);
+    }
+
+    .range_slider_container {
+        width: 0.5rem;
+        left: 0.32rem;
+        height: 88%;
+
+        background: whitesmoke;
+        z-index: -1;
+    }
+
+    .range_slider {
+        display: none;
+    }
+}
+
+/* ------------------------------------------------------------- */
+/*                          Navigation                           */
+/* ------------------------------------------------------------- */
+.nav {
+    margin: auto;
+    width: 50%;
+
+    text-align: center;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+.nav_separator {
+    height: 0;
+    display: none;
+}
+
+.nav > div {
+    display: inline-block;
+    margin: 2rem auto;
+    width: 50%;
+}
+
+.nav_buttons {
+    text-align: left;
+}
+
+.nav_buttons.closed {
+    text-align: center;
+}
+
+.submit_form {
+    text-align: right;
+}
+
+/* Tile Buttons Vertically On Smaller Devices */
+@media (max-width: 850px) {
+    .nav {
+        width: 100%;
+    }
+
+    .nav_separator {
+        display: block;
+    }
+
+    .nav > div {
+        display: flex;
+        justify-content: center;
+
+        margin: 0 auto;
+    }
+}
+
+.return_home {
+    padding: 0.5rem 2rem;
+    border-radius: 8px;
+
+    color: white;
+    text-decoration: none;
+
+    background-color: #99AAB5; /* Gray-ish */
+    transition: background-color 300ms;
+}
+
+.return_home:hover {
+    background-color: #6E7D88; /* Darker gray-ish */
+}
+
+.submit_form button {
+    padding: 0.5rem 4rem;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+    font: inherit;
+
+    background-color: #7289DA; /* Blurple */
+    transition: background-color 300ms;
+}
+
+.submit_form button:hover {
+    background-color: #4E609C; /* Darker blurple */
+}
