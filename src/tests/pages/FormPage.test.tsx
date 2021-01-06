@@ -27,6 +27,6 @@ test("calls api method to load form", () => {
     Object.defineProperty(forms, "getForm", {value: jest.fn(oldImpl)});
 
     render(<Router><Route history={history}><FormPage /></Route></Router>);
-    
+
     expect(forms.getForm).toBeCalled();
 });

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 
 interface RadioProps {
@@ -11,7 +11,7 @@ interface RadioProps {
 export default function Radio(props: RadioProps): JSX.Element {
     return (
         <label>
-            <input type="radio" name={props.question_id} className="radio" onChange={props.handler}/>
+            <input type="radio" name={props.question_id} css={css`margin: 1rem 0.5rem 0 0;`} onChange={props.handler}/>
             {props.option}<br/>
         </label>
     );

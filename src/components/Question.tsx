@@ -1,8 +1,9 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 
 import { Question, QuestionType } from "../api/question";
+import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
 
 const _skip_normal_state: Array<QuestionType> = [
@@ -37,6 +38,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.props.public_state.set(target, value);
     }
 
+    // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
@@ -71,8 +73,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         // Toggle checkbox class
         if (event.target.type == "checkbox" && event.target.parentElement !== null) {
-            event.target.parentElement.classList.toggle("unselected_checkbox_label");
-            event.target.parentElement.classList.toggle("selected_checkbox_label");
+            event.target.parentElement.classList.toggle("unselected");
+            event.target.parentElement.classList.toggle("selected");
         }
     }
 
@@ -109,17 +111,56 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         const question = this.props.question;
 
         if (question.type === QuestionType.Section) {
-            return <div>
-                <h1 className="selectable">{question.name}</h1>
-                { question.data["text"] ? <h3 className="selectable">{question.data["text"]}</h3> : "" }
-                <hr className="section_header"/>
+            const styles = css`
+              h1 {
+                margin-bottom: 0;
+              }
+
+              h3 {
+                margin-top: 0;
+              }
+
+              h1, h3 {
+                text-align: center;
+                padding: 0 2rem;
+              }
+
+              @media (max-width: 500px) {
+                h1, h3 {
+                  padding: 0;
+                }
+              }
+            `;
+
+            return <div css={styles}>
+                <h1 css={selectable}>{question.name}</h1>
+                { question.data["text"] ? <h3 css={selectable}>{question.data["text"]}</h3> : "" }
+                <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
+
         } else {
+            const requiredStarStyles = css`
+              span {
+                display: none;
+              }
+
+              .required {
+                display: inline-block;
+                position: relative;
+
+                color: red;
+
+                top: -0.2rem;
+                margin-left: 0.2rem;
+              }
+            `;
+
             return <div>
-                <h2 className="selectable">
-                    {question.name}<span id={question.required ? "required" : ""} className="required_star">*</span>
+                <h2 css={[selectable, requiredStarStyles]}>
+                    {question.name}<span className={question.required ? "required" : ""}>*</span>
                 </h2>
-                { create_input(this.props, this.handler) }<hr/>
+                { create_input(this.props, this.handler) }
+                <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
         }
     }
