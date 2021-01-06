@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import colors from "../colors";
 
 const styles = css`
   width: 2.5rem;
@@ -10,7 +11,7 @@ const styles = css`
   bottom: 3rem;
   right: 3rem;
   
-  background-color: #7289DA; /* Blurple */
+  background-color: ${colors.blurple};
   border-radius: 50%;
 
   opacity: 0;
