@@ -23,7 +23,7 @@ const textInputs = css`
   background: whitesmoke;
 
   color: black;
-  padding: 0 1rem;
+  padding: 0.15rem 1rem 0 1rem;
   font: inherit;
 
   margin-bottom: 0;
