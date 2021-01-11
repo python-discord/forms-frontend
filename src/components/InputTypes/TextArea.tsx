@@ -12,6 +12,7 @@ const styles = css`
   min-width: 40%;
   width: 100%;
   box-sizing: border-box;
+  resize: vertical;
 
   padding: 1rem;
 `;
