@@ -52,6 +52,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             break;
 
         case QuestionType.Radio:
+            // IMPORTANT: This handles radios and ranges,
+            // as they are both based on the same fundamental input type
             target = "value";
             if (event.target.parentElement) {
                 value = event.target.parentElement.innerText.trimEnd();
@@ -59,10 +61,6 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 value = event.target.value;
             }
             break;
-
-        case QuestionType.Select:
-            // Handled by component
-            return;
 
         default:
             target = "value";

@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
-import { multiSelectInput } from "../../commonStyles";
+import { multiSelectInput, hiddenInput } from "../../commonStyles";
 
 interface RadioProps {
     option: string,
@@ -11,13 +11,6 @@ interface RadioProps {
 }
 
 const styles = css`
-  input {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-  }
-  
   div {
     width: 0.5em;
     height: 0.5em;
@@ -26,7 +19,7 @@ const styles = css`
     border-radius: 50%;
   }
 
-  :hover div {
+  :hover div, :focus-within div {
     background-color: lightgray;
   }
 
@@ -38,7 +31,7 @@ const styles = css`
 export default function Radio(props: RadioProps): JSX.Element {
     return (
         <label css={styles}>
-            <input type="radio" name={props.question_id} onChange={props.handler}/>
+            <input type="radio" name={props.question_id} onChange={props.handler} css={hiddenInput}/>
             <div css={multiSelectInput}/>
             {props.option}<br/>
         </label>

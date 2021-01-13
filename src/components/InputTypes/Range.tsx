@@ -1,32 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import colors from "../../colors";
+import {hiddenInput, multiSelectInput} from "../../commonStyles";
 
 interface RangeProps {
     question_id: string,
     options: Array<string>,
-    state_dict: Map<string, string | boolean | null>
-}
-
-interface handler_props {
-    state_dict: Map<string, string | boolean | null>,
-    ref: React.RefObject<HTMLLabelElement>
-}
-
-let last_selection: Element;
-function handler(this: handler_props): void {
-    if (last_selection) {
-        last_selection.classList.toggle("selected");
-    }
-
-    const dot: Element = this.ref.current!.lastElementChild!; // eslint-disable-line
-    dot.classList.toggle("selected");
-
-    last_selection = dot;
-
-    const value: string = this.ref.current!.textContent!; //eslint-disable-line
-    this.state_dict.set("value", value);
+    handler: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 const containerStyles = css`
@@ -57,26 +38,23 @@ const optionStyles = css`
   transition: transform 300ms;
 `;
 
-const rangeDotStyles = css`
-  .range_dot {
-    width: 0.8rem;
-    height: 0.8rem;
+const selector_styles = css`
+  div {
+    width: 1rem;
+    height: 1rem;
+
     background-color: whitesmoke;
 
-    border: 0.2rem solid whitesmoke;
     border-radius: 50%;
-
-    transition: background-color 300ms;
+    margin: 0;
   }
 
-  .range_dot.selected {
+  :hover div, :focus-within div {
+    background-color: lightgray;
+  }
+
+  input:checked+div {
     background-color: ${colors.blurple};
-  }
-
-  @media (max-width: 800px) {
-    .range_dot {
-      margin-bottom: 1.5rem;
-    }
   }
 `;
 
@@ -116,17 +94,17 @@ const sliderStyles = css`
 
 export default function Range(props: RangeProps): JSX.Element {
     const range = props.options.map((option, index) => {
-        const ref: React.RefObject<HTMLLabelElement> = React.createRef();
         return (
-            <label key={index} ref={ref} css={css`width: 1rem;`} onClick={handler.bind({state_dict: props.state_dict, ref})}>
+            <label css={[selector_styles, css`width: 1rem`]} key={index}>
                 <span css={optionStyles}>{option}</span>
-                <div className="range_dot"/>
+                <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler}/>
+                <div css={multiSelectInput}/>
             </label>
         );
     });
 
     return (
-        <div css={[containerStyles, rangeDotStyles]}>
+        <div css={containerStyles}>
             { range }
 
             <div css={sliderContainerStyles}>

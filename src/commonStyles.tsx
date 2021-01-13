@@ -43,9 +43,17 @@ const multiSelectInput = css`
   transition: background-color 300ms;
 `;
 
+const hiddenInput = css`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
 export {
     selectable,
     unselectable,
     textInputs,
-    multiSelectInput
+    multiSelectInput,
+    hiddenInput
 };

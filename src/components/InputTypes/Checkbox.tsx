@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
-import { multiSelectInput } from "../../commonStyles";
+import { multiSelectInput, hiddenInput } from "../../commonStyles";
 
 interface CheckboxProps {
     index: number,
@@ -23,15 +23,8 @@ const generalStyles = css`
     background-color: white;
   }
 
-  .unselected:hover {
+  .unselected:focus-within, :hover .unselected {
     background-color: lightgray;
-  }
-
-  input {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
   }
 
   .checkmark {
@@ -60,8 +53,7 @@ export default function Checkbox(props: CheckboxProps): JSX.Element {
     return (
         <label css={[generalStyles, activeStyles]}>
             <label className="unselected" css={multiSelectInput}>
-                <input type="checkbox" value={props.option}
-                    name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler}/>
+                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler}/>
                 <span className="checkmark"/>
             </label>
             {props.option}<br/>
