@@ -3,7 +3,7 @@ import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 
 import { Question, QuestionType } from "../api/question";
-import { selectable } from "../CommonStyles";
+import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
 
 const _skip_normal_state: Array<QuestionType> = [

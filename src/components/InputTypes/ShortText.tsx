@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { ChangeEvent } from "react";
-import { textInputs } from "../../CommonStyles";
+import { textInputs } from "../../commonStyles";
 
 interface ShortTextProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void

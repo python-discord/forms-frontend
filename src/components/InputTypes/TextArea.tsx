@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
-import { textInputs } from "../../CommonStyles";
+import { textInputs } from "../../commonStyles";
 
 interface TextAreaProps {
     handler: (event: ChangeEvent<HTMLTextAreaElement>) => void
@@ -12,6 +12,7 @@ const styles = css`
   min-width: 40%;
   width: 100%;
   box-sizing: border-box;
+  resize: vertical;
 
   padding: 1rem;
 `;

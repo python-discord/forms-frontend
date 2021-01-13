@@ -13,7 +13,7 @@ const generalStyles = css`
   label {
     display: inline-block;
     position: relative;
-    top: 0.25em;
+    top: 0.3rem;
 
     width: 1em;
     height: 1em;
