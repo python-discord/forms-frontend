@@ -13,6 +13,12 @@ const containerStyles = css`
   width: min(20rem, 90%);
 
   color: black;
+  cursor: pointer;
+
+  :focus-within .selected_container {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 `;
 
 const mainWindowStyles = css`
@@ -27,6 +33,11 @@ const mainWindowStyles = css`
   margin-bottom: 0;
 
   overflow: hidden;
+  z-index: 1;
+
+  :hover, :focus-within {
+    background-color: lightgray;
+  }
 
   .selected_option {
     position: absolute;
@@ -85,6 +96,10 @@ const optionContainerStyles = css`
     border: 0.1rem solid black;
     border-radius: 0 0 8px 8px;
     border-top: none;
+    
+    * {
+      cursor: pointer;
+    }
   }
 
   :focus-within .option_container {
@@ -148,14 +163,14 @@ class Select extends React.Component<SelectProps> {
 
         return (
             <div css={[containerStyles, arrowStyles, optionContainerStyles]}>
-                <div css={mainWindowStyles}>
+                <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
                 </div>
 
                 <div className="option_container">
                     { this.props.options.map((option, index) => (
-                        <div key={index} css={optionStyles} className="option">
+                        <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
                             <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
                             <div>{option}</div>

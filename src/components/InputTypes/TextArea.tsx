@@ -9,7 +9,6 @@ interface TextAreaProps {
 
 const styles = css`
   min-height: 20rem;
-  min-width: 40%;
   width: 100%;
   box-sizing: border-box;
   resize: vertical;

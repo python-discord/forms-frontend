@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
-import {hiddenInput, multiSelectInput} from "../../commonStyles";
+import { hiddenInput, multiSelectInput } from "../../commonStyles";
 
 interface RangeProps {
     question_id: string,
@@ -39,6 +39,8 @@ const optionStyles = css`
 `;
 
 const selectorStyles = css`
+  cursor: pointer;
+
   div {
     width: 1rem;
     height: 1rem;

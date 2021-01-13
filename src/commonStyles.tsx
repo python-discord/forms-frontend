@@ -39,7 +39,7 @@ const multiSelectInput = css`
   margin: 1rem 0.5rem 0 0;
   border: whitesmoke 0.2rem solid;
 
-  background-color: white;
+  background-color: whitesmoke;
   transition: background-color 300ms;
 `;
 

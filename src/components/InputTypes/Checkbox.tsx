@@ -11,12 +11,15 @@ interface CheckboxProps {
 }
 
 const generalStyles = css`
+  cursor: pointer;
+        
   label {
     width: 1em;
     height: 1em;
     top: 0.3rem;
 
     border-radius: 25%;
+    cursor: pointer;
   }
 
   .unselected {
