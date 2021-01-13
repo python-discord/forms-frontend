@@ -32,8 +32,20 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
+const multiSelectInput = css`
+  display: inline-block;
+  position: relative;
+
+  margin: 1rem 0.5rem 0 0;
+  border: whitesmoke 0.2rem solid;
+
+  background-color: white;
+  transition: background-color 300ms;
+`;
+
 export {
     selectable,
     unselectable,
-    textInputs
+    textInputs,
+    multiSelectInput
 };
