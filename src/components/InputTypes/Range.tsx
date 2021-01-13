@@ -38,7 +38,7 @@ const optionStyles = css`
   transition: transform 300ms;
 `;
 
-const selector_styles = css`
+const selectorStyles = css`
   div {
     width: 1rem;
     height: 1rem;
@@ -46,7 +46,7 @@ const selector_styles = css`
     background-color: whitesmoke;
 
     border-radius: 50%;
-    margin: 0;
+    margin: 0 100% 0 0;
   }
 
   :hover div, :focus-within div {
@@ -66,15 +66,15 @@ const sliderContainerStyles = css`
   position: absolute;
   z-index: -1;
 
-  top: 2rem;
+  top: 2.1rem;
 
   transition: all 300ms;
   
   @media (max-width: 800px) {
     width: 0.5rem;
-    height: 88%;
+    height: 80%;
 
-    left: 0.32rem;
+    left: 0.4rem;
 
     background: whitesmoke;
   }
@@ -95,7 +95,7 @@ const sliderStyles = css`
 export default function Range(props: RangeProps): JSX.Element {
     const range = props.options.map((option, index) => {
         return (
-            <label css={[selector_styles, css`width: 1rem`]} key={index}>
+            <label css={[selectorStyles, css`width: 1rem`]} key={index}>
                 <span css={optionStyles}>{option}</span>
                 <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler}/>
                 <div css={multiSelectInput}/>
