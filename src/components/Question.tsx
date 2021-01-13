@@ -46,14 +46,13 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         let value: string | boolean;
 
         switch (event.target.type) {
-        case QuestionType.Checkbox:
-            target = this.props.question.id;
+        case "checkbox":
+            target = event.target.name;
             value = event.target.checked;
             break;
 
-        case QuestionType.Radio:
-            // IMPORTANT: This handles radios and ranges,
-            // as they are both based on the same fundamental input type
+        case "radio":
+            // This handles radios and ranges, as they are both based on the same fundamental input type
             target = "value";
             if (event.target.parentElement) {
                 value = event.target.parentElement.innerText.trimEnd();
