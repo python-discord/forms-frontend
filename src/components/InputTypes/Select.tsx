@@ -102,7 +102,7 @@ const optionContainerStyles = css`
     }
   }
 
-  :focus-within .option_container {
+  :focus-within .option_container, .active .option_container {
     height: auto;
     visibility: visible;
     opacity: 1;
@@ -138,6 +138,18 @@ const optionStyles = css`
   }
 `;
 
+function handleFocus(container: React.RefObject<HTMLDivElement>, event: React.FocusEvent<HTMLDivElement>) {
+    if (!container.current) {
+        return;
+    }
+
+    if (event.type == "focus") {
+        container.current.classList.add("active");
+    } else if (event.type == "blur") {
+        container.current.classList.remove("active");
+    }
+}
+
 class Select extends React.Component<SelectProps> {
     handler(selected_option: React.RefObject<HTMLDivElement>, event: React.ChangeEvent<HTMLInputElement>): void {
         const option_container = event.target.parentElement;
@@ -159,20 +171,21 @@ class Select extends React.Component<SelectProps> {
     }
 
     render(): JSX.Element {
+        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
         const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref}>
                 <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
-                    <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
+                    <div tabIndex={0} className="selected_option" ref={selected_option_ref} onFocus={event => handleFocus(container_ref, event)} onBlur={event => handleFocus(container_ref, event)}>...</div>
                 </div>
 
                 <div className="option_container">
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
-                            <input type="checkbox" tabIndex={0} css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
+                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
                             <div>{option}</div>
                         </div>
                     )) }
