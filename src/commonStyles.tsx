@@ -8,10 +8,7 @@ const selectable = css`
 `;
 
 const unselectable = css`
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+
 `;
 
 const textInputs = css`
