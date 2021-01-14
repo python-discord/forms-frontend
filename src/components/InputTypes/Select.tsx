@@ -185,7 +185,7 @@ class Select extends React.Component<SelectProps> {
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
-                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
+                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)} onFocus={event => handleFocus(container_ref, event)} onBlur={event => handleFocus(container_ref, event)}/>
                             <div>{option}</div>
                         </div>
                     )) }
