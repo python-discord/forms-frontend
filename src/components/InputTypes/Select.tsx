@@ -79,18 +79,11 @@ const arrowStyles = css`
 `;
 
 const optionContainerStyles = css`
-  :focus-within .test {
-    color: green;
-  }
-  .test {
-    color: red;
-  }
-  
   .option_container {
     position: absolute;
     width: 100%;
     height: 0;
-    
+
     top: 2.3rem;
     padding-top: 0.2rem;
 
@@ -103,18 +96,18 @@ const optionContainerStyles = css`
     border: 0.1rem solid black;
     border-radius: 0 0 8px 8px;
     border-top: none;
-    
+
     * {
       cursor: pointer;
     }
   }
 
-  :focus-within .option_container, .active .option_container {
+  :focus-within .option_container {
     height: auto;
     visibility: visible;
     opacity: 1;
   }
-  
+
   .option_container .hidden {
     display: none;
   }
@@ -134,28 +127,16 @@ const inputStyles = css`
 
 const optionStyles = css`
   position: relative;
-  
+
   :hover, :focus-within {
     background-color: lightgray;
   }
-  
+
   div {
     padding: 0.75rem;
     text-align: center;
   }
 `;
-
-function handleFocus(container: React.RefObject<HTMLDivElement>, event: React.FocusEvent<HTMLDivElement>) {
-    if (!container.current) {
-        return;
-    }
-
-    if (event.type == "focus") {
-        container.current.classList.add("active");
-    } else if (event.type == "blur") {
-        container.current.classList.remove("active");
-    }
-}
 
 class Select extends React.Component<SelectProps> {
     handler(selected_option: React.RefObject<HTMLDivElement>, event: React.ChangeEvent<HTMLInputElement>): void {
@@ -178,33 +159,26 @@ class Select extends React.Component<SelectProps> {
     }
 
     render(): JSX.Element {
-        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
         const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
-        const select = (
-            <div css={[containerStyles, arrowStyles]} ref={container_ref}>
-                <div className="test">
-                    Active
-                </div>
-
+        return (
+            <div css={[containerStyles, arrowStyles, optionContainerStyles]}>
                 <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
-                    <div tabIndex={0} className="selected_option" ref={selected_option_ref} onFocus={event => handleFocus(container_ref, event)} onBlur={event => handleFocus(container_ref, event)}>...</div>
+                    <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
                 </div>
 
                 <div className="option_container">
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
-                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)} onFocus={event => handleFocus(container_ref, event)} onBlur={event => handleFocus(container_ref, event)}/>
+                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
                             <div>{option}</div>
                         </div>
                     )) }
                 </div>
             </div>
         );
-
-        return <div css={optionContainerStyles}>{ select }</div>;
     }
 }
 
