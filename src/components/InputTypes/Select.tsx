@@ -102,7 +102,7 @@ const optionContainerStyles = css`
     }
   }
 
-  .option_container {
+  :focus-within .option_container {
     height: auto;
     visibility: visible;
     opacity: 1;
@@ -172,7 +172,7 @@ class Select extends React.Component<SelectProps> {
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
-                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
+                            <input type="checkbox" tabIndex={0} css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
                             <div>{option}</div>
                         </div>
                     )) }
