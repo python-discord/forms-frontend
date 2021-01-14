@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { hiddenInput, selectable } from "../../commonStyles";
+import { hiddenInput } from "../../commonStyles";
 
 interface SelectProps {
     options: Array<string>,
@@ -102,7 +102,7 @@ const optionContainerStyles = css`
     }
   }
 
-  :focus-within .option_container {
+  .option_container {
     height: auto;
     visibility: visible;
     opacity: 1;
