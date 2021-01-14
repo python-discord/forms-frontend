@@ -168,7 +168,7 @@ class Select extends React.Component<SelectProps> {
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
                 </div>
 
-                <div className="option_container">
+                <div className="option_container" tabIndex={-1} css={css`outline: none;`}>
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
                             <hr css={css`margin: 0 1rem;`}/>
