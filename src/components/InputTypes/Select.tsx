@@ -79,7 +79,7 @@ const arrowStyles = css`
 `;
 
 const optionContainerStyles = css`
-  .active .test {
+  :focus-within .test {
     color: green;
   }
   .test {
@@ -204,7 +204,7 @@ class Select extends React.Component<SelectProps> {
             </div>
         );
 
-        return <div css={optionContainerStyles}>{ select }</div>
+        return <div css={optionContainerStyles}>{ select }</div>;
     }
 }
 
