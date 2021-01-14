@@ -79,6 +79,13 @@ const arrowStyles = css`
 `;
 
 const optionContainerStyles = css`
+  .active .test {
+    color: green;
+  }
+  .test {
+    color: red;
+  }
+  
   .option_container {
     position: absolute;
     width: 100%;
@@ -174,8 +181,12 @@ class Select extends React.Component<SelectProps> {
         const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
         const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
-        return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref}>
+        const select = (
+            <div css={[containerStyles, arrowStyles]} ref={container_ref}>
+                <div className="test">
+                    Active
+                </div>
+
                 <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onFocus={event => handleFocus(container_ref, event)} onBlur={event => handleFocus(container_ref, event)}>...</div>
@@ -192,6 +203,8 @@ class Select extends React.Component<SelectProps> {
                 </div>
             </div>
         );
+
+        return <div css={optionContainerStyles}>{ select }</div>
     }
 }
 
