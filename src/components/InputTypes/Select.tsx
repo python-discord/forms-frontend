@@ -18,6 +18,8 @@ const containerStyles = css`
   :focus-within .selected_container {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+
+    border-bottom-color: transparent;
   }
 `;
 
@@ -45,7 +47,7 @@ const mainWindowStyles = css`
     width: 100%;
 
     outline: none;
-    text-align: center;
+    padding-left: 0.75rem;
     line-height: 250%;
   }
 
@@ -97,6 +99,8 @@ const optionContainerStyles = css`
     border-radius: 0 0 8px 8px;
     border-top: none;
 
+    transition: opacity 400ms, visibility 400ms;
+
     * {
       cursor: pointer;
     }
@@ -134,7 +138,6 @@ const optionStyles = css`
 
   div {
     padding: 0.75rem;
-    text-align: center;
   }
 `;
 
@@ -171,7 +174,6 @@ class Select extends React.Component<SelectProps> {
                 <div className="option_container" tabIndex={-1} css={css`outline: none;`}>
                     { this.props.options.map((option, index) => (
                         <div key={index} css={optionStyles}>
-                            <hr css={css`margin: 0 1rem;`}/>
                             <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
                             <div>{option}</div>
                         </div>
