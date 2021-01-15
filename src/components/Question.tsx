@@ -130,7 +130,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             `;
 
             return <div css={styles}>
-                <h1 css={selectable}>{question.name}</h1>
+                <h1 css={[selectable, css`line-height: 2.5rem;`]}>{question.name}</h1>
                 { question.data["text"] ? <h3 css={selectable}>{question.data["text"]}</h3> : "" }
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
