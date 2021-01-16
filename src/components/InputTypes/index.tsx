@@ -54,7 +54,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
         break;
 
     case QuestionType.Range:
-        result = <Range question_id={question.id} options={options} state_dict={public_state}/>;
+        result = <Range question_id={question.id} options={options} handler={handler}/>;
         break;
 
     case QuestionType.Code:

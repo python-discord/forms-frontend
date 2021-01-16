@@ -14,6 +14,24 @@ const unselectable = css`
   user-select: none;
 `;
 
+const hiddenInput = css`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const multiSelectInput = css`
+  display: inline-block;
+  position: relative;
+
+  margin: 1rem 0.5rem 0 0;
+  border: whitesmoke 0.2rem solid;
+
+  background-color: whitesmoke;
+  transition: background-color 300ms;
+`;
+
 const textInputs = css`
   display: inline-block;
   width: min(20rem, 90%);
@@ -32,8 +50,11 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
+
 export {
     selectable,
     unselectable,
-    textInputs
+    hiddenInput,
+    multiSelectInput,
+    textInputs,
 };
