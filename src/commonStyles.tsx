@@ -29,7 +29,7 @@ const multiSelectInput = css`
   border: whitesmoke 0.2rem solid;
 
   background-color: whitesmoke;
-  transition: background-color 300ms;
+  transition: background-color 200ms;
 `;
 
 const textInputs = css`

@@ -54,7 +54,7 @@ const mainWindowStyles = css`
   border: 0.1rem solid black;
   border-radius: 8px;
 
-  transition: border-radius 400ms;
+  transition: border-radius 200ms;
 `;
 
 const arrowStyles = css`
@@ -72,7 +72,7 @@ const arrowStyles = css`
     border-width: 0 0.2rem 0.2rem 0;
 
     transform: rotate(45deg);
-    transition: transform 400ms;
+    transition: transform 200ms;
   }
 
   :focus-within .arrow {
@@ -99,7 +99,7 @@ const optionContainerStyles = css`
     border-radius: 0 0 8px 8px;
     border-top: none;
 
-    transition: opacity 400ms, visibility 400ms;
+    transition: opacity 200ms, visibility 200ms;
 
     * {
       cursor: pointer;
