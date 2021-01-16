@@ -157,14 +157,35 @@ class Select extends React.Component<SelectProps> {
         selected_option.current.textContent = option_container.textContent;
     }
 
+    handle_click(
+        container: React.RefObject<HTMLDivElement>,
+        selected_option: React.RefObject<HTMLDivElement>,
+        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
+    ): void {
+        if (!container.current || !selected_option.current || (event.type === "keydown" && (event as React.KeyboardEvent).code !== "Space")) {
+            return;
+        }
+
+        // Check if menu is open
+        if (container.current.contains(document.activeElement)) {
+            // Close menu
+            selected_option.current.focus();
+            selected_option.current.blur();
+            event.preventDefault();
+        }
+    }
+
     render(): JSX.Element {
+        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
         const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
+        const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
+
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref}>
                 <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
-                    <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
+                    <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>
                 </div>
 
                 <div className="option_container" tabIndex={-1} css={css`outline: none;`}>
