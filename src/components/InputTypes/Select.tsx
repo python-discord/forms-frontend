@@ -1,43 +1,60 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import { hiddenInput } from "../../commonStyles";
 
 interface SelectProps {
     options: Array<string>,
     state_dict: Map<string, string | boolean | null>
 }
 
-interface HandlerProps {
-    props: SelectProps,
-    ref: React.RefObject<HTMLDivElement>
-}
-
 const containerStyles = css`
-  .container {
-    display: inline-block;
-    position: relative;
+  position: relative;
+  width: min(20rem, 90%);
 
-    width: min(20rem, 90%);
+  color: black;
+  cursor: pointer;
+
+  :focus-within .selected_container {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    border-bottom-color: transparent;
+  }
+`;
+
+const mainWindowStyles = css`
+  display: inline-block;
+  position: relative;
+  background: whitesmoke;
+
+  width: 100%;
+  height: 100%;
+  min-height: 2.5rem;
+
+  margin-bottom: 0;
+
+  overflow: hidden;
+  z-index: 1;
+
+  :hover, :focus-within {
+    background-color: lightgray;
+  }
+
+  .selected_option {
+    position: absolute;
     height: 100%;
-    min-height: 2rem;
+    width: 100%;
 
-    background: whitesmoke;
-
-    color: black;
-    text-align: center;
-
-    margin-bottom: 0;
-
-    border: 0.1rem solid black;
-    border-radius: 8px;
-
-    transition: border-radius 400ms;
+    outline: none;
+    padding-left: 0.75rem;
+    line-height: 250%;
   }
 
-  .container.active {
-    height: auto;
-    border-radius: 8px 8px 0 0;
-  }
+  border: 0.1rem solid black;
+  border-radius: 8px;
+
+  transition: border-radius 400ms;
 `;
 
 const arrowStyles = css`
@@ -58,83 +75,108 @@ const arrowStyles = css`
     transition: transform 400ms;
   }
 
-  .active .arrow {
+  :focus-within .arrow {
     transform: translateY(40%) rotate(225deg);
   }
 `;
 
-const optionContainer = css`
+const optionContainerStyles = css`
   .option_container {
-    display: block;
     position: absolute;
     width: 100%;
+    height: 0;
 
-    /* Need to account for margin */
-    left: -0.1rem;
+    top: 2.3rem;
+    padding-top: 0.2rem;
 
     visibility: hidden;
     opacity: 0;
 
-    background: whitesmoke;
     overflow: hidden;
+    background: whitesmoke;
 
     border: 0.1rem solid black;
     border-radius: 0 0 8px 8px;
     border-top: none;
 
     transition: opacity 400ms, visibility 400ms;
+
+    * {
+      cursor: pointer;
+    }
   }
 
-  .active .option_container {
+  :focus-within .option_container {
+    height: auto;
     visibility: visible;
     opacity: 1;
+  }
+
+  .option_container .hidden {
+    display: none;
+  }
+`;
+
+const inputStyles = css`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+
+  margin: 0;
+  border: none;
+  outline: none;
+`;
+
+const optionStyles = css`
+  position: relative;
+
+  :hover, :focus-within {
+    background-color: lightgray;
+  }
+
+  div {
+    padding: 0.75rem;
   }
 `;
 
 class Select extends React.Component<SelectProps> {
-    click_handler(this: HandlerProps, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-        if (!this.ref.current) {
+    handler(selected_option: React.RefObject<HTMLDivElement>, event: React.ChangeEvent<HTMLInputElement>): void {
+        const option_container = event.target.parentElement;
+        if (!option_container || !option_container.parentElement || !selected_option.current) {
             return;
         }
 
-        this.ref.current.classList.toggle("active");
+        // Update stored value
+        this.props.state_dict.set("value", option_container.textContent);
 
-        const target: Element = (event.target as Element);
-        if (target.id === "option") {
-            const selected_option: Element = this.ref.current.getElementsByClassName("selected_option")[0];
-            const new_option_text: string = target.textContent ?? "...";
-
-            if (selected_option.textContent === "..." && target.parentElement) {
-                target.parentElement.remove();
-            } else {
-                target.textContent = selected_option.textContent;
-            }
-
-            selected_option.textContent = new_option_text;
-            this.props.state_dict.set("value", selected_option.textContent);
-        }
+        // Close the menu
+        selected_option.current.focus();
+        selected_option.current.blur();
+        selected_option.current.textContent = option_container.textContent;
     }
 
     render(): JSX.Element {
-        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
+        const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
 
-        const element: JSX.Element = (
-            <div className="container" ref={container_ref} onClick={this.click_handler.bind({ref: container_ref, props: this.props})}>
-                <span className="arrow"/>
-                <span className="selected_option" css={css`display: block; padding: 0.5rem 0;`}>...</span>
+        return (
+            <div css={[containerStyles, arrowStyles, optionContainerStyles]}>
+                <div className="selected_container" css={mainWindowStyles}>
+                    <span className="arrow"/>
+                    <div tabIndex={0} className="selected_option" ref={selected_option_ref}>...</div>
+                </div>
 
-                <div className="option_container">
+                <div className="option_container" tabIndex={-1} css={css`outline: none;`}>
                     { this.props.options.map((option, index) => (
-                        <div css={css`:hover { background-color: lightgray; }`} key={index}>
-                            <hr css={css`margin: 0 1rem;`}/>
-                            <div id="option" css={css`padding: 0.75rem;`}>{option}</div>
+                        <div key={index} css={optionStyles}>
+                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
+                            <div>{option}</div>
                         </div>
                     )) }
                 </div>
             </div>
         );
-
-        return <div css={[containerStyles, arrowStyles, optionContainer]}>{ element }</div>;
     }
 }
 
