@@ -177,8 +177,8 @@ function FormPage(): JSX.Element {
 
             // TODO: Parse input from each question, and submit
             switch (question.type) {
-            default:
-                console.log(question.id, prop.props.public_state);
+                default:
+                    console.log(question.id, prop.props.public_state);
             }
         });
 

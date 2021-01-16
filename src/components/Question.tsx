@@ -46,24 +46,24 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         let value: string | boolean;
 
         switch (event.target.type) {
-        case "checkbox":
-            target = event.target.name;
-            value = event.target.checked;
-            break;
+            case "checkbox":
+                target = event.target.name;
+                value = event.target.checked;
+                break;
 
-        case "radio":
-            // This handles radios and ranges, as they are both based on the same fundamental input type
-            target = "value";
-            if (event.target.parentElement) {
-                value = event.target.parentElement.innerText.trimEnd();
-            } else {
+            case "radio":
+                // This handles radios and ranges, as they are both based on the same fundamental input type
+                target = "value";
+                if (event.target.parentElement) {
+                    value = event.target.parentElement.innerText.trimEnd();
+                } else {
+                    value = event.target.value;
+                }
+                break;
+
+            default:
+                target = "value";
                 value = event.target.value;
-            }
-            break;
-
-        default:
-            target = "value";
-            value = event.target.value;
         }
 
         this._setState(target, value);
@@ -85,21 +85,21 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         if (this.props.public_state.size === 0) {
             switch (this.props.question.type) {
-            case QuestionType.Checkbox:
-                if (typeof options === "string") {
-                    return;
-                }
+                case QuestionType.Checkbox:
+                    if (typeof options === "string") {
+                        return;
+                    }
 
-                options.forEach((option, index) => {
-                    this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
-                });
-                break;
+                    options.forEach((option, index) => {
+                        this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
+                    });
+                    break;
 
-            case QuestionType.Range:
-            case QuestionType.Radio:
-            case QuestionType.Select:
-                this._setState("value", null);
-                break;
+                case QuestionType.Range:
+                case QuestionType.Radio:
+                case QuestionType.Select:
+                    this._setState("value", null);
+                    break;
             }
         }
     }
