@@ -3,6 +3,9 @@ import { jsx, css } from "@emotion/react";
 import React from "react";
 import colors from "../colors";
 
+import smoothscroll from "smoothscroll-polyfill";
+smoothscroll.polyfill();
+
 const styles = css`
   width: 2.5rem;
   height: 2.5rem;
