@@ -11,7 +11,7 @@ import React, { ChangeEvent } from "react";
 import { QuestionType } from "../../api/question";
 import { QuestionProp } from "../Question";
 
-const _require_options: Array<QuestionType> = [
+const require_options: Array<QuestionType> = [
     QuestionType.Radio,
     QuestionType.Checkbox,
     QuestionType.Select,
@@ -26,7 +26,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     let options: string[] = question.data["options"];
 
     // Catch input types that require options but don't have any
-    if ((options === undefined || typeof options !== "object") && _require_options.includes(question.type)) {
+    if ((options === undefined || typeof options !== "object") && require_options.includes(question.type)) {
         // TODO: Implement some sort of warning here
         options = [];
     }

@@ -6,7 +6,7 @@ import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
 
-const _skip_normal_state: Array<QuestionType> = [
+const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
     QuestionType.Checkbox,
     QuestionType.Select,
@@ -28,12 +28,12 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             this.handler = this.normal_handler.bind(this);
         }
 
-        if (!_skip_normal_state.includes(props.question.type)) {
-            this._setState("value", "");
+        if (!skip_normal_state.includes(props.question.type)) {
+            this.setPublicState("value", "");
         }
     }
 
-    _setState(target: string, value: string | boolean | null, callback?:() => void): void {
+    setPublicState(target: string, value: string | boolean | null, callback?:() => void): void {
         this.setState({[target]: value}, callback);
         this.props.public_state.set(target, value);
     }
@@ -52,7 +52,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 break;
 
             case "radio":
-                // This handles radios and ranges, as they are both based on the same fundamental input type
+            // This handles radios and ranges, as they are both based on the same fundamental input type
                 target = "value";
                 if (event.target.parentElement) {
                     value = event.target.parentElement.innerText.trimEnd();
@@ -66,7 +66,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 value = event.target.value;
         }
 
-        this._setState(target, value);
+        this.setPublicState(target, value);
 
         // Toggle checkbox class
         if (event.target.type == "checkbox" && event.target.parentElement !== null) {
@@ -76,7 +76,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
-        this._setState("value", event.target.value);
+        this.setPublicState("value", event.target.value);
     }
 
     componentDidMount(): void {
@@ -91,14 +91,14 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     }
 
                     options.forEach((option, index) => {
-                        this._setState(`${("000" + index).slice(-4)}. ${option}`, false);
+                        this.setPublicState(`${("000" + index).slice(-4)}. ${option}`, false);
                     });
                     break;
 
                 case QuestionType.Range:
                 case QuestionType.Radio:
                 case QuestionType.Select:
-                    this._setState("value", null);
+                    this.setPublicState("value", null);
                     break;
             }
         }
