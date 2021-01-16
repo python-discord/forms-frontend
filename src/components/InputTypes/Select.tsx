@@ -154,10 +154,10 @@ class Select extends React.Component<SelectProps> {
         this.props.state_dict.set("value", option_container.textContent);
 
         // Show all elements
-        Array.from(all_options.children).forEach(child => child.classList.remove("hidden"));
+        // Array.from(all_options.children).forEach(child => child.classList.remove("hidden"));
 
         // Hide selected element, and display new element as selected
-        option_container.classList.add("hidden");
+        // option_container.classList.add("hidden");
         selected_option.current.textContent = option_container.textContent;
     }
 
