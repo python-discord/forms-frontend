@@ -146,6 +146,10 @@ const closedHeaderStyles = css`
   font-size: 1.5rem;
 
   background-color: ${colors.error};
+  
+  @media (max-width: 500px) {
+    padding: 1rem 1.5rem;
+  }
 `;
 
 function FormPage(): JSX.Element {
