@@ -59,8 +59,10 @@ class ScrollToTop extends React.Component {
 
         if (window.pageYOffset > 250) {
             last_ref.current.style.opacity = "1";
+            last_ref.current.style.cursor = "pointer";
         } else {
             last_ref.current.style.opacity = "0";
+            last_ref.current.style.cursor = "default";
         }
     }
 
