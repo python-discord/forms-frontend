@@ -158,6 +158,8 @@ class Select extends React.Component<SelectProps> {
 
         // Hide selected element, and display new element as selected
         // option_container.classList.add("hidden");
+        selected_option.current.focus();
+        selected_option.current.blur();
         selected_option.current.textContent = option_container.textContent;
     }
 
