@@ -17,9 +17,11 @@ const openFormListing: Form = {
             "id": "my-question",
             "name": "My question",
             "type": QuestionType.ShortText,
-            "data": {}
+            "data": {},
+            required: false
         }
-    ]
+    ],
+    webhook: null
 };
 
 const closedFormListing: Form = {
@@ -32,9 +34,11 @@ const closedFormListing: Form = {
             "id": "what-should-i-ask",
             "name": "What should I ask?",
             "type": QuestionType.ShortText,
-            "data": {}
+            "data": {},
+            required: false
         }
-    ]
+    ],
+    webhook: null
 };
 
 test("renders form listing with specified title", () => {
