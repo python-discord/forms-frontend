@@ -7,7 +7,8 @@ import { hiddenInput, multiSelectInput } from "../../commonStyles";
 interface RangeProps {
     question_id: string,
     options: Array<string>,
-    handler: (event: ChangeEvent<HTMLInputElement>) => void
+    handler: (event: ChangeEvent<HTMLInputElement>) => void,
+    required: boolean
 }
 
 const containerStyles = css`

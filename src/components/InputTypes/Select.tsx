@@ -5,7 +5,8 @@ import { hiddenInput } from "../../commonStyles";
 
 interface SelectProps {
     options: Array<string>,
-    state_dict: Map<string, string | boolean | null>
+    state_dict: Map<string, string | boolean | null>,
+    required: boolean
 }
 
 const containerStyles = css`

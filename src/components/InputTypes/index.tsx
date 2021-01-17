@@ -34,7 +34,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler}/>;
+            result = <TextArea handler={handler} required={question.required} />;
             break;
 
         case QuestionType.Checkbox:
@@ -46,15 +46,15 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state}/>;
+            result = <Select options={options} state_dict={public_state} required={question.required}/>;
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler}/>;
+            result = <ShortText handler={handler} required={question.required}/>;
             break;
 
         case QuestionType.Range:
-            result = <Range question_id={question.id} options={options} handler={handler}/>;
+            result = <Range question_id={question.id} options={options} handler={handler} required={question.required}/>;
             break;
 
         case QuestionType.Code:
@@ -63,7 +63,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         default:
-            result = <TextArea handler={handler}/>;
+            result = <TextArea handler={handler} required={question.required}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 

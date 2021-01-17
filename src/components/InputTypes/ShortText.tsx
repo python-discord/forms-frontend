@@ -4,7 +4,8 @@ import React, { ChangeEvent } from "react";
 import { textInputs } from "../../commonStyles";
 
 interface ShortTextProps {
-    handler: (event: ChangeEvent<HTMLInputElement>) => void
+    handler: (event: ChangeEvent<HTMLInputElement>) => void,
+    required: boolean
 }
 
 export default function ShortText(props: ShortTextProps): JSX.Element {

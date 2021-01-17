@@ -4,7 +4,8 @@ import React, { ChangeEvent } from "react";
 import { textInputs } from "../../commonStyles";
 
 interface TextAreaProps {
-    handler: (event: ChangeEvent<HTMLTextAreaElement>) => void
+    handler: (event: ChangeEvent<HTMLTextAreaElement>) => void,
+    required: boolean
 }
 
 const styles = css`
