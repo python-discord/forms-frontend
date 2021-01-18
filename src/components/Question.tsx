@@ -27,6 +27,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         } else {
             this.handler = this.normal_handler.bind(this);
         }
+        this.setPublicState("valid", true);
+        this.setPublicState("error", "");
 
         if (!skip_normal_state.includes(props.question.type)) {
             this.setPublicState("value", "");
@@ -76,6 +78,13 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
+        if (this.props.question.required && event.target.value === "") {
+            this.setPublicState("error", "Field must be filled.");
+            this.setPublicState("valid", false);
+        } else {
+            this.setPublicState("valid", true);
+        }
+
         this.setPublicState("value", event.target.value);
     }
 
