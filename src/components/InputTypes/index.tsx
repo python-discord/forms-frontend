@@ -24,6 +24,15 @@ export default function create_input({ question, public_state }: QuestionProp, h
     // eslint-disable-next-line
     // @ts-ignore
     let options: string[] = question.data["options"];
+    let valid = true;
+    if (!public_state.get("valid")) {
+        valid = false;
+    }
+    const rawError = public_state.get("error");
+    let error = "";
+    if (typeof rawError === "string") {
+        error = rawError;
+    }
 
     // Catch input types that require options but don't have any
     if ((options === undefined || typeof options !== "object") && require_options.includes(question.type)) {
@@ -34,7 +43,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler} required={question.required} />;
+            result = <TextArea handler={handler} required={question.required} valid={valid} error={error} />;
             break;
 
         case QuestionType.Checkbox:
@@ -63,7 +72,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         default:
-            result = <TextArea handler={handler} required={question.required}/>;
+            result = <TextArea handler={handler} required={question.required} valid={valid} error={error}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 
