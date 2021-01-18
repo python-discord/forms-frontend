@@ -29,7 +29,11 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             this.blurHandler = this.on_blur_textarea_handler.bind(this);
         } else {
             this.handler = this.normal_handler.bind(this);
-            this.blurHandler = this.on_blur_handler.bind(this);
+            if (props.question.type === QuestionType.Select) {
+                this.blurHandler = this.on_blur_select_handler.bind(this);
+            } else {
+                this.blurHandler = this.on_blur_handler.bind(this);
+            }
         }
         this.setPublicState("valid", true);
         this.setPublicState("error", "");
@@ -46,7 +50,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
-    blurHandler(_: FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
+    blurHandler(_: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>): void {} // eslint-disable-line
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
         let target: string;
@@ -108,6 +112,17 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     }
                     break;
             }
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    on_blur_select_handler(_: FocusEvent<HTMLDivElement>): void {
+        if (this.props.question.required && !this.props.public_state.get("value")) {
+            this.setPublicState("error", "Field must be filled.");
+            this.setPublicState("valid", false);
+        } else {
+            this.setPublicState("error", "");
+            this.setPublicState("valid", true);
         }
     }
 

@@ -6,7 +6,8 @@ import { hiddenInput } from "../../commonStyles";
 interface SelectProps {
     options: Array<string>,
     state_dict: Map<string, string | boolean | null>,
-    required: boolean
+    required: boolean,
+    handleBlur: (event: React.FocusEvent<HTMLDivElement>) => void
 }
 
 const containerStyles = css`
@@ -183,7 +184,7 @@ class Select extends React.Component<SelectProps> {
         const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
 
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref} onBlur={this.props.handleBlur}>
                 <div className="selected_container" css={mainWindowStyles}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>

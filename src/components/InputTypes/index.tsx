@@ -18,7 +18,7 @@ const require_options: Array<QuestionType> = [
     QuestionType.Range
 ];
 
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void): JSX.Element | JSX.Element[] {
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>) => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
@@ -50,7 +50,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state} required={question.required}/>;
+            result = <Select options={options} state_dict={public_state} required={question.required} handleBlur={blurHandler}/>;
             break;
 
         case QuestionType.ShortText:
