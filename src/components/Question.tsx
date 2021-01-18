@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 
 import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
+import ErrorMessage from "./ErrorMessage";
 
 const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
@@ -24,8 +26,10 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         super(props);
         if (props.question.type === QuestionType.TextArea) {
             this.handler = this.text_area_handler.bind(this);
+            this.blurHandler = this.on_blur_textarea_handler.bind(this);
         } else {
             this.handler = this.normal_handler.bind(this);
+            this.blurHandler = this.on_blur_handler.bind(this);
         }
         this.setPublicState("valid", true);
         this.setPublicState("error", "");
@@ -42,6 +46,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
+    blurHandler(_: FocusEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
         let target: string;
@@ -78,14 +83,27 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
+        // We will validate again when focusing out.
+        this.setPublicState("valid", true);
+        this.setPublicState("error", "");
+
+        this.setPublicState("value", event.target.value);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    on_blur_handler(event: FocusEvent<HTMLInputElement>): void {
+        
+    }
+
+    on_blur_textarea_handler(event: FocusEvent<HTMLTextAreaElement>): void {
         if (this.props.question.required && event.target.value === "") {
             this.setPublicState("error", "Field must be filled.");
             this.setPublicState("valid", false);
         } else {
             this.setPublicState("valid", true);
+            this.setPublicState("error", "");
         }
-
-        this.setPublicState("value", event.target.value);
     }
 
     componentDidMount(): void {
@@ -160,12 +178,22 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 margin-left: 0.2rem;
               }
             `;
+            let valid = true;
+            if (!this.props.public_state.get("valid")) {
+                valid = false;
+            }
+            const rawError = this.props.public_state.get("error");
+            let error = "";
+            if (typeof rawError === "string") {
+                error = rawError;
+            }
 
             return <div>
                 <h2 css={[selectable, requiredStarStyles]}>
                     {question.name}<span className={question.required ? "required" : ""}>*</span>
                 </h2>
-                { create_input(this.props, this.handler) }
+                { create_input(this.props, this.handler, this.blurHandler) }
+                <ErrorMessage show={!valid} message={error} />
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
         }
