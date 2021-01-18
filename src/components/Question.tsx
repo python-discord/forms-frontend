@@ -26,15 +26,11 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         super(props);
         if (props.question.type === QuestionType.TextArea) {
             this.handler = this.text_area_handler.bind(this);
-            this.blurHandler = this.on_blur_textarea_handler.bind(this);
         } else {
             this.handler = this.normal_handler.bind(this);
-            if (props.question.type === QuestionType.Select) {
-                this.blurHandler = this.on_blur_select_handler.bind(this);
-            } else {
-                this.blurHandler = this.on_blur_handler.bind(this);
-            }
         }
+        this.blurHandler = this.blurHandler.bind(this);
+
         this.setPublicState("valid", true);
         this.setPublicState("error", "");
 
@@ -50,7 +46,41 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
-    blurHandler(_: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>): void {} // eslint-disable-line
+
+    blurHandler(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>): void {
+        if (this.props.question.required) {
+            switch (this.props.question.type) {
+                case QuestionType.ShortText:
+                    if (event.target.value === "") {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    } else {
+                        this.setPublicState("valid", true);
+                        this.setPublicState("error", "");
+                    }
+                    break;
+                
+                case QuestionType.TextArea:
+                    if (event.target.value === "") {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    } else {
+                        this.setPublicState("valid", true);
+                        this.setPublicState("error", "");
+                    }
+                    break;
+                
+                case QuestionType.Select:
+                    if (!this.props.public_state.get("value")) {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    } else {
+                        this.setPublicState("error", "");
+                        this.setPublicState("valid", true);
+                    }
+            }
+        }
+    }
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
         let target: string;
@@ -98,42 +128,6 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.setPublicState("error", "");
 
         this.setPublicState("value", event.target.value);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    on_blur_handler(event: FocusEvent<HTMLInputElement>): void {
-        if (this.props.question.required) {
-            switch (event.target.type) {
-                case "text":
-                    if (event.target.value === "") {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
-                    }
-                    break;
-            }
-        }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    on_blur_select_handler(_: FocusEvent<HTMLDivElement>): void {
-        if (this.props.question.required && !this.props.public_state.get("value")) {
-            this.setPublicState("error", "Field must be filled.");
-            this.setPublicState("valid", false);
-        } else {
-            this.setPublicState("error", "");
-            this.setPublicState("valid", true);
-        }
-    }
-
-    on_blur_textarea_handler(event: FocusEvent<HTMLTextAreaElement>): void {
-        if (this.props.question.required && event.target.value === "") {
-            this.setPublicState("error", "Field must be filled.");
-            this.setPublicState("valid", false);
-        } else {
-            this.setPublicState("valid", true);
-            this.setPublicState("error", "");
-        }
     }
 
     componentDidMount(): void {
