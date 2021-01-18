@@ -80,6 +80,12 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             event.target.parentElement.classList.toggle("unselected");
             event.target.parentElement.classList.toggle("selected");
         }
+
+        switch (event.target.type) {
+            case "text":
+                this.setPublicState("valid", true);
+                break;
+        }
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
@@ -93,7 +99,16 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     on_blur_handler(event: FocusEvent<HTMLInputElement>): void {
-        
+        if (this.props.question.required) {
+            switch (event.target.type) {
+                case "text":
+                    if (event.target.value === "") {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    }
+                    break;
+            }
+        }
     }
 
     on_blur_textarea_handler(event: FocusEvent<HTMLTextAreaElement>): void {
