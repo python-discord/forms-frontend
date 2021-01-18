@@ -9,9 +9,9 @@ interface ErrorMessageProps {
 
 const styles = css`
   color: ${colors.error};
-  font-size: 20px;
+  font-size: 18px;
   line-height: 15px;
-  margin: 10px 0 0;
+  margin: 15px 0 0;
 `;
 
 export default function ErrorMessage(props: ErrorMessageProps): JSX.Element|null {
