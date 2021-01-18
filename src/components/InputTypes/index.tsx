@@ -6,7 +6,7 @@ import Select from "./Select";
 import ShortText from "./ShortText";
 import TextArea from "./TextArea";
 
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 
 import { QuestionType } from "../../api/question";
 import { QuestionProp } from "../Question";
@@ -18,7 +18,7 @@ const require_options: Array<QuestionType> = [
     QuestionType.Range
 ];
 
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void): JSX.Element | JSX.Element[] {
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
@@ -27,11 +27,6 @@ export default function create_input({ question, public_state }: QuestionProp, h
     let valid = true;
     if (!public_state.get("valid")) {
         valid = false;
-    }
-    const rawError = public_state.get("error");
-    let error = "";
-    if (typeof rawError === "string") {
-        error = rawError;
     }
 
     // Catch input types that require options but don't have any
@@ -43,7 +38,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler} required={question.required} valid={valid} error={error} />;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={blurHandler}/>;
             break;
 
         case QuestionType.Checkbox:
@@ -72,7 +67,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         default:
-            result = <TextArea handler={handler} required={question.required} valid={valid} error={error}/>;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={blurHandler}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 
