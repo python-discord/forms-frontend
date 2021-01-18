@@ -49,35 +49,33 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     blurHandler(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>): void {
         if (this.props.question.required) {
+            let invalid = false;
             switch (this.props.question.type) {
                 case QuestionType.ShortText:
                     if (event.target.value === "") {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
-                    } else {
-                        this.setPublicState("valid", true);
-                        this.setPublicState("error", "");
+                        invalid = true;
                     }
                     break;
                 
                 case QuestionType.TextArea:
                     if (event.target.value === "") {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
-                    } else {
-                        this.setPublicState("valid", true);
-                        this.setPublicState("error", "");
+                        invalid = true;
                     }
                     break;
                 
                 case QuestionType.Select:
                     if (!this.props.public_state.get("value")) {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
-                    } else {
-                        this.setPublicState("error", "");
-                        this.setPublicState("valid", true);
+                        invalid = true;
                     }
+                    break;
+            }
+
+            if (invalid) {
+                this.setPublicState("error", "Field must be filled.");
+                this.setPublicState("valid", false);
+            } else {
+                this.setPublicState("error", "");
+                this.setPublicState("valid", true);
             }
         }
     }
