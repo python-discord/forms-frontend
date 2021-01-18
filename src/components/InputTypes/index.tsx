@@ -54,7 +54,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler} required={question.required}/>;
+            result = <ShortText handler={handler} blurHandler={blurHandler} valid={valid}/>;
             break;
 
         case QuestionType.Range:
