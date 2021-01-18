@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
-import { textInputs } from "../../commonStyles";
+import { invalidStyles, textInputs } from "../../commonStyles";
 import ErrorMessage from "../ErrorMessage";
-import colors from "../../colors";
 
 interface TextAreaProps {
     handler: (event: ChangeEvent<HTMLTextAreaElement>) => void,
@@ -19,13 +18,6 @@ const styles = css`
   resize: vertical;
 
   padding: 1rem;
-`;
-
-const invalidStyles = css`
-  .invalid-box {
-    box-shadow: 0 0 10px ${colors.error};
-    border: none;
-  }
 `;
 
 export default function TextArea(props: TextAreaProps): JSX.Element {
