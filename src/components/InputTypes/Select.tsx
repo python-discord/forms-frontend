@@ -1,12 +1,12 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { hiddenInput } from "../../commonStyles";
+import { hiddenInput, invalidStyles } from "../../commonStyles";
 
 interface SelectProps {
     options: Array<string>,
     state_dict: Map<string, string | boolean | null>,
-    required: boolean,
+    valid: boolean,
     handleBlur: (event: React.FocusEvent<HTMLDivElement>) => void
 }
 
@@ -184,8 +184,8 @@ class Select extends React.Component<SelectProps> {
         const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
 
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref} onBlur={this.props.handleBlur}>
-                <div className="selected_container" css={mainWindowStyles}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} ref={container_ref} onBlur={this.props.handleBlur}>
+                <div css={mainWindowStyles} className={!this.props.valid ? "invalid-box selected_container" : "selected_container"}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>
                 </div>

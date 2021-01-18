@@ -50,7 +50,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state} required={question.required} handleBlur={blurHandler}/>;
+            result = <Select options={options} state_dict={public_state} valid={valid} handleBlur={blurHandler}/>;
             break;
 
         case QuestionType.ShortText:
