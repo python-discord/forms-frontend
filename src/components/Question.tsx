@@ -52,12 +52,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         if (this.props.question.required) {
             let invalid = false;
             switch (this.props.question.type) {
-                case QuestionType.ShortText:
-                    if (event.target.value === "") {
-                        invalid = true;
-                    }
-                    break;
-                
+                case QuestionType.ShortText:   
                 case QuestionType.TextArea:
                     if (event.target.value === "") {
                         invalid = true;
@@ -155,12 +150,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         let invalid = false;
         const options: string | string[] = this.props.question.data["options"];
         switch (this.props.question.type) {
-            case QuestionType.TextArea:
-                if (this.props.public_state.get("value") === "") {
-                    invalid = true;
-                }
-                break;
-            
+            case QuestionType.TextArea:    
             case QuestionType.ShortText:
                 if (this.props.public_state.get("value") === "") {
                     invalid = true;
@@ -168,17 +158,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 break;
             
             case QuestionType.Select:
-                if (!this.props.public_state.get("value")) {
-                    invalid = true;
-                }
-                break;
-
             case QuestionType.Range:
-                if (!this.props.public_state.get("value")) {
-                    invalid = true;
-                }
-                break;
-
             case QuestionType.Radio:
                 if (!this.props.public_state.get("value")) {
                     invalid = true;
