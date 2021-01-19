@@ -174,6 +174,7 @@ function FormPage(): JSX.Element {
     });
 
     function handleSubmit(event: SyntheticEvent) {
+        event.preventDefault();
         // Client-side required validation
         const invalidFieldIds: string[] = [];
         questionsMap.forEach((prop, id) => {
