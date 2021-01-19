@@ -53,6 +53,8 @@ const textInputs = css`
 
 const invalidStyles = css`
   .invalid-box {
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 10px ${colors.error};
     box-shadow: 0 0 10px ${colors.error};
     border: none;
   }
