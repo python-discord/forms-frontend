@@ -169,16 +169,15 @@ function FormPage(): JSX.Element {
         return <Loading/>;
     }
 
-    const questionsMap: Map<string, JSX.Element> = new Map();
-    form.questions.map((question, index) => {
-        questionsMap.set(question.id, <RenderedQuestion ref={createRef<RenderedQuestion>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>);
+    const questions = form.questions.map((question, index) => {
+        return <RenderedQuestion ref={createRef<RenderedQuestion>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
     });
 
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
         // Client-side required validation
-        const invalidFieldIds: string[] = [];
-        questionsMap.forEach((prop, id) => {
+        const invalidFieldIds: number[] = [];
+        questions.forEach((prop, i) => {
             const question: Question = prop.props.question;
             if (!question.required) {
                 return;
@@ -187,12 +186,12 @@ function FormPage(): JSX.Element {
             prop.ref.current.validateField();
             // In case when field is invalid, add this to invalid fields list.
             if (prop.props.public_state.get("valid") === false) {
-                invalidFieldIds.push(id);
+                invalidFieldIds.push(i);
             }
         });
 
         if (invalidFieldIds.length) {
-            const firstErrored = questionsMap.get(invalidFieldIds[0]);
+            const firstErrored = questions[invalidFieldIds[0]];
             if (firstErrored !== undefined) {
                 firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
             }
@@ -200,7 +199,7 @@ function FormPage(): JSX.Element {
         }
 
         const answers = {};
-        questionsMap.forEach(prop => {
+        questions.forEach(prop => {
             const question = prop.props.question;
             const options: string | string[] = prop.props.question.data["options"];
 
@@ -242,9 +241,6 @@ function FormPage(): JSX.Element {
     if (!open) {
         closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
     }
-
-    const questions: JSX.Element[] = [];
-    questionsMap.forEach(val => questions.push(val));
 
     return (
         <div>
