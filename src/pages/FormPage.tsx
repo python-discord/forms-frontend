@@ -207,8 +207,6 @@ function FormPage(): JSX.Element {
                     console.log(question.id, prop.props.public_state);
             }
         });
-
-        event.preventDefault();
     }
 
     const open: boolean = form.features.includes(FormFeatures.Open);
