@@ -13,7 +13,8 @@ import ScrollToTop from "../components/ScrollToTop";
 import { Form, FormFeatures, getForm } from "../api/forms";
 import colors from "../colors";
 import { unselectable }  from "../commonStyles";
-import { Question } from "../api/question";
+import { Question, QuestionType } from "../api/question";
+import ApiClient from "../api/client";
 
 
 interface PathParams {
@@ -173,7 +174,7 @@ function FormPage(): JSX.Element {
         questionsMap.set(question.id, <RenderedQuestion ref={createRef<RenderedQuestion>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>);
     });
 
-    function handleSubmit(event: SyntheticEvent) {
+    async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
         // Client-side required validation
         const invalidFieldIds: string[] = [];
@@ -198,15 +199,41 @@ function FormPage(): JSX.Element {
             return;
         }
 
+        const answers = {};
         questionsMap.forEach(prop => {
             const question = prop.props.question;
+            const options: string | string[] = prop.props.question.data["options"];
 
             // TODO: Parse input from each question, and submit
             switch (question.type) {
+                case QuestionType.Section:
+                    answers[question.id] = false;
+                    break;
+
+                case QuestionType.Code:
+                    answers[question.id] = "";
+                    break;
+
+                case QuestionType.Checkbox:
+                    if (typeof options !== "string") {
+                        const keys: Map<string, string> = new Map();
+                        options.forEach((val, index) => {
+                            keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
+                        });
+                        const pairs = {};
+                        keys.forEach((val, key) => {
+                            pairs[key] = !!prop.props.public_state.get(val);
+                        });
+                        answers[question.id] = pairs;
+                    }
+                    break;
+
                 default:
-                    console.log(question.id, prop.props.public_state);
+                    answers[question.id] = prop.props.public_state.get("value");
             }
         });
+
+        await ApiClient.post(`forms/submit/${id}`, {response: answers});
     }
 
     const open: boolean = form.features.includes(FormFeatures.Open);
