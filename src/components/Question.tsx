@@ -113,9 +113,27 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             event.target.parentElement.classList.toggle("selected");
         }
 
+        const options: string | string[] = this.props.question.data["options"];
         switch (event.target.type) {
             case "text":
                 this.setPublicState("valid", true);
+                break;
+            
+            case "checkbox":
+                // We need to check this here, because checkbox doesn't have onBlur
+                if (this.props.question.required && typeof options !== "string") {
+                    const keys: string[] = [];
+                    options.forEach((val, index) => {
+                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
+                    });
+                    if (keys.every(v => !this.props.public_state.get(v))) {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    } else {
+                        this.setPublicState("error", "");
+                        this.setPublicState("valid", true);
+                    }
+                }
                 break;
         }
     }
