@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState, createRef, RefObject } from "react";
 import { useParams } from "react-router";
 
 import HeaderBar from "../components/HeaderBar";
@@ -13,6 +13,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import { Form, FormFeatures, getForm } from "../api/forms";
 import colors from "../colors";
 import { unselectable }  from "../commonStyles";
+import { Question } from "../api/question";
 
 
 interface PathParams {
@@ -167,12 +168,36 @@ function FormPage(): JSX.Element {
         return <Loading/>;
     }
 
-    const questions = form.questions.map((question, index) => {
-        return <RenderedQuestion question={question} public_state={new Map()} key={index + Date.now()}/>;
+    const questionsMap: Map<string, JSX.Element> = new Map();
+    form.questions.map((question, index) => {
+        questionsMap.set(question.id, <RenderedQuestion ref={createRef<RenderedQuestion>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>);
     });
 
     function handleSubmit(event: SyntheticEvent) {
-        questions.forEach(prop => {
+        // Client-side required validation
+        const invalidFieldIds: string[] = [];
+        questionsMap.forEach((prop, id) => {
+            const question: Question = prop.props.question;
+            if (!question.required) {
+                return;
+            }
+
+            prop.ref.current.validateField();
+            // In case when field is invalid, add this to invalid fields list.
+            if (prop.props.public_state.get("valid") === false) {
+                invalidFieldIds.push(id);
+            }
+        });
+
+        if (invalidFieldIds.length) {
+            const firstErrored = questionsMap.get(invalidFieldIds[0]);
+            if (firstErrored !== undefined) {
+                firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            return;
+        }
+
+        questionsMap.forEach(prop => {
             const question = prop.props.question;
 
             // TODO: Parse input from each question, and submit
@@ -191,6 +216,9 @@ function FormPage(): JSX.Element {
     if (!open) {
         closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
     }
+
+    const questions: JSX.Element[] = [];
+    questionsMap.forEach(val => questions.push(val));
 
     return (
         <div>

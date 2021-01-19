@@ -19,6 +19,7 @@ const skip_normal_state: Array<QuestionType> = [
 export type QuestionProp = {
     question: Question,
     public_state: Map<string, string | boolean | null>,
+    scroll_ref: React.RefObject<HTMLDivElement>
 }
 
 class RenderedQuestion extends React.Component<QuestionProp> {
@@ -146,6 +147,66 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.setPublicState("value", event.target.value);
     }
 
+    validateField(): void {
+        if (!this.props.question.required) {
+            return;
+        }
+
+        let invalid = false;
+        const options: string | string[] = this.props.question.data["options"];
+        switch (this.props.question.type) {
+            case QuestionType.TextArea:
+                if (this.props.public_state.get("value") === "") {
+                    invalid = true;
+                }
+                break;
+            
+            case QuestionType.ShortText:
+                if (this.props.public_state.get("value") === "") {
+                    invalid = true;
+                }
+                break;
+            
+            case QuestionType.Select:
+                if (!this.props.public_state.get("value")) {
+                    invalid = true;
+                }
+                break;
+
+            case QuestionType.Range:
+                if (!this.props.public_state.get("value")) {
+                    invalid = true;
+                }
+                break;
+
+            case QuestionType.Radio:
+                if (!this.props.public_state.get("value")) {
+                    invalid = true;
+                }
+                break;
+
+            case QuestionType.Checkbox:
+                if (typeof options !== "string") {
+                    const keys: string[] = [];
+                    options.forEach((val, index) => {
+                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
+                    });
+                    if (keys.every(v => !this.props.public_state.get(v))) {
+                        invalid = true;
+                    }
+                }
+                break;
+        }
+
+        if (invalid) {
+            this.setPublicState("error", "Field must be filled.");
+            this.setPublicState("valid", false);
+        } else {
+            this.setPublicState("error", "");
+            this.setPublicState("valid", true);
+        }
+    }
+
     componentDidMount(): void {
         // Initialize defaults for complex and nested fields
         const options: string | string[] = this.props.question.data["options"];
@@ -228,7 +289,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 error = rawError;
             }
 
-            return <div>
+            return <div ref={this.props.scroll_ref}>
                 <h2 css={[selectable, requiredStarStyles]}>
                     {question.name}<span className={question.required ? "required" : ""}>*</span>
                 </h2>
