@@ -2,8 +2,9 @@
 import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
-import React, { SyntheticEvent, useEffect, useState, createRef, RefObject } from "react";
+import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
 import { useParams } from "react-router";
+import { PropagateLoader } from "react-spinners";
 
 import HeaderBar from "../components/HeaderBar";
 import RenderedQuestion from "../components/Question";
@@ -12,7 +13,7 @@ import ScrollToTop from "../components/ScrollToTop";
 
 import { Form, FormFeatures, getForm } from "../api/forms";
 import colors from "../colors";
-import { unselectable }  from "../commonStyles";
+import { unselectable, containerStyles, separatorStyles, returnStyles }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
 
@@ -26,65 +27,6 @@ interface NavigationProps {
 }
 
 class Navigation extends React.Component<NavigationProps> {
-    containerStyles = css`
-      margin: auto;
-      width: 50%;
-
-      text-align: center;
-      font-size: 1.5rem;
-      white-space: nowrap;
-
-      > div {
-        display: inline-block;
-        margin: 2rem auto;
-        width: 50%;
-      }
-
-      @media (max-width: 850px) {
-        width: 100%;
-
-        > div {
-          display: flex;
-          justify-content: center;
-
-          margin: 0 auto;
-        }
-      }
-
-      .return_button {
-        text-align: left;
-      }
-
-      .return_button.closed {
-        text-align: center;
-      }
-    `;
-
-    separatorStyles = css`
-      height: 0;
-      display: none;
-
-      @media (max-width: 850px) {
-        display: block;
-      }
-    `;
-
-    returnStyles = css`
-      padding: 0.5rem 2rem;
-      border-radius: 8px;
-
-      color: white;
-      text-decoration: none;
-
-      background-color: ${colors.greyple};
-      transition: background-color 300ms;
-
-      :hover {
-        background-color: ${colors.darkerGreyple};
-      }
-    }
-    `;
-
     submitStyles = css`
       text-align: right;
 
@@ -118,11 +60,11 @@ class Navigation extends React.Component<NavigationProps> {
         }
 
         return (
-            <div css={[unselectable, this.containerStyles]}>
+            <div css={[unselectable, containerStyles]}>
                 <div className={ "return_button" + (this.props.form_state ? "" : " closed") }>
-                    <Link to="/" css={this.returnStyles}>Return Home</Link>
+                    <Link to="/" css={returnStyles}>Return Home</Link>
                 </div>
-                <br css={this.separatorStyles}/>
+                <br css={separatorStyles}/>
                 { submit }
             </div>
         );
@@ -158,12 +100,41 @@ function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
 
     const [form, setForm] = useState<Form>();
+    const [sending, setSending] = useState<boolean>();
+    const [sent, setSent] = useState<boolean>();
 
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
         });
     }, []);
+
+    if (form && sent) {
+        const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif;`;
+        return (
+            <div>
+                <HeaderBar title={form.name} description={form.description}/>
+                <div css={[unselectable, containerStyles]}>
+                    <h3 css={thanksStyle}>Thanks for your response!</h3>
+                    <div className={ "return_button closed" }>
+                        <Link to="/" css={returnStyles}>Return Home</Link>
+                    </div>
+                    <br css={separatorStyles}/>
+                </div>
+            </div>
+        );
+    }
+
+    if (sending) {
+        return (
+            <div>
+                <HeaderBar title={"Submitting..."}/>
+                <div css={{display: "flex", justifyContent: "center", paddingTop: "40px"}}>
+                    <PropagateLoader color="white"/>
+                </div>
+            </div>
+        );
+    }
 
     if (!form) {
         return <Loading/>;
@@ -197,6 +168,8 @@ function FormPage(): JSX.Element {
             }
             return;
         }
+
+        setSending(true);
 
         const answers = {};
         questions.forEach(prop => {
@@ -233,6 +206,8 @@ function FormPage(): JSX.Element {
         });
 
         await ApiClient.post(`forms/submit/${id}`, {response: answers});
+        setSending(false);
+        setSent(true);
     }
 
     const open: boolean = form.features.includes(FormFeatures.Open);
