@@ -6,13 +6,15 @@ if (process.env.NODE_ENV === "development") { require("dotenv").config(); }
 
 module.exports = {
     entry: "./src/index.tsx",
-    mode: process.env.NODE_ENV,
+    mode: process.env.NODE_ENV || "production",
     output: {
         path: path.resolve(__dirname, "build"),
-        filename: "[name].[contenthash].bundle.js",
+        filename: "[name].bundle.js",
+        sourceMapFilename: "[name].bundle.js.map",
         publicPath: "/",
-        devtoolModuleFilenameTemplate: "file:///" + path.resolve(__dirname, "[resource-path]?[loaders]")
+        devtoolModuleFilenameTemplate: "[resource-path]"
     },
+    devtool: "source-map",
     optimization: {
         splitChunks: {
             chunks: 'all',
