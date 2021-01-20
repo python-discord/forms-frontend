@@ -14,6 +14,11 @@ if (process.env.NODE_ENV === "production") {
         release: `forms-frontend@${process.env.REACT_APP_SHA}`,
         environment: process.env.CONTEXT
     });
+
+    // Set tag as PR number, "main", or if unavailable, "unknown"
+    const branch = process.env.REACT_APP_BRANCH ?? "unknown";
+    const branch_name = branch.replace(RegExp("pull/|/head", "g"), "");
+    Sentry.setTag(branch_name === "main" ? "branch" : "pull_request", branch_name);
 }
 
 console.log("%c  Python Discord Forms  ", `font-size: 6em; font-family: "Hind", "Arial"; font-weight: 900; background-color: ${colors.blurple}; border-radius: 10px;`);
