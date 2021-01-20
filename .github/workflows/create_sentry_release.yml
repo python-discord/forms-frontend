@@ -13,16 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: EgorDm/gha-yarn-node-cache@v1
-      
+
       - name: Install dependencies
         run: yarn install
-      
+
+      - name: Set SHA
+        id: commit-sha
+        run: |
+          if ${{ github.ref == 'refs/heads/main' }};
+            then echo "::set-output name=sha::${{ github.sha }}";
+            else echo "::set-output name=sha::${{ github.event.pull_request.head.sha }}";
+          fi;
+
       - name: Build application
         run: yarn build
         env:
           REACT_APP_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          REACT_APP_SHA: ${{ github.sha }}
-          REACT_APP_BRANCH: main
+          COMMIT_REF: ${{ steps.commit-sha.outputs.sha }}
           REACT_APP_OAUTH2_CLIENT_ID: ${{ secrets.CLIENT_ID }}
 
       - name: Create Sentry release (production)
@@ -34,7 +41,8 @@ jobs:
           SENTRY_PROJECT: forms-frontend
         with:
           environment: production
-          sourcemaps: ./build/static/js/
+          sourcemaps: ./build/
+          version: ${{ steps.commit-sha.outputs.sha }}
           version_prefix: forms-frontend@
 
       - name: Create Sentry release (deploy preview)
@@ -46,5 +54,6 @@ jobs:
           SENTRY_PROJECT: forms-frontend
         with:
           environment: deploy-preview
-          sourcemaps: ./build/static/js/
+          sourcemaps: ./build/
+          version: ${{ steps.commit-sha.outputs.sha }}
           version_prefix: forms-frontend@
