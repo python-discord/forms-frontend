@@ -20,7 +20,7 @@
     "axios": "0.21.1",
     "copy-webpack-plugin": "7.0.0",
     "cross-env": "7.0.3",
-    "fs-extra": "9.0.1",
+    "fs-extra": "9.1.0",
     "html-webpack-plugin": "4.5.1",
     "identity-obj-proxy": "3.0.0",
     "react": "17.0.1",
