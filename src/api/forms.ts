@@ -16,7 +16,8 @@ export interface Form {
     webhook: WebHook | null,
     questions: Array<Question>,
     name: string,
-    description: string
+    description: string,
+    submitted_text: string | null
 }
 
 export interface WebHook {
