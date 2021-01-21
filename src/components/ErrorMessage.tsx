@@ -14,7 +14,7 @@ const styles = css`
   margin: 1rem 0 0;
 `;
 
-export default function ErrorMessage(props: ErrorMessageProps): JSX.Element|null {
+export default function ErrorMessage(props: ErrorMessageProps): JSX.Element | null {
     if (!props.show) {
         return null;
     }
