@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent, FocusEvent } from "react";
