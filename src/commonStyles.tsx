@@ -66,7 +66,6 @@ const containerStyles = css`
 
   text-align: center;
   font-size: 1.5rem;
-  white-space: nowrap;
 
   > div {
     display: inline-block;
@@ -109,6 +108,7 @@ const returnStyles = css`
 
   color: white;
   text-decoration: none;
+  white-space: nowrap;
 
   background-color: ${colors.greyple};
   transition: background-color 300ms;

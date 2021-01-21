@@ -29,6 +29,7 @@ interface NavigationProps {
 class Navigation extends React.Component<NavigationProps> {
     submitStyles = css`
       text-align: right;
+      white-space: nowrap;
 
       button {
         padding: 0.5rem 4rem;
@@ -110,12 +111,13 @@ function FormPage(): JSX.Element {
     }, []);
 
     if (form && sent) {
-        const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif;`;
+        const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif; margin-top: 250px;`;
+        const divStyle = css`width: 80%;`;
         return (
             <div>
                 <HeaderBar title={form.name} description={form.description}/>
-                <div css={[unselectable, containerStyles]}>
-                    <h3 css={thanksStyle}>Thanks for your response!</h3>
+                <div css={[unselectable, containerStyles, divStyle]}>
+                    <h3 css={thanksStyle}>{form.submitted_text ?? "Thanks for your response!"}</h3>
                     <div className={ "return_button closed" }>
                         <Link to="/" css={returnStyles}>Return Home</Link>
                     </div>
