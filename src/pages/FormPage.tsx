@@ -107,11 +107,12 @@ function FormPage(): JSX.Element {
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
+            setSent(true);
         });
     }, []);
 
     if (form && sent) {
-        const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif; margin-top: 250px;`;
+        const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif; margin-top: 15.5rem;`;
         const divStyle = css`width: 80%;`;
         return (
             <div>
