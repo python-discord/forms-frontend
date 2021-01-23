@@ -107,7 +107,6 @@ function FormPage(): JSX.Element {
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
-            setSent(true);
         });
     }, []);
 
