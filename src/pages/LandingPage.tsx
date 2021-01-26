@@ -17,7 +17,7 @@ function LandingPage(): JSX.Element {
         const fetchForms = async () => {
             setForms(await getForms());
         };
-        fetchForms();
+        fetchForms().then();
     }, []);
 
     if (!forms) {
