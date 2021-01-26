@@ -39,7 +39,9 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-trailing-spaces": "error",
+        "eol-last": "error"
     },
     "settings": {
         "react": {
