@@ -13,10 +13,58 @@ import ScrollToTop from "../components/ScrollToTop";
 
 import { Form, FormFeatures, getForm } from "../api/forms";
 import colors from "../colors";
-import { unselectable, containerStyles, returnStyles }  from "../commonStyles";
+import { unselectable }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
 
+const containerStyles = css`
+  margin: auto;
+  width: 50%;
+
+  text-align: center;
+  font-size: 1.5rem;
+
+  > div {
+    display: inline-block;
+    margin: 2rem auto;
+    width: 50%;
+  }
+
+  @media (max-width: 850px) {
+    width: 100%;
+
+    > div {
+      display: flex;
+      justify-content: center;
+
+      margin: 0 auto;
+    }
+  }
+
+  .return_button {
+    text-align: left;
+  }
+
+  .return_button.closed {
+    text-align: center;
+  }
+`;
+
+const returnStyles = css`
+  padding: 0.5rem 2rem;
+  border-radius: 8px;
+
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+
+  background-color: ${colors.greyple};
+  transition: background-color 300ms;
+
+  :hover {
+    background-color: ${colors.darkerGreyple};
+  }
+`;
 
 interface PathParams {
     id: string
@@ -74,7 +122,7 @@ class Navigation extends React.Component<NavigationProps> {
                 <div className={ "return_button" + (this.props.form_state ? "" : " closed") }>
                     <Link to="/" css={returnStyles}>Return Home</Link>
                 </div>
-                <br css={separatorStyles}/>
+                <br css={this.separatorStyles}/>
                 { submit }
             </div>
         );
