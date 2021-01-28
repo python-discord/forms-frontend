@@ -93,15 +93,6 @@ const containerStyles = css`
   }
 `;
 
-const separatorStyles = css`
-  height: 0;
-  display: none;
-
-  @media (max-width: 850px) {
-    display: block;
-  }
-`;
-
 const returnStyles = css`
   padding: 0.5rem 2rem;
   border-radius: 8px;
@@ -126,6 +117,5 @@ export {
     textInputs,
     invalidStyles,
     containerStyles,
-    separatorStyles,
     returnStyles
 };

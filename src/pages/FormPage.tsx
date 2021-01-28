@@ -13,7 +13,7 @@ import ScrollToTop from "../components/ScrollToTop";
 
 import { Form, FormFeatures, getForm } from "../api/forms";
 import colors from "../colors";
-import { unselectable, containerStyles, separatorStyles, returnStyles }  from "../commonStyles";
+import { unselectable, containerStyles, returnStyles }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
 
@@ -27,6 +27,15 @@ interface NavigationProps {
 }
 
 class Navigation extends React.Component<NavigationProps> {
+    separatorStyles = css`
+      height: 0;
+      display: none;
+
+      @media (max-width: 850px) {
+        display: block;
+      }
+    `;
+
     submitStyles = css`
       text-align: right;
       white-space: nowrap;
@@ -121,7 +130,6 @@ function FormPage(): JSX.Element {
                     <div className={ "return_button closed" }>
                         <Link to="/" css={returnStyles}>Return Home</Link>
                     </div>
-                    <br css={separatorStyles}/>
                 </div>
             </div>
         );
