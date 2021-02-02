@@ -1,7 +1,7 @@
 {
-  "name": "pydis_insights_frontend",
+  "name": "pydis-forms-frontend",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "11.1.4",
     "@fortawesome/fontawesome-svg-core": "1.2.34",
