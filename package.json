@@ -13,7 +13,6 @@
     "@swc/core": "1.2.47",
     "axios": "0.21.1",
     "copy-webpack-plugin": "7.0.0",
-    "cross-env": "7.0.3",
     "fs-extra": "9.1.0",
     "html-webpack-plugin": "4.5.1",
     "identity-obj-proxy": "3.0.0",
@@ -32,10 +31,10 @@
     "workbox-webpack-plugin": "6.1.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack serve",
-    "build": "cross-env REACT_APP_SHA=$COMMIT_REF REACT_APP_BRANCH=$BRANCH webpack",
-    "test": "cross-env jest",
-    "lint": "cross-env eslint --cache src/"
+    "start": "webpack serve --node-env=development",
+    "build": "webpack",
+    "test": "jest",
+    "lint": "eslint --cache src/"
   },
   "eslintConfig": {
     "extends": "react-app"
