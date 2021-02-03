@@ -13,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: EgorDm/gha-yarn-node-cache@v1
-      
+
       - name: Install dependencies
-        run: yarn install
-      
+        run: yarn install --prod
+
       - name: Build
         run: yarn build
 
@@ -26,9 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: EgorDm/gha-yarn-node-cache@v1
-      
+
       - name: Install dependencies
-        run: yarn install --dev
+        run: yarn install
 
       - name: Run tests
         run: yarn test
@@ -41,7 +41,7 @@ jobs:
       - uses: EgorDm/gha-yarn-node-cache@v1
 
       - name: Install dependencies
-        run: yarn install --dev
+        run: yarn install
 
       - name: Lint
         run: yarn run eslint --ext .ts,.tsx --quiet src/
