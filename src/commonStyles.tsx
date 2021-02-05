@@ -56,7 +56,7 @@ const invalidStyles = css`
     -webkit-appearance: none;
     -webkit-box-shadow: 0 0 0.6rem ${colors.error};
     box-shadow: 0 0 0.6rem ${colors.error};
-    border: none;
+    border-color: transparent;
   }
 `;
 
