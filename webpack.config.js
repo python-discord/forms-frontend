@@ -79,7 +79,12 @@ module.exports = {
     new CopyPlugin({
         patterns: [{
             from: 'public',
-            to: '.'
+            to: '.',
+            globOptions: {
+                ignore: [
+                    '**/index.html'
+                ]
+            }
         }, ],
     }), new webpack.EnvironmentPlugin({
         NODE_ENV: "production",
