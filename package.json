@@ -2,6 +2,7 @@
   "name": "pydis-forms-frontend",
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "dependencies": {
     "@emotion/react": "11.1.4",
     "@fortawesome/fontawesome-svg-core": "1.2.34",
