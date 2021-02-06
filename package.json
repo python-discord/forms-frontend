@@ -2,6 +2,7 @@
   "name": "pydis-forms-frontend",
   "version": "0.1.0",
   "private": false,
+  "license": "MIT",
   "dependencies": {
     "@emotion/react": "11.1.4",
     "@fortawesome/fontawesome-svg-core": "1.2.34",
@@ -21,7 +22,7 @@
     "copy-webpack-plugin": "7.0.0",
     "cross-env": "7.0.3",
     "fs-extra": "9.1.0",
-    "html-webpack-plugin": "4.5.1",
+    "html-webpack-plugin": "5.0.0",
     "identity-obj-proxy": "3.0.0",
     "react": "17.0.1",
     "react-app-polyfill": "2.0.0",
