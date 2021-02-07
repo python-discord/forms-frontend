@@ -88,9 +88,9 @@ module.exports = {
         }, ],
     }), new webpack.EnvironmentPlugin({
         NODE_ENV: "production",
-        REACT_APP_SHA: "development",
+        BRANCH: "development",
+        COMMIT_REF: "development",
         REACT_APP_SENTRY_DSN: "https://false@notreal.ingest.sentry.io/1234",
-        REACT_APP_BRANCH: "development",
         REACT_APP_OAUTH2_CLIENT_ID: "0",
         BACKEND_URL: "https://forms-api.pythondiscord.com/",
         CONTEXT: "development"
