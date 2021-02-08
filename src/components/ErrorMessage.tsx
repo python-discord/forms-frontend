@@ -14,6 +14,8 @@ export default function ErrorMessage(props: ErrorMessageProps): JSX.Element | nu
       line-height: 1.1rem;
       margin: 1rem 0 0;
       visibility: ${props.show ? "visible" : "hidden"};
+      position: absolute;
+      z-index: -1;
     `;
 
     return (
