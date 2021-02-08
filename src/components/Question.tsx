@@ -18,7 +18,9 @@ const skip_normal_state: Array<QuestionType> = [
 export type QuestionProp = {
     question: Question,
     public_state: Map<string, string | boolean | null>,
-    scroll_ref: React.RefObject<HTMLDivElement>
+    scroll_ref: React.RefObject<HTMLDivElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    focus_ref: React.RefObject<any>
 }
 
 class RenderedQuestion extends React.Component<QuestionProp> {
@@ -256,7 +258,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 <h2 css={[selectable, requiredStarStyles]}>
                     {question.name}<span className={question.required ? "required" : ""}>*</span>
                 </h2>
-                { create_input(this.props, this.handler, this.blurHandler) }
+                { create_input(this.props, this.handler, this.blurHandler, this.props.focus_ref) }
                 <ErrorMessage show={!valid} message={error} />
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;

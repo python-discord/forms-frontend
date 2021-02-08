@@ -199,7 +199,8 @@ function FormPage(): JSX.Element {
     }
 
     const questions = form.questions.map((question, index) => {
-        return <RenderedQuestion ref={createRef<RenderedQuestion>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return <RenderedQuestion ref={createRef<RenderedQuestion>()} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
     });
 
     async function handleSubmit(event: SyntheticEvent) {
@@ -223,6 +224,9 @@ function FormPage(): JSX.Element {
             const firstErrored = questions[invalidFieldIDs[0]];
             if (firstErrored && firstErrored.props.scroll_ref) {
                 firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (firstErrored.props.focus_ref && firstErrored.props.focus_ref.current) {
+                    firstErrored.props.focus_ref.current.focus({ preventScroll: true });
+                }
             }
             return;
         }

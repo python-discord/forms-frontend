@@ -6,7 +6,9 @@ import { invalidStyles, textInputs } from "../../commonStyles";
 interface TextAreaProps {
     handler: (event: ChangeEvent<HTMLTextAreaElement>) => void,
     onBlurHandler: (event: FocusEvent<HTMLTextAreaElement>) => void,
-    valid: boolean
+    valid: boolean,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    focus_ref: React.RefObject<any>
 }
 
 const styles = css`
@@ -21,7 +23,7 @@ const styles = css`
 export default function TextArea(props: TextAreaProps): JSX.Element {
     return (
         <div css={invalidStyles}>
-            <textarea css={[textInputs, styles]} placeholder="Enter Text..." onChange={props.handler} onBlur={props.onBlurHandler} className={!props.valid ? "invalid-box" : ""}/>
+            <textarea css={[textInputs, styles]} placeholder="Enter Text..." onChange={props.handler} onBlur={props.onBlurHandler} className={!props.valid ? "invalid-box" : ""} ref={props.focus_ref}/>
         </div>
     );
 }
