@@ -19,7 +19,7 @@ const require_options: Array<QuestionType> = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
@@ -39,7 +39,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler} valid={valid} onBlurHandler={blurHandler} focus_ref={focus_ref}/>;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
             break;
 
         case QuestionType.Checkbox:
@@ -51,11 +51,11 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state} valid={valid} handleBlur={blurHandler}/>;
+            result = <Select options={options} state_dict={public_state} valid={valid} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler} blurHandler={blurHandler} valid={valid} focus_ref={focus_ref}/>;
+            result = <ShortText handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref}/>;
             break;
 
         case QuestionType.Range:
@@ -68,7 +68,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         default:
-            result = <TextArea handler={handler} valid={valid} onBlurHandler={blurHandler} focus_ref={focus_ref}/>;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 
