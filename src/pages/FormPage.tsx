@@ -229,10 +229,9 @@ function FormPage(): JSX.Element {
 
         setSending(true);
 
-        const answers = {};
+        const answers: { [key: string]: unknown } = {};
         questions.forEach(prop => {
-            const question = prop.props.question;
-            const options: string | string[] = prop.props.question.data["options"];
+            const question: Question = prop.props.question;
 
             // TODO: Parse input from each question, and submit
             switch (question.type) {
@@ -240,16 +239,12 @@ function FormPage(): JSX.Element {
                     answers[question.id] = false;
                     break;
 
-                case QuestionType.Code:
-                    answers[question.id] = "";
-                    break;
-
                 case QuestionType.Checkbox: {
-                    const parsed = new Map();
+                    const parsed: { [key: string]: unknown } = {};
 
-                    prop.props.public_state.forEach((value, key) => {
+                    prop.props.public_state.forEach((value: unknown, key: string) => {
                         if (key !== "valid" && key !== "error") {
-                            answers.set(key.slice(6), value);
+                            parsed[key.slice(6)] = value;
                         }
                     });
 
@@ -257,6 +252,7 @@ function FormPage(): JSX.Element {
                     break;
                 }
 
+                case QuestionType.Code:
                 default:
                     answers[question.id] = prop.props.public_state.get("value");
             }
