@@ -197,10 +197,13 @@ function FormPage(): JSX.Element {
     if (!form) {
         return <Loading/>;
     }
-
+    
+    const refMap: Map<string, React.RefObject<RenderedQuestion>> = new Map();
     const questions = form.questions.map((question, index) => {
+        const questionRef = createRef<RenderedQuestion>();
+        refMap.set(question.id, questionRef);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return <RenderedQuestion ref={createRef<RenderedQuestion>()} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
+        return <RenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
     });
 
     async function handleSubmit(event: SyntheticEvent) {
@@ -213,7 +216,10 @@ function FormPage(): JSX.Element {
                 return;
             }
 
-            prop.ref.current.validateField();
+            const questionRef = refMap.get(question.id);
+            if (questionRef && questionRef.current) {
+                questionRef.current.validateField();
+            }
             // In case when field is invalid, add this to invalid fields list.
             if (prop.props.public_state.get("valid") === false) {
                 invalidFieldIDs.push(i);
