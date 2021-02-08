@@ -13,7 +13,7 @@ export default function ErrorMessage(props: ErrorMessageProps): JSX.Element | nu
       font-size: 1.15rem;
       line-height: 1.1rem;
       margin: 1rem 0 0;
-      visibilty: ${props.show ? "visible" : "hidden"}
+      visibility: ${props.show ? "visible" : "hidden"};
     `;
 
     return (
