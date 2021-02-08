@@ -5,7 +5,7 @@ import { textInputs, invalidStyles } from "../../commonStyles";
 
 interface ShortTextProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void,
-    blurHandler: (event: FocusEvent<HTMLInputElement>) => void,
+    onBlurHandler: (event: FocusEvent<HTMLInputElement>) => void,
     valid: boolean,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     focus_ref: React.RefObject<any>
@@ -14,7 +14,7 @@ interface ShortTextProps {
 export default function ShortText(props: ShortTextProps): JSX.Element {
     return (
         <div css={invalidStyles}>
-            <input type="text" css={textInputs} placeholder="Enter Text..." onChange={props.handler} onBlur={props.blurHandler} className={!props.valid ? "invalid-box" : ""} ref={props.focus_ref}/>
+            <input type="text" css={textInputs} placeholder="Enter Text..." onChange={props.handler} onBlur={props.onBlurHandler} className={!props.valid ? "invalid-box" : ""} ref={props.focus_ref}/>
         </div>
     );
 }
