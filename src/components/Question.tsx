@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { ChangeEvent, FocusEvent } from "react";
+import React, { ChangeEvent } from "react";
 
 import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
@@ -47,25 +47,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
 
-    blurHandler(event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>): void {
+    blurHandler(): void {
         if (this.props.question.required) {
-            let invalid = false;
-            switch (this.props.question.type) {
-                case QuestionType.ShortText:   
-                case QuestionType.TextArea:
-                    if (event.target.value === "") {
-                        invalid = true;
-                    }
-                    break;
-                
-                case QuestionType.Select:
-                    if (!this.props.public_state.get("value")) {
-                        invalid = true;
-                    }
-                    break;
-            }
-
-            if (invalid) {
+            if (!this.props.public_state.get("value")) {
                 this.setPublicState("error", "Field must be filled.");
                 this.setPublicState("valid", false);
             } else {

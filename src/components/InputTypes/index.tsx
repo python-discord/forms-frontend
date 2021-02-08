@@ -6,7 +6,7 @@ import Select from "./Select";
 import ShortText from "./ShortText";
 import TextArea from "./TextArea";
 
-import React, { ChangeEvent, FocusEvent } from "react";
+import React, { ChangeEvent } from "react";
 
 import { QuestionType } from "../../api/question";
 import { QuestionProp } from "../Question";
@@ -18,7 +18,7 @@ const require_options: Array<QuestionType> = [
     QuestionType.Range
 ];
 
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLDivElement>) => void): JSX.Element | JSX.Element[] {
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, blurHandler: () => void): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
