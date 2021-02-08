@@ -244,19 +244,18 @@ function FormPage(): JSX.Element {
                     answers[question.id] = "";
                     break;
 
-                case QuestionType.Checkbox:
-                    if (typeof options !== "string") {
-                        const keys: Map<string, string> = new Map();
-                        options.forEach((val, index) => {
-                            keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
-                        });
-                        const pairs = {};
-                        keys.forEach((val, key) => {
-                            pairs[key] = !!prop.props.public_state.get(val);
-                        });
-                        answers[question.id] = pairs;
-                    }
+                case QuestionType.Checkbox: {
+                    const parsed = new Map();
+
+                    prop.props.public_state.forEach((value, key) => {
+                        if (key !== "valid" && key !== "error") {
+                            answers.set(key.slice(6), value);
+                        }
+                    });
+
+                    answers[question.id] = parsed;
                     break;
+                }
 
                 default:
                     answers[question.id] = prop.props.public_state.get("value");
