@@ -205,7 +205,7 @@ function FormPage(): JSX.Element {
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
         // Client-side required validation
-        const invalidFieldIds: number[] = [];
+        const invalidFieldIDs: number[] = [];
         questions.forEach((prop, i) => {
             const question: Question = prop.props.question;
             if (!question.required) {
@@ -215,12 +215,12 @@ function FormPage(): JSX.Element {
             prop.ref.current.validateField();
             // In case when field is invalid, add this to invalid fields list.
             if (prop.props.public_state.get("valid") === false) {
-                invalidFieldIds.push(i);
+                invalidFieldIDs.push(i);
             }
         });
 
-        if (invalidFieldIds.length) {
-            const firstErrored = questions[invalidFieldIds[0]];
+        if (invalidFieldIDs.length) {
+            const firstErrored = questions[invalidFieldIDs[0]];
             if (firstErrored && firstErrored.props.scroll_ref) {
                 firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
             }
