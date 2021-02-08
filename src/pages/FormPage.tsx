@@ -221,7 +221,7 @@ function FormPage(): JSX.Element {
 
         if (invalidFieldIds.length) {
             const firstErrored = questions[invalidFieldIds[0]];
-            if (firstErrored !== undefined) {
+            if (firstErrored) {
                 firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
             }
             return;
