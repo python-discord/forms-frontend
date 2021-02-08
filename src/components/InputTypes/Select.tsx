@@ -7,7 +7,7 @@ interface SelectProps {
     options: Array<string>,
     state_dict: Map<string, string | boolean | null>,
     valid: boolean,
-    handleBlur: (event: React.FocusEvent<HTMLDivElement>) => void
+    onBlurHandler: (event: React.FocusEvent<HTMLDivElement>) => void
 }
 
 const containerStyles = css`
@@ -184,7 +184,7 @@ class Select extends React.Component<SelectProps> {
         const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
 
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} ref={container_ref} onBlur={this.props.handleBlur}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} ref={container_ref} onBlur={this.props.onBlurHandler}>
                 <div css={mainWindowStyles} className={!this.props.valid ? "invalid-box selected_container" : "selected_container"}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>
