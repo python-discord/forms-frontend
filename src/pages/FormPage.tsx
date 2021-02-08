@@ -170,6 +170,7 @@ function FormPage(): JSX.Element {
     const questions = form.questions.map((question, index) => {
         return <RenderedQuestion question={question} public_state={new Map()} key={index + Date.now()}/>;
     });
+    let foo;
 
     function handleSubmit(event: SyntheticEvent) {
         questions.forEach(prop => {
@@ -195,7 +196,7 @@ function FormPage(): JSX.Element {
     return (
         <div>
             <HeaderBar title={form.name} description={form.description}/>
-
+    
             <div>
                 <form id="form" onSubmit={handleSubmit} css={[formStyles, unselectable]}>
                     { closed_header }
