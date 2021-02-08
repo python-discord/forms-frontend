@@ -99,7 +99,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             case "text":
                 this.setPublicState("valid", true);
                 break;
-            
+
             case "checkbox":
                 // We need to check this here, because checkbox doesn't have onBlur
                 if (this.props.question.required && typeof options !== "string") {
@@ -135,13 +135,13 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         let invalid = false;
         const options: string | string[] = this.props.question.data["options"];
         switch (this.props.question.type) {
-            case QuestionType.TextArea:    
+            case QuestionType.TextArea:
             case QuestionType.ShortText:
                 if (this.props.public_state.get("value") === "") {
                     invalid = true;
                 }
                 break;
-            
+
             case QuestionType.Select:
             case QuestionType.Range:
             case QuestionType.Radio:

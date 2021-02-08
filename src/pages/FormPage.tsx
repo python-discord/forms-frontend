@@ -197,7 +197,7 @@ function FormPage(): JSX.Element {
     if (!form) {
         return <Loading/>;
     }
-    
+
     const refMap: Map<string, React.RefObject<RenderedQuestion>> = new Map();
     const questions = form.questions.map((question, index) => {
         const questionRef = createRef<RenderedQuestion>();
