@@ -35,7 +35,8 @@
     "start": "webpack serve --node-env=development",
     "build": "webpack",
     "test": "jest",
-    "lint": "eslint --cache src/"
+    "lint": "eslint --cache src/",
+    "pre-commit": "husky install .config/husky"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -76,10 +77,5 @@
     "jest-svg-transformer": "1.0.0",
     "jest-watch-typeahead": "0.6.1",
     "webpack-dev-server": "3.11.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
   }
 }
