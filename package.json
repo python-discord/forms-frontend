@@ -79,7 +79,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint --quiet"
+      "pre-commit": "yarn lint"
     }
   }
 }
