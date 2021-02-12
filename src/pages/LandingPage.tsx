@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import HeaderBar from "../components/HeaderBar";
 import FormListing from "../components/FormListing";
-import OAuth2Button from "../components/OAuth2Button";
 import Loading from "../components/Loading";
 import ScrollToTop from "../components/ScrollToTop";
 
@@ -28,16 +27,8 @@ function LandingPage(): JSX.Element {
         <HeaderBar/>
         <ScrollToTop/>
         <div>
-            <div css={css`
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-      `}>
+            <div css={css`display: flex; align-items: center; flex-direction: column;`}>
                 <h1>Available Forms</h1>
-
-                <OAuth2Button/>
-
-
                 {forms.map(form => (
                     <FormListing key={form.id} form={form}/>
                 ))}
