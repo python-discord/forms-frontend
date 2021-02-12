@@ -190,19 +190,21 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
  * @param disableFunction An optional function that can disable a component while processing.
  * @param path The site path to save the token under.
  */
-export default function authorize(scopes?: OAuthScopes[], disableFunction?: (newState: boolean) => void, path = "/"): void {
+export default async function authorize(scopes?: OAuthScopes[], disableFunction?: (newState: boolean) => void, path = "/"): Promise<void> {
     if (!checkScopes(scopes, path)) {
         const cookies = new Cookies;
         cookies.remove(CookieNames.Token + path);
         cookies.remove(CookieNames.Scopes + path);
 
-        getDiscordCode(scopes || [], disableFunction).then(discord_response =>{
-            requestBackendJWT(discord_response.code).then(backend_response => {
+        await getDiscordCode(scopes || [], disableFunction).then(async discord_response =>{
+            await requestBackendJWT(discord_response.code).then(backend_response => {
                 const options: CookieSetOptions = {sameSite: "strict", expires: backend_response.Expiry, secure: PRODUCTION, path: path};
 
                 cookies.set(CookieNames.Token + path, backend_response.JWT, options);
                 cookies.set(CookieNames.Scopes + path, discord_response.cleanedScopes, options);
             });
         });
+
+        return new Promise<void>(resolve => resolve());
     }
 }
