@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import colors from "./colors";
 
 const selectable = css`
   -moz-user-select: text;
@@ -50,6 +51,36 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
+const submitStyles = css`
+  text-align: right;
+
+  button:disabled {
+    background-color: ${colors.greyple};
+    cursor: default;
+  }
+
+  button {
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+    font: inherit;
+
+    background-color: ${colors.blurple};
+    transition: background-color 300ms;
+  }
+  
+  button[type="submit"] {
+    padding: 0.55rem 4.25rem;
+  }
+
+  button:enabled:hover {
+    background-color: ${colors.darkerBlurple};
+  }
+`;
+
 
 export {
     selectable,
@@ -57,4 +88,5 @@ export {
     hiddenInput,
     multiSelectInput,
     textInputs,
+    submitStyles
 };

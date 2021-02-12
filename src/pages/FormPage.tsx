@@ -9,10 +9,12 @@ import HeaderBar from "../components/HeaderBar";
 import RenderedQuestion from "../components/Question";
 import Loading from "../components/Loading";
 import ScrollToTop from "../components/ScrollToTop";
+import OAuth2Button  from "../components/OAuth2Button";
 
 import { Form, FormFeatures, getForm } from "../api/forms";
+import { OAuthScopes, checkScopes } from "../api/auth";
 import colors from "../colors";
-import { unselectable }  from "../commonStyles";
+import { submitStyles, unselectable } from "../commonStyles";
 
 
 interface PathParams {
@@ -20,10 +22,13 @@ interface PathParams {
 }
 
 interface NavigationProps {
-    form_state: boolean  // Whether the form is open or not
+    form_state: boolean,  // Whether the form is open or not
+    scopes: OAuthScopes[]
 }
 
 class Navigation extends React.Component<NavigationProps> {
+    PAGE_PATH = "/form"
+
     containerStyles = css`
       margin: auto;
       width: 50%;
@@ -38,7 +43,7 @@ class Navigation extends React.Component<NavigationProps> {
         width: 50%;
       }
 
-      @media (max-width: 850px) {
+      @media (max-width: 870px) {
         width: 100%;
 
         > div {
@@ -62,13 +67,13 @@ class Navigation extends React.Component<NavigationProps> {
       height: 0;
       display: none;
 
-      @media (max-width: 850px) {
+      @media (max-width: 870px) {
         display: block;
       }
     `;
 
     returnStyles = css`
-      padding: 0.5rem 2rem;
+      padding: 0.55rem 2.2rem;
       border-radius: 8px;
 
       color: white;
@@ -83,36 +88,21 @@ class Navigation extends React.Component<NavigationProps> {
     }
     `;
 
-    submitStyles = css`
-      text-align: right;
-
-      button {
-        padding: 0.5rem 4rem;
-        cursor: pointer;
-
-        border: none;
-        border-radius: 8px;
-
-        color: white;
-        font: inherit;
-
-        background-color: ${colors.blurple};
-        transition: background-color 300ms;
-      }
-
-      button:hover {
-        background-color: ${colors.darkerBlurple};
-      }
-    `;
+    constructor(props: NavigationProps) {
+        super(props);
+        this.setState({"logged_in": false});
+    }
 
     render(): JSX.Element {
         let submit = null;
+
         if (this.props.form_state) {
-            submit = (
-                <div css={this.submitStyles}>
-                    <button form="form" type="submit">Submit</button>
-                </div>
-            );
+            if (this.props.scopes.includes(OAuthScopes.Identify) && !checkScopes(this.props.scopes, this.PAGE_PATH)) {
+                // Render OAuth button if login is required, and the scopes needed are not available
+                submit = <OAuth2Button path={this.PAGE_PATH} scopes={this.props.scopes} rerender={() => this.setState({"logged_in": true})}/>;
+            } else {
+                submit = <button form="form" type="submit">Submit</button>;
+            }
         }
 
         return (
@@ -121,7 +111,7 @@ class Navigation extends React.Component<NavigationProps> {
                     <Link to="/" css={this.returnStyles}>Return Home</Link>
                 </div>
                 <br css={this.separatorStyles}/>
-                { submit }
+                <div css={submitStyles}>{ submit }</div>
             </div>
         );
     }
@@ -146,7 +136,7 @@ const closedHeaderStyles = css`
   font-size: 1.5rem;
 
   background-color: ${colors.error};
-  
+
   @media (max-width: 500px) {
     padding: 1rem 1.5rem;
   }
@@ -186,6 +176,13 @@ function FormPage(): JSX.Element {
     }
 
     const open: boolean = form.features.includes(FormFeatures.Open);
+    const require_auth: boolean = form.features.includes(FormFeatures.RequiresLogin);
+
+    const scopes = [];
+    if (require_auth) {
+        scopes.push(OAuthScopes.Identify);
+        if (form.features.includes(FormFeatures.CollectEmail)) { scopes.push(OAuthScopes.Email); }
+    }
 
     let closed_header = null;
     if (!open) {
@@ -201,7 +198,7 @@ function FormPage(): JSX.Element {
                     { closed_header }
                     { questions }
                 </form>
-                <Navigation form_state={open}/>
+                <Navigation form_state={open} scopes={scopes}/>
             </div>
 
             <div css={css`margin-bottom: 10rem`}/>
