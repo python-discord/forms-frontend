@@ -115,6 +115,7 @@ class Navigation extends React.Component<NavigationProps> {
             );
         }
 
+        throw Error("<3");
         return (
             <div css={[unselectable, this.containerStyles]}>
                 <div className={ "return_button" + (this.props.form_state ? "" : " closed") }>
