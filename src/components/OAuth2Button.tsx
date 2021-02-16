@@ -36,7 +36,11 @@ const errorStyles =  css`
   text-align: center;
   white-space: normal;
   box-sizing: border-box;
-  padding: 0 5rem;
+  
+  padding: 0 15rem;
+  @media (max-width: 750px) {
+    padding: 0 5rem;
+  }
   
   color: red;
   margin-top: 2.5rem;
@@ -52,7 +56,7 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
         }
 
         // Propagate to sentry
-        const error = reason.Error.toJSON();
+        const error = reason.Error;
         error["Custom Error Message"] = reason.Message;
 
         // Filter Discord code
