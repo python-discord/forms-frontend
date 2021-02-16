@@ -27,6 +27,19 @@ enum CookieNames {
     Token = "FormBackendToken"
 }
 
+export interface APIErrors {
+    Message: APIErrorMessages,
+    Error: any, /* eslint-disable-line @typescript-eslint/no-explicit-any */
+}
+
+export enum APIErrorMessages {
+    BackendValidation = "Backend could not authorize with Discord. Please contact the forms team.",
+    BackendValidationDev = "Backend could not authorize with Discord, possibly due to being on a preview branch. Please contact the forms team.",
+    BackendUnresponsive = "Unable to reach the backend, please retry, or contact the forms team.",
+    BadResponse = "The server returned a bad response, please contact the forms team.",
+    Unknown = "An unknown error occurred, please contact the forms team."
+}
+
 /**
  * [Reference]{@link https://discord.com/developers/docs/topics/oauth2#shared-resources-oauth2-scopes}
  *
@@ -100,16 +113,11 @@ export function checkScopes(scopes?: OAuthScopes[], path = ""): boolean {
 /***
  * Request authorization code from the discord api with the provided scopes.
  *
- * If disable function is passed, the component will be disabled while the login is ongoing.
- *
  * @returns {code, cleanedScopes} The discord authorization code and the scopes the code is granted for.
  * @throws {Error} Indicates that an integrity check failed.
  */
-export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (newState: boolean) => void): Promise<{code: string, cleanedScopes: OAuthScopes[]}> {
+export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: string, cleanedScopes: OAuthScopes[]}> {
     const cleanedScopes = ensureMinimumScopes(scopes, OAuthScopes.Identify);
-    const disable = (newState: boolean) => { if (disableFunction) disableFunction(newState); };
-
-    disable(true);
 
     // Generate a new user state
     const state = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -128,7 +136,6 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (n
     const interval = setInterval(() => {
         if (windowRef?.closed) {
             clearInterval(interval);
-            disable(false);
         }
     }, 500);
 
@@ -144,7 +151,6 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (n
                 windowRef?.close();
 
                 clearInterval(interval);
-                disable(false);
 
                 // State integrity check
                 if (message.data.state !== state.toString()) {
@@ -165,19 +171,47 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (n
 /**
  * Sends a discord code from a given path to the backend,
  * and returns the resultant JWT and expiry date.
+ *
+ * @throws { APIErrors } On error, the APIErrors.Message is set, and an APIErrors object is thrown.
  */
 export async function requestBackendJWT(code: string): Promise<JWTResponse> {
-    const result = await APIClient.post("/auth/authorize", {token: code})
-        .catch(reason => { throw reason; }) // TODO: Show some sort of authentication failure here
-        .then((response: AxiosResponse<AuthResult>) => {
-            const _expiry = new Date();
-            _expiry.setTime(Date.parse(response.data.expiry));
+    const reason: APIErrors = { Message: APIErrorMessages.Unknown, Error: null };
+    let result;
 
-            return {JWT: response.data.token, Expiry: _expiry};
-        });
+    try {
+        result = await APIClient.post("/auth/authorize", {token: code})
+            .catch(error => {
+                reason.Error = error;
+
+                if (error.response) {
+                    // API Responded with a non-2xx Response
+                    if (error.response.status === 400) {
+                        reason.Message = process.env.CONTEXT === "deploy-preview" ? APIErrorMessages.BackendValidationDev : APIErrorMessages.BackendValidation;
+                    }
+                } else if (error.request) {
+                    // API did not respond
+                    reason.Message = APIErrorMessages.BackendUnresponsive;
+                }
+
+                throw error;
+
+            }).then((response: AxiosResponse<AuthResult>) => {
+                const expiry = new Date();
+                expiry.setTime(Date.parse(response.data.expiry));
+
+                return {JWT: response.data.token, Expiry: expiry};
+            });
+    } catch (e) {
+        if (reason.Error === null) {
+            reason.Error = e;
+        }
+
+        throw reason;
+    }
 
     if (!result.JWT || !result.Expiry) {
-        throw Error("Could not fetch OAuth code.");
+        reason.Message = APIErrorMessages.BadResponse;
+        throw reason;
     }
 
     return result;
@@ -189,20 +223,25 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
  * @param scopes The scopes that should be authorized for the application.
  * @param disableFunction An optional function that can disable a component while processing.
  * @param path The site path to save the token under.
+ *
+ * @throws { APIErrors } See documentation on { requestBackendJWT }.
  */
-export default async function authorize(scopes?: OAuthScopes[], disableFunction?: (newState: boolean) => void, path = "/"): Promise<void> {
+export default async function authorize(scopes: OAuthScopes[] = [], disableFunction?: (newState: boolean) => void, path = "/"): Promise<void> {
     if (!checkScopes(scopes, path)) {
         const cookies = new Cookies;
         cookies.remove(CookieNames.Token + path);
         cookies.remove(CookieNames.Scopes + path);
 
-        await getDiscordCode(scopes || [], disableFunction).then(async discord_response =>{
+        if (disableFunction) { disableFunction(true); }
+        await getDiscordCode(scopes).then(async discord_response =>{
             await requestBackendJWT(discord_response.code).then(backend_response => {
                 const options: CookieSetOptions = {sameSite: "strict", expires: backend_response.Expiry, secure: PRODUCTION, path: path};
 
                 cookies.set(CookieNames.Token + path, backend_response.JWT, options);
                 cookies.set(CookieNames.Scopes + path, discord_response.cleanedScopes, options);
             });
+        }).finally(() => {
+            if (disableFunction) { disableFunction(false); }
         });
 
         return new Promise<void>(resolve => resolve());
