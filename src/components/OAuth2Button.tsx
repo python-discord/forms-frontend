@@ -56,20 +56,8 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
         }
 
         // Propagate to sentry
-        const error = reason.Error;
-        error["Custom Error Message"] = reason.Message;
-
-        // Filter Discord code
-        if (error?.config?.data) {
-            const data = JSON.parse(error.config.data);
-            if (data["token"]) {
-                data["token"] = "[FILTERED]";
-            }
-
-            error.config.data = data;
-        }
-
-        throw error;
+        reason.Error.stack = new Error(`OAuth: ${reason.Message}`).stack + "\n" + reason.Error.stack;
+        throw reason.Error;
     });
 
     if (checkScopes(props.scopes, props.path)) {
