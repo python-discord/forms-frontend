@@ -17,55 +17,6 @@ import { unselectable }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
 
-const containerStyles = css`
-  margin: auto;
-  width: 50%;
-
-  text-align: center;
-  font-size: 1.5rem;
-
-  > div {
-    display: inline-block;
-    margin: 2rem auto;
-    width: 50%;
-  }
-
-  @media (max-width: 850px) {
-    width: 100%;
-
-    > div {
-      display: flex;
-      justify-content: center;
-
-      margin: 0 auto;
-    }
-  }
-
-  .return_button {
-    text-align: left;
-  }
-
-  .return_button.closed {
-    text-align: center;
-  }
-`;
-
-const returnStyles = css`
-  padding: 0.5rem 2rem;
-  border-radius: 8px;
-
-  color: white;
-  text-decoration: none;
-  white-space: nowrap;
-
-  background-color: ${colors.greyple};
-  transition: background-color 300ms;
-
-  :hover {
-    background-color: ${colors.darkerGreyple};
-  }
-`;
-
 interface PathParams {
     id: string
 }
@@ -75,12 +26,61 @@ interface NavigationProps {
 }
 
 class Navigation extends React.Component<NavigationProps> {
+    static containerStyles = css`
+      margin: auto;
+      width: 50%;
+
+      text-align: center;
+      font-size: 1.5rem;
+
+      > div {
+        display: inline-block;
+        margin: 2rem auto;
+        width: 50%;
+      }
+
+      @media (max-width: 850px) {
+        width: 100%;
+
+        > div {
+          display: flex;
+          justify-content: center;
+
+          margin: 0 auto;
+        }
+      }
+
+      .return_button {
+        text-align: left;
+      }
+
+      .return_button.closed {
+        text-align: center;
+      }
+    `;
+
     separatorStyles = css`
       height: 0;
       display: none;
 
       @media (max-width: 850px) {
         display: block;
+      }
+    `;
+
+    static returnStyles = css`
+      padding: 0.5rem 2rem;
+      border-radius: 8px;
+
+      color: white;
+      text-decoration: none;
+      white-space: nowrap;
+
+      background-color: ${colors.greyple};
+      transition: background-color 300ms;
+
+      :hover {
+        background-color: ${colors.darkerGreyple};
       }
     `;
 
@@ -118,9 +118,9 @@ class Navigation extends React.Component<NavigationProps> {
         }
 
         return (
-            <div css={[unselectable, containerStyles]}>
+            <div css={[unselectable, Navigation.containerStyles]}>
                 <div className={ "return_button" + (this.props.form_state ? "" : " closed") }>
-                    <Link to="/" css={returnStyles}>Return Home</Link>
+                    <Link to="/" css={Navigation.returnStyles}>Return Home</Link>
                 </div>
                 <br css={this.separatorStyles}/>
                 { submit }
@@ -173,10 +173,10 @@ function FormPage(): JSX.Element {
         return (
             <div>
                 <HeaderBar title={form.name} description={form.description}/>
-                <div css={[unselectable, containerStyles, divStyle]}>
+                <div css={[unselectable, Navigation.containerStyles, divStyle]}>
                     <h3 css={thanksStyle}>{form.submitted_text ?? "Thanks for your response!"}</h3>
                     <div className={ "return_button closed" }>
-                        <Link to="/" css={returnStyles}>Return Home</Link>
+                        <Link to="/" css={Navigation.returnStyles}>Return Home</Link>
                     </div>
                 </div>
             </div>
