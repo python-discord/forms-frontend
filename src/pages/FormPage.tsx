@@ -229,6 +229,11 @@ function FormPage(): JSX.Element {
         if (invalidFieldIDs.length) {
             const firstErrored = questions[invalidFieldIDs[0]];
             if (firstErrored && firstErrored.props.scroll_ref) {
+                // If any element is already focused, unfocus it to avoid not scrolling behavior.
+                if (document.activeElement && document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                }
+
                 firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
                 if (firstErrored.props.focus_ref && firstErrored.props.focus_ref.current) {
                     firstErrored.props.focus_ref.current.focus({ preventScroll: true });
