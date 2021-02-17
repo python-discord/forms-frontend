@@ -27,8 +27,6 @@ interface NavigationProps {
 }
 
 class Navigation extends React.Component<NavigationProps> {
-    PAGE_PATH = "/form"
-
     containerStyles = css`
       margin: auto;
       width: 50%;
@@ -97,9 +95,9 @@ class Navigation extends React.Component<NavigationProps> {
         let submit = null;
 
         if (this.props.form_state) {
-            if (this.props.scopes.includes(OAuthScopes.Identify) && !checkScopes(this.props.scopes, this.PAGE_PATH)) {
+            if (this.props.scopes.includes(OAuthScopes.Identify) && !checkScopes(this.props.scopes)) {
                 // Render OAuth button if login is required, and the scopes needed are not available
-                submit = <OAuth2Button path={this.PAGE_PATH} scopes={this.props.scopes} rerender={() => this.setState({"logged_in": true})}/>;
+                submit = <OAuth2Button scopes={this.props.scopes} rerender={() => this.setState({"logged_in": true})}/>;
             } else {
                 submit = <button form="form" type="submit">Submit</button>;
             }

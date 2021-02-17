@@ -91,11 +91,11 @@ function ensureMinimumScopes(scopes: unknown, expected: OAuthScopes | OAuthScope
 /**
  * Return true if the program has the requested scopes or higher.
  */
-export function checkScopes(scopes?: OAuthScopes[], path = ""): boolean {
+export function checkScopes(scopes?: OAuthScopes[]): boolean {
     const cleanedScopes = ensureMinimumScopes(scopes, OAuthScopes.Identify);
 
     // Get Active Scopes And Ensure Type
-    const cookies = new Cookies().get(CookieNames.Scopes + path);
+    const cookies = new Cookies().get(CookieNames.Scopes);
     if (!cookies || !Array.isArray(cookies)) {
         return false;
     }
@@ -169,7 +169,7 @@ export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: stri
 }
 
 /**
- * Sends a discord code from a given path to the backend,
+ * Sends a discord code to the backend,
  * and returns the resultant JWT and expiry date.
  *
  * @throws { APIErrors } On error, the APIErrors.Message is set, and an APIErrors object is thrown.
@@ -218,27 +218,26 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
 }
 
 /**
- * Handle a full authorization flow. Sets a token for the specified path with the JWT and scopes.
+ * Handle a full authorization flow. Sets a cookie with the JWT and scopes.
  *
  * @param scopes The scopes that should be authorized for the application.
  * @param disableFunction An optional function that can disable a component while processing.
- * @param path The site path to save the token under.
  *
  * @throws { APIErrors } See documentation on { requestBackendJWT }.
  */
-export default async function authorize(scopes: OAuthScopes[] = [], disableFunction?: (newState: boolean) => void, path = "/"): Promise<void> {
-    if (!checkScopes(scopes, path)) {
+export default async function authorize(scopes: OAuthScopes[] = [], disableFunction?: (newState: boolean) => void): Promise<void> {
+    if (!checkScopes(scopes)) {
         const cookies = new Cookies;
-        cookies.remove(CookieNames.Token + path);
-        cookies.remove(CookieNames.Scopes + path);
+        cookies.remove(CookieNames.Token);
+        cookies.remove(CookieNames.Scopes);
 
         if (disableFunction) { disableFunction(true); }
         await getDiscordCode(scopes).then(async discord_response =>{
             await requestBackendJWT(discord_response.code).then(backend_response => {
-                const options: CookieSetOptions = {sameSite: "strict", expires: backend_response.Expiry, secure: PRODUCTION, path: path};
+                const options: CookieSetOptions = {sameSite: "strict", expires: backend_response.Expiry, secure: PRODUCTION};
 
-                cookies.set(CookieNames.Token + path, backend_response.JWT, options);
-                cookies.set(CookieNames.Scopes + path, discord_response.cleanedScopes, options);
+                cookies.set(CookieNames.Token, backend_response.JWT, options);
+                cookies.set(CookieNames.Scopes, discord_response.cleanedScopes, options);
             });
         }).finally(() => {
             if (disableFunction) { disableFunction(false); }

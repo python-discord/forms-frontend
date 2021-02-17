@@ -11,7 +11,6 @@ import { selectable } from "../commonStyles";
 
 interface OAuth2ButtonProps {
     scopes?: OAuthScopes[],
-    path?: string,
     rerender: () => void
 }
 
@@ -47,7 +46,7 @@ const errorStyles =  css`
 `;
 
 async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTMLDivElement>, setDisabled: (newState: boolean) => void) {
-    await authenticate(props.scopes, setDisabled, props.path).catch((reason: APIErrors) => {
+    await authenticate(props.scopes, setDisabled).catch((reason: APIErrors) => {
         // Display Error Message
         if (errorDialog.current) {
             errorDialog.current.style.visibility = "visible";
@@ -60,7 +59,7 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
         throw reason.Error;
     });
 
-    if (checkScopes(props.scopes, props.path)) {
+    if (checkScopes(props.scopes)) {
         props.rerender();
     }
 }
