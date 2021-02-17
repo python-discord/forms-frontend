@@ -47,7 +47,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Radio:
-            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index}/>);
+            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index} onBlurHandler={onBlurHandler}/>);
             break;
 
         case QuestionType.Select:
@@ -59,7 +59,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Range:
-            result = <Range question_id={question.id} options={options} handler={handler} required={question.required}/>;
+            result = <Range question_id={question.id} options={options} handler={handler} required={question.required} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.Code:
