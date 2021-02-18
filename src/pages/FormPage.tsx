@@ -247,6 +247,7 @@ function FormPage(): JSX.Element {
         const answers: { [key: string]: unknown } = {};
         questions.forEach(prop => {
             const question: Question = prop.props.question;
+            const options: string | string[] = question.data["options"];
 
             // TODO: Parse input from each question, and submit
             switch (question.type) {
@@ -255,15 +256,17 @@ function FormPage(): JSX.Element {
                     break;
 
                 case QuestionType.Checkbox: {
-                    const parsed: { [key: string]: unknown } = {};
-
-                    prop.props.public_state.forEach((value: unknown, key: string) => {
-                        if (key !== "valid" && key !== "error") {
-                            parsed[key.slice(6)] = value;
-                        }
-                    });
-
-                    answers[question.id] = parsed;
+                    if (typeof options !== "string") {
+                        const keys: Map<string, string> = new Map();
+                        options.forEach((val: string, index) => {
+                            keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
+                        });
+                        const pairs: { [key: string]: boolean } = { };
+                        keys.forEach((val, key) => {
+                            pairs[key] = !!prop.props.public_state.get(val);
+                        });
+                        answers[question.id] = pairs;
+                    }
                     break;
                 }
 
