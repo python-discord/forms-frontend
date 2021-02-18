@@ -178,9 +178,11 @@ class Select extends React.Component<SelectProps> {
     }
 
     focusOption(): void {
-        this.props.state_dict.set("value", "temporary");
-        this.props.onBlurHandler();
-        this.props.state_dict.set("value", null);
+        if (!this.props.state_dict.get("value")) {
+            this.props.state_dict.set("value", "temporary");
+            this.props.onBlurHandler();
+            this.props.state_dict.set("value", null);
+        }
     }
 
     render(): JSX.Element {
