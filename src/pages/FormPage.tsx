@@ -249,7 +249,7 @@ function FormPage(): JSX.Element {
             const question: Question = prop.props.question;
             const options: string | string[] = question.data["options"];
 
-            // TODO: Parse input from each question, and submit
+            // Parse input from each question
             switch (question.type) {
                 case QuestionType.Section:
                     answers[question.id] = false;
