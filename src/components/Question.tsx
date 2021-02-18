@@ -116,6 +116,11 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     }
                 }
                 break;
+
+            case "radio":
+                this.setPublicState("valid", true);
+                this.setPublicState("error", "");
+                break;
         }
     }
 
