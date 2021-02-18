@@ -7,7 +7,7 @@ interface SelectProps {
     options: Array<string>,
     state_dict: Map<string, string | boolean | null>,
     valid: boolean,
-    onBlurHandler: (event: React.FocusEvent<HTMLDivElement>) => void
+    onBlurHandler: () => void
 }
 
 const containerStyles = css`

@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { ChangeEvent, FocusEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { invalidStyles, textInputs } from "../../commonStyles";
 
 interface TextAreaProps {
     handler: (event: ChangeEvent<HTMLTextAreaElement>) => void,
-    onBlurHandler: (event: FocusEvent<HTMLTextAreaElement>) => void,
+    onBlurHandler: () => void,
     valid: boolean,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     focus_ref: React.RefObject<any>

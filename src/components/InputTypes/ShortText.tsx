@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React, { ChangeEvent, FocusEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { textInputs, invalidStyles } from "../../commonStyles";
 
 interface ShortTextProps {
     handler: (event: ChangeEvent<HTMLInputElement>) => void,
-    onBlurHandler: (event: FocusEvent<HTMLInputElement>) => void,
+    onBlurHandler: () => void,
     valid: boolean,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     focus_ref: React.RefObject<any>
