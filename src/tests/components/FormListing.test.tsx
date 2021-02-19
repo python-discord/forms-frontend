@@ -21,7 +21,8 @@ const openFormListing: Form = {
             required: false
         }
     ],
-    webhook: null
+    webhook: null,
+    submitted_text: null
 };
 
 const closedFormListing: Form = {
@@ -38,7 +39,8 @@ const closedFormListing: Form = {
             required: false
         }
     ],
-    webhook: null
+    webhook: null,
+    submitted_text: null
 };
 
 test("renders form listing with specified title", () => {

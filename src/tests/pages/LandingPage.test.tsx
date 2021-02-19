@@ -21,7 +21,8 @@ const testingForm: forms.Form = {
             required: true
         }
     ],
-    "webhook": null
+    "webhook": null,
+    submitted_text: null
 };
 
 test("renders landing page", () => {
