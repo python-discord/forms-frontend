@@ -1,12 +1,20 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { ChangeEvent } from "react";
-import { textInputs } from "../../commonStyles";
+import { textInputs, invalidStyles } from "../../commonStyles";
 
 interface ShortTextProps {
-    handler: (event: ChangeEvent<HTMLInputElement>) => void
+    handler: (event: ChangeEvent<HTMLInputElement>) => void,
+    onBlurHandler: () => void,
+    valid: boolean,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    focus_ref: React.RefObject<any>
 }
 
 export default function ShortText(props: ShortTextProps): JSX.Element {
-    return <input type="text" css={textInputs} placeholder="Enter Text..." onChange={props.handler}/>;
+    return (
+        <div css={invalidStyles}>
+            <input type="text" css={textInputs} placeholder="Enter Text..." onChange={props.handler} onBlur={props.onBlurHandler} className={!props.valid ? "invalid-box" : ""} ref={props.focus_ref}/>
+        </div>
+    );
 }

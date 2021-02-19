@@ -7,7 +7,9 @@ import { hiddenInput, multiSelectInput } from "../../commonStyles";
 interface RangeProps {
     question_id: string,
     options: Array<string>,
-    handler: (event: ChangeEvent<HTMLInputElement>) => void
+    handler: (event: ChangeEvent<HTMLInputElement>) => void,
+    required: boolean,
+    onBlurHandler: () => void
 }
 
 const containerStyles = css`
@@ -99,7 +101,7 @@ export default function Range(props: RangeProps): JSX.Element {
         return (
             <label css={[selectorStyles, css`width: 1rem`]} key={index}>
                 <span css={optionStyles}>{option}</span>
-                <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler}/>
+                <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler} onBlur={props.onBlurHandler}/>
                 <div css={multiSelectInput}/>
             </label>
         );

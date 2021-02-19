@@ -18,12 +18,17 @@ const require_options: Array<QuestionType> = [
     QuestionType.Range
 ];
 
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void): JSX.Element | JSX.Element[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
     // @ts-ignore
     let options: string[] = question.data["options"];
+    let valid = true;
+    if (!public_state.get("valid")) {
+        valid = false;
+    }
 
     // Catch input types that require options but don't have any
     if ((options === undefined || typeof options !== "object") && require_options.includes(question.type)) {
@@ -34,7 +39,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler}/>;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
             break;
 
         case QuestionType.Checkbox:
@@ -42,19 +47,19 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Radio:
-            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index}/>);
+            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index} onBlurHandler={onBlurHandler}/>);
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state}/>;
+            result = <Select options={options} state_dict={public_state} valid={valid} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler}/>;
+            result = <ShortText handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref}/>;
             break;
 
         case QuestionType.Range:
-            result = <Range question_id={question.id} options={options} handler={handler}/>;
+            result = <Range question_id={question.id} options={options} handler={handler} required={question.required} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.Code:
@@ -63,7 +68,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         default:
-            result = <TextArea handler={handler}/>;
+            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 

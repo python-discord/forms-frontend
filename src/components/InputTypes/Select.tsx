@@ -1,11 +1,13 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
-import { hiddenInput } from "../../commonStyles";
+import { hiddenInput, invalidStyles } from "../../commonStyles";
 
 interface SelectProps {
     options: Array<string>,
-    state_dict: Map<string, string | boolean | null>
+    state_dict: Map<string, string | boolean | null>,
+    valid: boolean,
+    onBlurHandler: () => void
 }
 
 const containerStyles = css`
@@ -175,6 +177,14 @@ class Select extends React.Component<SelectProps> {
         }
     }
 
+    focusOption(): void {
+        if (!this.props.state_dict.get("value")) {
+            this.props.state_dict.set("value", "temporary");
+            this.props.onBlurHandler();
+            this.props.state_dict.set("value", null);
+        }
+    }
+
     render(): JSX.Element {
         const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
         const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
@@ -182,8 +192,8 @@ class Select extends React.Component<SelectProps> {
         const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
 
         return (
-            <div css={[containerStyles, arrowStyles, optionContainerStyles]} ref={container_ref}>
-                <div className="selected_container" css={mainWindowStyles}>
+            <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} onFocus={this.focusOption.bind(this)} ref={container_ref} onBlur={this.props.onBlurHandler}>
+                <div css={mainWindowStyles} className={!this.props.valid ? "invalid-box selected_container" : "selected_container"}>
                     <span className="arrow"/>
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>
                 </div>

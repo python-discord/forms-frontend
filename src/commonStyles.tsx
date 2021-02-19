@@ -1,4 +1,5 @@
 import { css } from "@emotion/react";
+import colors from "./colors";
 
 const selectable = css`
   -moz-user-select: text;
@@ -50,6 +51,14 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
+const invalidStyles = css`
+  .invalid-box {
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 0.6rem ${colors.error};
+    box-shadow: 0 0 0.6rem ${colors.error};
+    border-color: transparent;
+  }
+`;
 
 export {
     selectable,
@@ -57,4 +66,5 @@ export {
     hiddenInput,
     multiSelectInput,
     textInputs,
+    invalidStyles
 };
