@@ -218,7 +218,7 @@ export async function refreshBackendJWT(): Promise<boolean> {
 
     let pass = true;
     APIClient.post("/auth/refresh").then((response: AxiosResponse<AuthResult>) => {
-        cookies.set(CookieNames.Username, response.data.username, {sameSite: "strict", secure: PRODUCTION});
+        cookies.set(CookieNames.Username, response.data.username, {sameSite: "strict", secure: PRODUCTION, path: "/"});
 
         const expiry = Date.parse(response.data.expiry);
         setTimeout(refreshBackendJWT, (expiry * 0.9));
@@ -250,7 +250,7 @@ export default async function authorize(scopes: OAuthScopes[] = [], disableFunct
     if (disableFunction) { disableFunction(true); }
     await getDiscordCode(scopes).then(async discord_response =>{
         await requestBackendJWT(discord_response.code).then(backend_response => {
-            const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION};
+            const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION, path: "/"};
             cookies.set(CookieNames.Username, backend_response.username, options);
 
             options.maxAge = backend_response.maxAge;
