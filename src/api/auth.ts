@@ -10,13 +10,8 @@ const PRODUCTION = process.env.NODE_ENV !== "development";
  * Authorization result as returned from the backend.
  */
 interface AuthResult {
-    token: string,
+    username: string,
     expiry: string
-}
-
-interface JWTResponse {
-    JWT: string,
-    Expiry: Date
 }
 
 /**
@@ -24,7 +19,7 @@ interface JWTResponse {
  */
 enum CookieNames {
     Scopes = "DiscordOAuthScopes",
-    Token = "FormBackendToken"
+    Username = "DiscordUsername"
 }
 
 export interface APIErrors {
@@ -169,12 +164,12 @@ export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: stri
 }
 
 /**
- * Sends a discord code to the backend,
- * and returns the resultant JWT and expiry date.
+ * Sends a discord code to the backend, which sets an authentication JWT
+ * and returns the Discord username.
  *
  * @throws { APIErrors } On error, the APIErrors.Message is set, and an APIErrors object is thrown.
  */
-export async function requestBackendJWT(code: string): Promise<JWTResponse> {
+export async function requestBackendJWT(code: string): Promise<{username: string, maxAge: number}> {
     const reason: APIErrors = { Message: APIErrorMessages.Unknown, Error: null };
     let result;
 
@@ -196,10 +191,8 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
                 throw error;
 
             }).then((response: AxiosResponse<AuthResult>) => {
-                const expiry = new Date();
-                expiry.setTime(Date.parse(response.data.expiry));
-
-                return {JWT: response.data.token, Expiry: expiry};
+                const expiry = Date.parse(response.data.expiry);
+                return {username: response.data.username, maxAge: (expiry - Date.now()) / 1000};
             });
     } catch (e) {
         if (reason.Error === null) {
@@ -209,7 +202,7 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
         throw reason;
     }
 
-    if (!result.JWT || !result.Expiry) {
+    if (!result || !result.username || !result.maxAge) {
         reason.Message = APIErrorMessages.BadResponse;
         throw reason;
     }
@@ -218,31 +211,60 @@ export async function requestBackendJWT(code: string): Promise<JWTResponse> {
 }
 
 /**
+ * Refresh the backend authentication JWT. Returns the success of the operation, and silently handles denied requests.
+ */
+export async function refreshBackendJWT(): Promise<boolean> {
+    const cookies = new Cookies();
+
+    let pass = true;
+    APIClient.post("/auth/refresh").then((response: AxiosResponse<AuthResult>) => {
+        cookies.set(CookieNames.Username, response.data.username, {sameSite: "strict", secure: PRODUCTION});
+
+        const expiry = Date.parse(response.data.expiry);
+        setTimeout(refreshBackendJWT, (expiry * 0.9));
+    }).catch(() => {
+        pass = false;
+        cookies.remove(CookieNames.Scopes);
+    });
+
+    return new Promise(resolve => resolve(pass));
+}
+
+/**
  * Handle a full authorization flow. Sets a cookie with the JWT and scopes.
  *
  * @param scopes The scopes that should be authorized for the application.
  * @param disableFunction An optional function that can disable a component while processing.
+ * @param refresh If true, the token refresh will be scehduled automatically
  *
  * @throws { APIErrors } See documentation on { requestBackendJWT }.
  */
-export default async function authorize(scopes: OAuthScopes[] = [], disableFunction?: (newState: boolean) => void): Promise<void> {
-    if (!checkScopes(scopes)) {
-        const cookies = new Cookies;
-        cookies.remove(CookieNames.Token);
-        cookies.remove(CookieNames.Scopes);
-
-        if (disableFunction) { disableFunction(true); }
-        await getDiscordCode(scopes).then(async discord_response =>{
-            await requestBackendJWT(discord_response.code).then(backend_response => {
-                const options: CookieSetOptions = {sameSite: "strict", expires: backend_response.Expiry, secure: PRODUCTION};
-
-                cookies.set(CookieNames.Token, backend_response.JWT, options);
-                cookies.set(CookieNames.Scopes, discord_response.cleanedScopes, options);
-            });
-        }).finally(() => {
-            if (disableFunction) { disableFunction(false); }
-        });
-
-        return new Promise<void>(resolve => resolve());
+export default async function authorize(scopes: OAuthScopes[] = [], disableFunction?: (newState: boolean) => void, refresh = true): Promise<void> {
+    if (checkScopes(scopes)) {
+        return;
     }
+
+    const cookies = new Cookies;
+    cookies.remove(CookieNames.Scopes);
+
+    if (disableFunction) { disableFunction(true); }
+    await getDiscordCode(scopes).then(async discord_response =>{
+        await requestBackendJWT(discord_response.code).then(backend_response => {
+            const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION};
+            cookies.set(CookieNames.Username, backend_response.username, options);
+
+            options.maxAge = backend_response.maxAge;
+            cookies.set(CookieNames.Scopes, discord_response.cleanedScopes, options);
+
+            if (refresh) {
+                // Schedule refresh after 90% of it's age
+                setTimeout(refreshBackendJWT, (backend_response.maxAge * 0.9) * 1000);
+            }
+        });
+    }).finally(() => {
+        if (disableFunction) { disableFunction(false); }
+    });
+
+
+    return new Promise<void>(resolve => resolve());
 }
