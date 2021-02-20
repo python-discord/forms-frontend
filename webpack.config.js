@@ -70,6 +70,7 @@ module.exports = {
         }]
     },
     devServer: {
+        allowedHosts: ["pythondiscord.local"],  // hCaptcha don't support localhost (pythondiscord.local:3000)
         contentBase: path.join(__dirname, 'public'),
         compress: true,
         port: 3000,
@@ -93,7 +94,8 @@ module.exports = {
         REACT_APP_SENTRY_DSN: "https://false@notreal.ingest.sentry.io/1234",
         REACT_APP_OAUTH2_CLIENT_ID: "0",
         BACKEND_URL: "https://forms-api.pythondiscord.com/",
-        CONTEXT: "development"
+        CONTEXT: "development",
+        HCAPTCHA_SITEKEY: "10000000-ffff-ffff-ffff-000000000001"  // This is development key what don't add any protection
     }), new HtmlWebpackPlugin({
         inject: true,
         template: 'public/index.html'
