@@ -53,6 +53,7 @@ const textInputs = css`
 
 const submitStyles = css`
   text-align: right;
+  white-space: nowrap;
 
   button:disabled {
     background-color: ${colors.greyple};
@@ -81,6 +82,14 @@ const submitStyles = css`
   }
 `;
 
+const invalidStyles = css`
+  .invalid-box {
+    -webkit-appearance: none;
+    -webkit-box-shadow: 0 0 0.6rem ${colors.error};
+    box-shadow: 0 0 0.6rem ${colors.error};
+    border-color: transparent;
+  }
+`;
 
 export {
     selectable,
@@ -88,5 +97,6 @@ export {
     hiddenInput,
     multiSelectInput,
     textInputs,
-    submitStyles
+    submitStyles,
+    invalidStyles
 };

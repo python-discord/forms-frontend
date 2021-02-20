@@ -5,6 +5,7 @@ import React, { ChangeEvent } from "react";
 import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
+import ErrorMessage from "./ErrorMessage";
 
 const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
@@ -17,6 +18,9 @@ const skip_normal_state: Array<QuestionType> = [
 export type QuestionProp = {
     question: Question,
     public_state: Map<string, string | boolean | null>,
+    scroll_ref: React.RefObject<HTMLDivElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    focus_ref: React.RefObject<any>
 }
 
 class RenderedQuestion extends React.Component<QuestionProp> {
@@ -27,6 +31,10 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         } else {
             this.handler = this.normal_handler.bind(this);
         }
+        this.blurHandler = this.blurHandler.bind(this);
+
+        this.setPublicState("valid", true);
+        this.setPublicState("error", "");
 
         if (!skip_normal_state.includes(props.question.type)) {
             this.setPublicState("value", "");
@@ -40,6 +48,18 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
+
+    blurHandler(): void {
+        if (this.props.question.required) {
+            if (!this.props.public_state.get("value")) {
+                this.setPublicState("error", "Field must be filled.");
+                this.setPublicState("valid", false);
+            } else {
+                this.setPublicState("error", "");
+                this.setPublicState("valid", true);
+            }
+        }
+    }
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
         let target: string;
@@ -73,10 +93,88 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             event.target.parentElement.classList.toggle("unselected");
             event.target.parentElement.classList.toggle("selected");
         }
+
+        const options: string | string[] = this.props.question.data["options"];
+        switch (event.target.type) {
+            case "text":
+                this.setPublicState("valid", true);
+                break;
+
+            case "checkbox":
+                // We need to check this here, because checkbox doesn't have onBlur
+                if (this.props.question.required && typeof options !== "string") {
+                    const keys: string[] = [];
+                    options.forEach((val, index) => {
+                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
+                    });
+                    if (keys.every(v => !this.props.public_state.get(v))) {
+                        this.setPublicState("error", "Field must be filled.");
+                        this.setPublicState("valid", false);
+                    } else {
+                        this.setPublicState("error", "");
+                        this.setPublicState("valid", true);
+                    }
+                }
+                break;
+
+            case "radio":
+                this.setPublicState("valid", true);
+                this.setPublicState("error", "");
+                break;
+        }
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
+        // We will validate again when focusing out.
+        this.setPublicState("valid", true);
+        this.setPublicState("error", "");
+
         this.setPublicState("value", event.target.value);
+    }
+
+    validateField(): void {
+        if (!this.props.question.required) {
+            return;
+        }
+
+        let invalid = false;
+        const options: string | string[] = this.props.question.data["options"];
+        switch (this.props.question.type) {
+            case QuestionType.TextArea:
+            case QuestionType.ShortText:
+                if (this.props.public_state.get("value") === "") {
+                    invalid = true;
+                }
+                break;
+
+            case QuestionType.Select:
+            case QuestionType.Range:
+            case QuestionType.Radio:
+                if (!this.props.public_state.get("value")) {
+                    invalid = true;
+                }
+                break;
+
+            case QuestionType.Checkbox:
+                if (typeof options !== "string") {
+                    const keys: string[] = [];
+                    options.forEach((val, index) => {
+                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
+                    });
+                    if (keys.every(v => !this.props.public_state.get(v))) {
+                        invalid = true;
+                    }
+                }
+                break;
+        }
+
+        if (invalid) {
+            this.setPublicState("error", "Field must be filled.");
+            this.setPublicState("valid", false);
+        } else {
+            this.setPublicState("error", "");
+            this.setPublicState("valid", true);
+        }
     }
 
     componentDidMount(): void {
@@ -151,12 +249,22 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 margin-left: 0.2rem;
               }
             `;
+            let valid = true;
+            if (!this.props.public_state.get("valid")) {
+                valid = false;
+            }
+            const rawError = this.props.public_state.get("error");
+            let error = "";
+            if (typeof rawError === "string") {
+                error = rawError;
+            }
 
-            return <div>
+            return <div ref={this.props.scroll_ref}>
                 <h2 css={[selectable, requiredStarStyles]}>
                     {question.name}<span className={question.required ? "required" : ""}>*</span>
                 </h2>
-                { create_input(this.props, this.handler) }
+                { create_input(this.props, this.handler, this.blurHandler, this.props.focus_ref) }
+                <ErrorMessage show={!valid} message={error} />
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
         }
