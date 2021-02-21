@@ -186,7 +186,7 @@ function FormPage(): JSX.Element {
     const [sent, setSent] = useState<boolean>();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const captchaRef = useRef<any>();
+    const captchaRef = useRef<HCaptcha>(null);
 
     useEffect(() => {
         dispatch(clean());
@@ -293,9 +293,7 @@ function FormPage(): JSX.Element {
 
                 case QuestionType.Checkbox: {
                     if (typeof options !== "string") {
-                        console.log(values);
                         const checkbox_values = values.get(question.id);
-                        console.log(checkbox_values);
                         const keys: Map<string, string> = new Map();
                         options.forEach((val: string, index) => {
                             keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
