@@ -9,7 +9,7 @@ export const initialState: FormState = {
 };
 
 export function formReducer(state = initialState, action: Action): FormState {
-    const new_state = state;
+    const new_state = {...state};
     switch (action.type) {
         case FormAction.SET_VALUE:
             new_state.values.set(action.payload.question.id, action.payload.value);
