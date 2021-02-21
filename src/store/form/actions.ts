@@ -5,7 +5,8 @@ export enum FormAction {
     SET_VALUE = "SET_VALUE",
     SET_ERROR = "SET_ERROR",
     SET_VALID = "SET_VALID",
-    CLEAN = "CLEAN"
+    CLEAN = "CLEAN",
+    SET_CAPTCHA_TOKEN = "SET_CAPTCHA_TOKEN"
 }
 
 // This is base for all actions
@@ -42,7 +43,12 @@ export interface CleanAction extends DefaultFormAction {
     type: FormAction.CLEAN
 }
 
-export type Action = SetValueAction | SetErrorAction | SetValidAction | CleanAction;
+export interface SetCaptchaTokenAction extends DefaultFormAction {
+    type: FormAction.SET_CAPTCHA_TOKEN,
+    payload: string | null
+}
+
+export type Action = SetValueAction | SetErrorAction | SetValidAction | CleanAction | SetCaptchaTokenAction;
 
 export function setValue(question: Question, value: string | Map<string, boolean> | null): SetValueAction {
     return {
@@ -76,4 +82,8 @@ export function setValid(question: Question, valid: boolean): SetValidAction {
 
 export function clean(): CleanAction {
     return { type: FormAction.CLEAN };
+}
+
+export function setCaptchaToken(token: string | null): SetCaptchaTokenAction {
+    return { type: FormAction.SET_CAPTCHA_TOKEN, payload: token };
 }
