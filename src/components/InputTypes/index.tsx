@@ -56,7 +56,7 @@ export default function create_input(props: QuestionProp & QuestionStateProp & Q
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref}/>;
+            result = <ShortText handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref} question={question}/>;
             break;
 
         case QuestionType.Range:
