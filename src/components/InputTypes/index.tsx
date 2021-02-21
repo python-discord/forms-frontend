@@ -6,10 +6,10 @@ import Select from "./Select";
 import ShortText from "./ShortText";
 import TextArea from "./TextArea";
 
-import React, { ChangeEvent } from "react";
+import React, {ChangeEvent} from "react";
 
-import { QuestionType } from "../../api/question";
-import { QuestionProp } from "../Question";
+import {QuestionType} from "../../api/question";
+import {QuestionDispatchProp, QuestionProp, QuestionStateProp} from "../Question";
 
 const require_options: Array<QuestionType> = [
     QuestionType.Radio,
@@ -19,14 +19,15 @@ const require_options: Array<QuestionType> = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
+export default function create_input(props: QuestionProp & QuestionStateProp & QuestionDispatchProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
+    const question = props.question;
 
     // eslint-disable-next-line
     // @ts-ignore
     let options: string[] = question.data["options"];
     let valid = true;
-    if (!public_state.get("valid")) {
+    if (!props.valid.get(question.id)) {
         valid = false;
     }
 
@@ -51,7 +52,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state} valid={valid} onBlurHandler={onBlurHandler}/>;
+            result = <Select options={options} question={question} valid={valid} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.ShortText:

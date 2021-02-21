@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
 import { useParams } from "react-router";
 import { PropagateLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
 
 import HeaderBar from "../components/HeaderBar";
-import RenderedQuestion from "../components/Question";
+import ConnectedRenderedQuestion, { RenderedQuestion } from "../components/Question";
 import Loading from "../components/Loading";
 import ScrollToTop from "../components/ScrollToTop";
 
@@ -16,6 +17,8 @@ import colors from "../colors";
 import { unselectable }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
+import { FormState } from "../store/form/types";
+import { clean } from "../store/form/actions";
 
 interface PathParams {
     id: string
@@ -157,11 +160,21 @@ const closedHeaderStyles = css`
 function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
 
+    const valid = useSelector<FormState, FormState["valid"]>(
+        state => state.valid
+    );
+    const values = useSelector<FormState, FormState["values"]>(
+        state => state.values
+    );
+
+    const dispatch = useDispatch();
+
     const [form, setForm] = useState<Form>();
     const [sending, setSending] = useState<boolean>();
     const [sent, setSent] = useState<boolean>();
 
     useEffect(() => {
+        dispatch(clean());
         getForm(id).then(form => {
             setForm(form);
         });
@@ -203,7 +216,7 @@ function FormPage(): JSX.Element {
         const questionRef = createRef<RenderedQuestion>();
         refMap.set(question.id, questionRef);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return <RenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
+        return <ConnectedRenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} key={index + Date.now()}/>;
     });
 
     async function handleSubmit(event: SyntheticEvent) {
@@ -220,8 +233,8 @@ function FormPage(): JSX.Element {
             if (questionRef && questionRef.current) {
                 questionRef.current.validateField();
             }
-            // In case when field is invalid, add this to invalid fields list.
-            if (prop.props.public_state.get("valid") === false) {
+            // In case when field is invalid, add this to invalid fields list
+            if (valid.get(question.id) === false) {
                 invalidFieldIDs.push(i);
             }
         });
@@ -257,22 +270,27 @@ function FormPage(): JSX.Element {
 
                 case QuestionType.Checkbox: {
                     if (typeof options !== "string") {
+                        console.log(values);
+                        const checkbox_values = values.get(question.id);
+                        console.log(checkbox_values);
                         const keys: Map<string, string> = new Map();
                         options.forEach((val: string, index) => {
                             keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
                         });
-                        const pairs: { [key: string]: boolean } = { };
-                        keys.forEach((val, key) => {
-                            pairs[key] = !!prop.props.public_state.get(val);
-                        });
-                        answers[question.id] = pairs;
+                        if (checkbox_values instanceof Map) {
+                            const pairs: { [key: string]: boolean } = { };
+                            keys.forEach((val, key) => {
+                                pairs[key] = !!checkbox_values.get(val);
+                            });
+                            answers[question.id] = pairs;
+                        }
                     }
                     break;
                 }
 
                 case QuestionType.Code:
                 default:
-                    answers[question.id] = prop.props.public_state.get("value");
+                    answers[question.id] = values.get(question.id);
             }
         });
 

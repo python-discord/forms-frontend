@@ -1,13 +1,26 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React from "react";
+import { connect } from "react-redux";
+
 import { hiddenInput, invalidStyles } from "../../commonStyles";
+import { Question } from "../../api/question";
+import { setValue, SetValueAction } from "../../store/form/actions";
+import { FormState } from "../../store/form/types";
 
 interface SelectProps {
     options: Array<string>,
-    state_dict: Map<string, string | boolean | null>,
     valid: boolean,
-    onBlurHandler: () => void
+    onBlurHandler: () => void,
+    question: Question
+}
+
+interface SelectStateProps {
+    values: Map<string, string | Map<string, boolean> | null>
+}
+
+interface SelectDispatchProps {
+    setValue: (question: Question, value: string | Map<string, boolean> | null) => SetValueAction
 }
 
 const containerStyles = css`
@@ -143,7 +156,7 @@ const optionStyles = css`
   }
 `;
 
-class Select extends React.Component<SelectProps> {
+class Select extends React.Component<SelectProps & SelectStateProps & SelectDispatchProps> {
     handler(selected_option: React.RefObject<HTMLDivElement>, event: React.ChangeEvent<HTMLInputElement>): void {
         const option_container = event.target.parentElement;
         if (!option_container || !option_container.parentElement || !selected_option.current) {
@@ -151,7 +164,7 @@ class Select extends React.Component<SelectProps> {
         }
 
         // Update stored value
-        this.props.state_dict.set("value", option_container.textContent);
+        this.props.setValue(this.props.question, option_container.textContent);
 
         // Close the menu
         selected_option.current.focus();
@@ -178,10 +191,10 @@ class Select extends React.Component<SelectProps> {
     }
 
     focusOption(): void {
-        if (!this.props.state_dict.get("value")) {
-            this.props.state_dict.set("value", "temporary");
+        if (!this.props.values.get(this.props.question.id)) {
+            this.props.setValue(this.props.question, "temporary");
             this.props.onBlurHandler();
-            this.props.state_dict.set("value", null);
+            this.props.setValue(this.props.question, null);
         }
     }
 
@@ -211,4 +224,15 @@ class Select extends React.Component<SelectProps> {
     }
 }
 
-export default Select;
+const mapStateToProps = (state: FormState, ownProps: SelectProps): SelectProps & SelectStateProps => {
+    return {
+        ...ownProps,
+        values: state.values
+    };
+};
+
+const mapDispatchToProps = {
+    setValue
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Select);

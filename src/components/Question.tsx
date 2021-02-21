@@ -1,11 +1,14 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
+import { connect } from "react-redux";
 
 import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
 import create_input from "./InputTypes";
 import ErrorMessage from "./ErrorMessage";
+import { FormState } from "../store/form/types";
+import { setError, SetErrorAction, setValid, SetValidAction, setValue, SetValueAction } from "../store/form/actions";
 
 const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
@@ -17,14 +20,25 @@ const skip_normal_state: Array<QuestionType> = [
 
 export type QuestionProp = {
     question: Question,
-    public_state: Map<string, string | boolean | null>,
     scroll_ref: React.RefObject<HTMLDivElement>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     focus_ref: React.RefObject<any>
 }
 
-class RenderedQuestion extends React.Component<QuestionProp> {
-    constructor(props: QuestionProp) {
+export type QuestionStateProp = {
+    values: Map<string, string | Map<string, boolean> | null>,
+    errors: Map<string, string>,
+    valid: Map<string, boolean>,
+};
+
+export type QuestionDispatchProp = {
+    setValue: (question: Question, value: string | Map<string, boolean> | null) => SetValueAction,
+    setValid: (question: Question, valid: boolean) => SetValidAction,
+    setError: (question: Question, error: string) => SetErrorAction
+};
+
+export class RenderedQuestion extends React.Component<QuestionProp & QuestionStateProp & QuestionDispatchProp> {
+    constructor(props: QuestionProp & QuestionStateProp & QuestionDispatchProp) {
         super(props);
         if (props.question.type === QuestionType.TextArea) {
             this.handler = this.text_area_handler.bind(this);
@@ -33,17 +47,12 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
         this.blurHandler = this.blurHandler.bind(this);
 
-        this.setPublicState("valid", true);
-        this.setPublicState("error", "");
+        props.setValid(props.question, true);
+        props.setError(props.question, "");
 
         if (!skip_normal_state.includes(props.question.type)) {
-            this.setPublicState("value", "");
+            props.setValue(props.question, "");
         }
-    }
-
-    setPublicState(target: string, value: string | boolean | null, callback?:() => void): void {
-        this.setState({[target]: value}, callback);
-        this.props.public_state.set(target, value);
     }
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
@@ -51,29 +60,26 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     blurHandler(): void {
         if (this.props.question.required) {
-            if (!this.props.public_state.get("value")) {
-                this.setPublicState("error", "Field must be filled.");
-                this.setPublicState("valid", false);
+            if (!this.props.values.get(this.props.question.id)) {
+                this.props.setError(this.props.question, "Field must be filled.");
+                this.props.setValid(this.props.question, false);
             } else {
-                this.setPublicState("error", "");
-                this.setPublicState("valid", true);
+                this.props.setError(this.props.question, "");
+                this.props.setValid(this.props.question, true);
             }
         }
     }
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
-        let target: string;
-        let value: string | boolean;
+        let value: string | [string, boolean];
 
         switch (event.target.type) {
             case "checkbox":
-                target = event.target.name;
-                value = event.target.checked;
+                value = [event.target.name, event.target.checked];
                 break;
 
             case "radio":
-            // This handles radios and ranges, as they are both based on the same fundamental input type
-                target = "value";
+                // This handles radios and ranges, as they are both based on the same fundamental input type
                 if (event.target.parentElement) {
                     value = event.target.parentElement.innerText.trimEnd();
                 } else {
@@ -82,11 +88,19 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 break;
 
             default:
-                target = "value";
                 value = event.target.value;
         }
 
-        this.setPublicState(target, value);
+        if (value instanceof Array) {
+            let values = this.props.values.get(this.props.question.id);
+            if (!(values instanceof Map)) {
+                values = new Map<string, boolean>();
+            }
+            values.set(value[0], value[1]);
+            this.props.setValue(this.props.question, values);
+        } else {
+            this.props.setValue(this.props.question, value);
+        }
 
         // Toggle checkbox class
         if (event.target.type == "checkbox" && event.target.parentElement !== null) {
@@ -97,7 +111,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         const options: string | string[] = this.props.question.data["options"];
         switch (event.target.type) {
             case "text":
-                this.setPublicState("valid", true);
+                this.props.setValid(this.props.question, true);
                 break;
 
             case "checkbox":
@@ -107,29 +121,30 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     options.forEach((val, index) => {
                         keys.push(`${("000" + index).slice(-4)}. ${val}`);
                     });
-                    if (keys.every(v => !this.props.public_state.get(v))) {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
+                    const values = this.props.values.get(this.props.question.id);
+                    if (values instanceof Map && keys.every(v => !values.get(v))) {
+                        this.props.setError(this.props.question, "Field must be filled.");
+                        this.props.setValid(this.props.question, false);
                     } else {
-                        this.setPublicState("error", "");
-                        this.setPublicState("valid", true);
+                        this.props.setError(this.props.question, "");
+                        this.props.setValid(this.props.question, true);
                     }
                 }
                 break;
 
             case "radio":
-                this.setPublicState("valid", true);
-                this.setPublicState("error", "");
+                this.props.setError(this.props.question, "");
+                this.props.setValid(this.props.question, true);
                 break;
         }
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
         // We will validate again when focusing out.
-        this.setPublicState("valid", true);
-        this.setPublicState("error", "");
+        this.props.setError(this.props.question, "");
+        this.props.setValid(this.props.question, true);
 
-        this.setPublicState("value", event.target.value);
+        this.props.setValue(this.props.question, event.target.value);
     }
 
     validateField(): void {
@@ -142,7 +157,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         switch (this.props.question.type) {
             case QuestionType.TextArea:
             case QuestionType.ShortText:
-                if (this.props.public_state.get("value") === "") {
+                if (this.props.values.get(this.props.question.id) === "") {
                     invalid = true;
                 }
                 break;
@@ -150,7 +165,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             case QuestionType.Select:
             case QuestionType.Range:
             case QuestionType.Radio:
-                if (!this.props.public_state.get("value")) {
+                if (!this.props.values.get(this.props.question.id)) {
                     invalid = true;
                 }
                 break;
@@ -161,7 +176,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     options.forEach((val, index) => {
                         keys.push(`${("000" + index).slice(-4)}. ${val}`);
                     });
-                    if (keys.every(v => !this.props.public_state.get(v))) {
+                    const values = this.props.values.get(this.props.question.id);
+                    if (values instanceof Map && keys.every(v => !values.get(v))) {
                         invalid = true;
                     }
                 }
@@ -169,36 +185,36 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
 
         if (invalid) {
-            this.setPublicState("error", "Field must be filled.");
-            this.setPublicState("valid", false);
+            this.props.setError(this.props.question, "Field must be filled.");
+            this.props.setValid(this.props.question, false);
         } else {
-            this.setPublicState("error", "");
-            this.setPublicState("valid", true);
+            this.props.setError(this.props.question, "");
+            this.props.setValid(this.props.question, true);
         }
     }
 
     componentDidMount(): void {
         // Initialize defaults for complex and nested fields
         const options: string | string[] = this.props.question.data["options"];
+        const values = this.props.values.get(this.props.question.id);
 
-        if (this.props.public_state.size === 0) {
-            switch (this.props.question.type) {
-                case QuestionType.Checkbox:
-                    if (typeof options === "string") {
-                        return;
-                    }
+        switch (this.props.question.type) {
+            case QuestionType.Checkbox:
+                if (typeof options === "string" || !(values instanceof Map)) {
+                    return;
+                }
 
-                    options.forEach((option, index) => {
-                        this.setPublicState(`${("000" + index).slice(-4)}. ${option}`, false);
-                    });
-                    break;
+                options.forEach((option, index) => {
+                    values.set(`${("000" + index).slice(-4)}. ${option}`, false);
+                });
+                this.props.setValue(this.props.question, values);
+                break;
 
-                case QuestionType.Range:
-                case QuestionType.Radio:
-                case QuestionType.Select:
-                    this.setPublicState("value", null);
-                    break;
-            }
+            case QuestionType.Range:
+            case QuestionType.Radio:
+            case QuestionType.Select:
+                this.props.setValue(this.props.question, null);
+                break;
         }
     }
 
@@ -250,10 +266,10 @@ class RenderedQuestion extends React.Component<QuestionProp> {
               }
             `;
             let valid = true;
-            if (!this.props.public_state.get("valid")) {
+            if (!this.props.valid.get(this.props.question.id)) {
                 valid = false;
             }
-            const rawError = this.props.public_state.get("error");
+            const rawError = this.props.errors.get(this.props.question.id);
             let error = "";
             if (typeof rawError === "string") {
                 error = rawError;
@@ -271,4 +287,19 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 }
 
-export default RenderedQuestion;
+const mapStateToProps = (state: FormState, ownProps: QuestionProp): QuestionProp & QuestionStateProp => {
+    return {
+        ...ownProps,
+        values: state.values,
+        errors: state.errors,
+        valid: state.valid
+    };
+};
+
+const mapDispatchToProps = {
+    setValue,
+    setValid,
+    setError
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(RenderedQuestion);
