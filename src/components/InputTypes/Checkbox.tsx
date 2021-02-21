@@ -3,6 +3,8 @@ import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
 import { multiSelectInput, hiddenInput } from "../../commonStyles";
+import {useSelector} from "react-redux";
+import {FormState} from "../../store/form/types";
 
 interface CheckboxProps {
     index: number,
@@ -53,10 +55,13 @@ const activeStyles = css`
 `;
 
 export default function Checkbox(props: CheckboxProps): JSX.Element {
+    const values = useSelector<FormState, FormState["values"]>(
+        state => state.values
+    );
     return (
         <label css={[generalStyles, activeStyles]}>
             <label className="unselected" css={multiSelectInput}>
-                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler}/>
+                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler} checked={!!values.get(`${("000" + props.index).slice(-4)}. ${props.option}`)}/>
                 <span className="checkmark"/>
             </label>
             {props.option}<br/>

@@ -2,12 +2,14 @@
 import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
-import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
+import React, {SyntheticEvent, useEffect, useState, createRef, useRef} from "react";
 import { useParams } from "react-router";
 import { PropagateLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 import HeaderBar from "../components/HeaderBar";
-import RenderedQuestion from "../components/Question";
+import ConnectedRenderedQuestion, { RenderedQuestion } from "../components/Question";
 import Loading from "../components/Loading";
 import ScrollToTop from "../components/ScrollToTop";
 
@@ -16,6 +18,8 @@ import colors from "../colors";
 import { unselectable }  from "../commonStyles";
 import { Question, QuestionType } from "../api/question";
 import ApiClient from "../api/client";
+import { FormState } from "../store/form/types";
+import { clean, setCaptchaToken } from "../store/form/actions";
 
 interface PathParams {
     id: string
@@ -154,14 +158,38 @@ const closedHeaderStyles = css`
   }
 `;
 
+const captchaStyles = css`
+  text-align: center;
+  
+  @media (max-width: 850px) {
+    padding-bottom: 1.2rem;
+  }
+`;
+
 function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
+
+    const valid = useSelector<FormState, FormState["valid"]>(
+        state => state.valid
+    );
+    const values = useSelector<FormState, FormState["values"]>(
+        state => state.values
+    );
+    const captchaToken = useSelector<FormState, FormState["captchaToken"]>(
+        state => state.captchaToken
+    );
+
+    const dispatch = useDispatch();
 
     const [form, setForm] = useState<Form>();
     const [sending, setSending] = useState<boolean>();
     const [sent, setSent] = useState<boolean>();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const captchaRef = useRef<HCaptcha>(null);
+
     useEffect(() => {
+        dispatch(clean());
         getForm(id).then(form => {
             setForm(form);
         });
@@ -203,7 +231,7 @@ function FormPage(): JSX.Element {
         const questionRef = createRef<RenderedQuestion>();
         refMap.set(question.id, questionRef);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return <RenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
+        return <ConnectedRenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} key={index + Date.now()}/>;
     });
 
     async function handleSubmit(event: SyntheticEvent) {
@@ -220,8 +248,8 @@ function FormPage(): JSX.Element {
             if (questionRef && questionRef.current) {
                 questionRef.current.validateField();
             }
-            // In case when field is invalid, add this to invalid fields list.
-            if (prop.props.public_state.get("valid") === false) {
+            // In case when field is invalid, add this to invalid fields list
+            if (valid.get(question.id) === false) {
                 invalidFieldIDs.push(i);
             }
         });
@@ -242,6 +270,14 @@ function FormPage(): JSX.Element {
             return;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (!(FormFeatures.DisableAntispam in form!.features) && captchaToken === null) {
+            if (captchaRef && captchaRef.current) {
+                captchaRef.current.execute();
+            }
+            return;
+        }
+
         setSending(true);
 
         const answers: { [key: string]: unknown } = {};
@@ -257,26 +293,36 @@ function FormPage(): JSX.Element {
 
                 case QuestionType.Checkbox: {
                     if (typeof options !== "string") {
+                        const checkbox_values = values.get(question.id);
                         const keys: Map<string, string> = new Map();
                         options.forEach((val: string, index) => {
                             keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
                         });
-                        const pairs: { [key: string]: boolean } = { };
-                        keys.forEach((val, key) => {
-                            pairs[key] = !!prop.props.public_state.get(val);
-                        });
-                        answers[question.id] = pairs;
+                        if (checkbox_values instanceof Map) {
+                            const pairs: { [key: string]: boolean } = { };
+                            keys.forEach((val, key) => {
+                                pairs[key] = !!checkbox_values.get(val);
+                            });
+                            answers[question.id] = pairs;
+                        }
                     }
                     break;
                 }
 
                 case QuestionType.Code:
                 default:
-                    answers[question.id] = prop.props.public_state.get("value");
+                    answers[question.id] = values.get(question.id);
             }
         });
 
-        await ApiClient.post(`forms/submit/${id}`, {response: answers});
+        const data: { [key: string]: unknown } = {response: answers};
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (!(FormFeatures.DisableAntispam in form!.features)) {
+            data["captcha"] = captchaToken;
+        }
+
+        await ApiClient.post(`forms/submit/${id}`, data);
         setSending(false);
         setSent(true);
     }
@@ -288,6 +334,21 @@ function FormPage(): JSX.Element {
         closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
     }
 
+    let captcha = null;
+    if (!(FormFeatures.DisableAntispam in form.features)) {
+        captcha = (
+            <div css={captchaStyles}>
+                <HCaptcha
+                    sitekey={process.env.HCAPTCHA_SITEKEY ? process.env.HCAPTCHA_SITEKEY : ""}
+                    theme={"dark"}
+                    onVerify={(token) => dispatch(setCaptchaToken(token))}
+                    onExpire={() => dispatch(setCaptchaToken(null))}
+                    ref={captchaRef}
+                />
+            </div>
+        );
+    }
+
     return (
         <div>
             <HeaderBar title={form.name} description={form.description}/>
@@ -296,6 +357,7 @@ function FormPage(): JSX.Element {
                 <form id="form" onSubmit={handleSubmit} css={[formStyles, unselectable]}>
                     { closed_header }
                     { questions }
+                    { captcha }
                 </form>
                 <Navigation form_state={open}/>
             </div>

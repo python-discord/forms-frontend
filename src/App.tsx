@@ -3,6 +3,7 @@
 import React, { Suspense } from "react";
 import { jsx, css, Global } from "@emotion/react";
 
+import { Provider } from "react-redux";
 import {
     BrowserRouter as Router,
     Route,
@@ -14,6 +15,7 @@ import { PropagateLoader } from "react-spinners";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import globalStyles from "./globalStyles";
+import { store } from "./store/form/store";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 const FormPage = React.lazy(() => import("./pages/FormPage"));
@@ -51,7 +53,7 @@ function App(): JSX.Element {
                                 {routes.map(({path, Component}) => (
                                     <Route exact key={path} path={path}>
                                         <Suspense fallback={<PageLoading/>}>
-                                            <Component/>
+                                            {path == "/form/:id" ? <Provider store={store}><Component/></Provider> : <Component/>}
                                         </Suspense>
                                     </Route>
                                 ))}
