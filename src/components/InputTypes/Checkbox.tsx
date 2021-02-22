@@ -61,7 +61,7 @@ export default function Checkbox(props: CheckboxProps): JSX.Element {
     return (
         <label css={[generalStyles, activeStyles]}>
             <label className="unselected" css={multiSelectInput}>
-                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler} checked={!!values.get(`${("000" + props.index).slice(-4)}. ${props.option}`)}/>
+                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler} checked={!!values[`${("000" + props.index).slice(-4)}. ${props.option}`]}/>
                 <span className="checkmark"/>
             </label>
             {props.option}<br/>

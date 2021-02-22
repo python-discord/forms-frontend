@@ -26,10 +26,7 @@ export default function create_input(props: QuestionProp & QuestionStateProp & Q
     // eslint-disable-next-line
     // @ts-ignore
     let options: string[] = question.data["options"];
-    let valid = true;
-    if (!props.valid.get(question.id)) {
-        valid = false;
-    }
+    const valid = props.valid[question.id];
 
     // Catch input types that require options but don't have any
     if ((options === undefined || typeof options !== "object") && require_options.includes(question.type)) {

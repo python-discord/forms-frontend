@@ -249,7 +249,7 @@ function FormPage(): JSX.Element {
                 questionRef.current.validateField();
             }
             // In case when field is invalid, add this to invalid fields list
-            if (valid.get(question.id) === false) {
+            if (!valid[question.id]) {
                 invalidFieldIDs.push(i);
             }
         });
@@ -293,15 +293,15 @@ function FormPage(): JSX.Element {
 
                 case QuestionType.Checkbox: {
                     if (typeof options !== "string") {
-                        const checkbox_values = values.get(question.id);
+                        const checkbox_values = values[question.id];
                         const keys: Map<string, string> = new Map();
                         options.forEach((val: string, index) => {
                             keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
                         });
-                        if (checkbox_values instanceof Map) {
+                        if (typeof checkbox_values === "object" && checkbox_values) {
                             const pairs: { [key: string]: boolean } = { };
                             keys.forEach((val, key) => {
-                                pairs[key] = !!checkbox_values.get(val);
+                                pairs[key] = checkbox_values[val];
                             });
                             answers[question.id] = pairs;
                         }
@@ -311,7 +311,7 @@ function FormPage(): JSX.Element {
 
                 case QuestionType.Code:
                 default:
-                    answers[question.id] = values.get(question.id);
+                    answers[question.id] = values[question.id];
             }
         });
 

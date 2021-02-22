@@ -19,7 +19,7 @@ export interface SetValueAction extends DefaultFormAction {
     type: FormAction.SET_VALUE,
     payload: {
         question: Question,
-        value: string | Map<string, boolean> | null
+        value: string | { [key: string]: boolean } | null
     }
 }
 
@@ -50,7 +50,7 @@ export interface SetCaptchaTokenAction extends DefaultFormAction {
 
 export type Action = SetValueAction | SetErrorAction | SetValidAction | CleanAction | SetCaptchaTokenAction;
 
-export function setValue(question: Question, value: string | Map<string, boolean> | null): SetValueAction {
+export function setValue(question: Question, value: string | { [key: string]: boolean } | null): SetValueAction {
     return {
         type: FormAction.SET_VALUE,
         payload: {

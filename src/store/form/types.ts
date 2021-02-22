@@ -1,6 +1,6 @@
 export interface FormState {
-    values: Map<string, string | Map<string, boolean> | null>,
-    errors: Map<string, string>,
-    valid: Map<string, boolean>,
+    values: { [key: string]: string | { [subKey: string]: boolean } | null },
+    errors: { [key: string]: string },
+    valid: { [key: string]: boolean },
     captchaToken: string | null
 }

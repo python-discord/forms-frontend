@@ -20,7 +20,7 @@ export default function ShortText(props: ShortTextProps): JSX.Element {
     const values = useSelector<FormState, FormState["values"]>(
         state => state.values
     );
-    const value = values.get(props.question.id);
+    const value = values[props.question.id];
 
     return (
         <div css={invalidStyles}>

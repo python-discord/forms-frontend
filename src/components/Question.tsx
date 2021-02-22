@@ -26,13 +26,13 @@ export type QuestionProp = {
 }
 
 export type QuestionStateProp = {
-    values: Map<string, string | Map<string, boolean> | null>,
-    errors: Map<string, string>,
-    valid: Map<string, boolean>,
+    values: { [key: string]: string | { [subKey: string]: boolean } | null },
+    errors: { [key: string]: string },
+    valid: { [key: string]: boolean }
 };
 
 export type QuestionDispatchProp = {
-    setValue: (question: Question, value: string | Map<string, boolean> | null) => SetValueAction,
+    setValue: (question: Question, value: string | { [key: string]: boolean } | null) => SetValueAction,
     setValid: (question: Question, valid: boolean) => SetValidAction,
     setError: (question: Question, error: string) => SetErrorAction
 };
@@ -60,7 +60,7 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
 
     blurHandler(): void {
         if (this.props.question.required) {
-            if (!this.props.values.get(this.props.question.id)) {
+            if (!this.props.values[this.props.question.id]) {
                 this.props.setError(this.props.question, "Field must be filled.");
                 this.props.setValid(this.props.question, false);
             } else {
@@ -92,11 +92,11 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
         }
 
         if (value instanceof Array) {
-            let values = this.props.values.get(this.props.question.id);
-            if (!(values instanceof Map)) {
-                values = new Map<string, boolean>();
+            let values = this.props.values[this.props.question.id];
+            if (typeof values !== "object" || !values) {
+                values = {};
             }
-            values.set(value[0], value[1]);
+            values[value[0]] = value[1];
             this.props.setValue(this.props.question, values);
         } else {
             this.props.setValue(this.props.question, value);
@@ -121,8 +121,8 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
                     options.forEach((val, index) => {
                         keys.push(`${("000" + index).slice(-4)}. ${val}`);
                     });
-                    const values = this.props.values.get(this.props.question.id);
-                    if (values instanceof Map && keys.every(v => !values.get(v))) {
+                    const values = this.props.values[this.props.question.id];
+                    if (typeof values === "object" && values && keys.every(v => !values[v])) {
                         this.props.setError(this.props.question, "Field must be filled.");
                         this.props.setValid(this.props.question, false);
                     } else {
@@ -157,7 +157,7 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
         switch (this.props.question.type) {
             case QuestionType.TextArea:
             case QuestionType.ShortText:
-                if (this.props.values.get(this.props.question.id) === "") {
+                if (this.props.values[this.props.question.id] === "") {
                     invalid = true;
                 }
                 break;
@@ -165,7 +165,7 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
             case QuestionType.Select:
             case QuestionType.Range:
             case QuestionType.Radio:
-                if (!this.props.values.get(this.props.question.id)) {
+                if (!this.props.values[this.props.question.id]) {
                     invalid = true;
                 }
                 break;
@@ -176,8 +176,8 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
                     options.forEach((val, index) => {
                         keys.push(`${("000" + index).slice(-4)}. ${val}`);
                     });
-                    const values = this.props.values.get(this.props.question.id);
-                    if (values instanceof Map && keys.every(v => !values.get(v))) {
+                    const values = this.props.values[this.props.question.id];
+                    if (typeof values === "object" && values && keys.every(v => !values[v])) {
                         invalid = true;
                     }
                 }
@@ -196,16 +196,16 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
     componentDidMount(): void {
         // Initialize defaults for complex and nested fields
         const options: string | string[] = this.props.question.data["options"];
-        const values = this.props.values.get(this.props.question.id);
+        const values = this.props.values[this.props.question.id];
 
         switch (this.props.question.type) {
             case QuestionType.Checkbox:
-                if (typeof options === "string" || !(values instanceof Map)) {
+                if (typeof options === "string" || !(typeof values === "object") || !values) {
                     return;
                 }
 
                 options.forEach((option, index) => {
-                    values.set(`${("000" + index).slice(-4)}. ${option}`, false);
+                    values[`${("000" + index).slice(-4)}. ${option}`] = false;
                 });
                 this.props.setValue(this.props.question, values);
                 break;
@@ -266,13 +266,13 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
               }
             `;
             let valid = true;
-            if (!this.props.valid.get(this.props.question.id)) {
-                valid = false;
+            if (this.props.question.id in this.props.valid) {
+                valid = this.props.valid[this.props.question.id];
             }
-            const rawError = this.props.errors.get(this.props.question.id);
+
             let error = "";
-            if (typeof rawError === "string") {
-                error = rawError;
+            if (this.props.question.id in this.props.errors) {
+                error = this.props.errors[this.props.question.id];
             }
 
             return <div ref={this.props.scroll_ref}>
