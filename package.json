@@ -15,7 +15,7 @@
     "axios": "0.21.1",
     "copy-webpack-plugin": "7.0.0",
     "fs-extra": "9.1.0",
-    "html-webpack-plugin": "5.1.0",
+    "html-webpack-plugin": "5.2.0",
     "identity-obj-proxy": "3.0.0",
     "react": "17.0.1",
     "react-app-polyfill": "2.0.0",
