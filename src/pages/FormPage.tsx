@@ -158,9 +158,7 @@ const closedHeaderStyles = css`
 const captchaStyles = css`
   text-align: center;
   
-  @media (max-width: 850px) {
-    padding: 1.2rem;
-  }
+  margin-bottom: 1.5rem;
 `;
 
 function FormPage(): JSX.Element {
