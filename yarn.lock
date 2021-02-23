@@ -1296,7 +1296,7 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hcaptcha/react-hcaptcha@^0.3.2":
+"@hcaptcha/react-hcaptcha@0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-0.3.2.tgz#8910ea4c111799336fb64de6aa7b74329a7d7579"
   integrity sha512-+90hSDwtnKAk3PXJsyABi+wRHS1B+wgWjDO4nz68KpkLnE73rMz/XMdl+ckrwYkFFilzIDKI3o1IqOpMapEwgg==
@@ -2016,7 +2016,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hcaptcha__react-hcaptcha@^0.1.4":
+"@types/hcaptcha__react-hcaptcha@0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@types/hcaptcha__react-hcaptcha/-/hcaptcha__react-hcaptcha-0.1.4.tgz#145cab4f0ac29fe8925dc98ab16cf2dffacad7d5"
   integrity sha512-eqEIBR7yn4Y1fRtxPnFlEP8SAHwX762Z27s/ifd5wfJicviz6HynF8gHCgUPPtfYlaQFHa/A0NkwBA5YNmNCmQ==
