@@ -315,7 +315,7 @@ function FormPage(): JSX.Element {
     }
 
     let captcha = null;
-    if (!(FormFeatures.DisableAntispam in form.features)) {
+    if (!(FormFeatures.DisableAntispam in form.features) && open) {
         captcha = (
             <div css={captchaStyles}>
                 <HCaptcha
