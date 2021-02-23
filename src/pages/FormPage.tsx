@@ -341,8 +341,8 @@ function FormPage(): JSX.Element {
                 <form id="form" onSubmit={handleSubmit} css={[formStyles, unselectable]}>
                     { closed_header }
                     { questions }
-                    { captcha }
                 </form>
+                { captcha }
                 <Navigation form_state={open}/>
             </div>
 
