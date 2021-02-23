@@ -16,11 +16,11 @@ interface SelectProps {
 }
 
 interface SelectStateProps {
-    values: Map<string, string | Map<string, boolean> | null>
+    values: { [key: string]: string | { [subKey: string]: boolean; } | null; }
 }
 
 interface SelectDispatchProps {
-    setValue: (question: Question, value: string | Map<string, boolean> | null) => SetValueAction
+    setValue: (question: Question, value: string | { [key: string]: boolean } | null) => SetValueAction
 }
 
 const containerStyles = css`
@@ -191,7 +191,7 @@ class Select extends React.Component<SelectProps & SelectStateProps & SelectDisp
     }
 
     focusOption(): void {
-        if (!this.props.values.get(this.props.question.id)) {
+        if (!(this.props.question.id in this.props.values) || !this.props.values[this.props.question.id]) {
             this.props.setValue(this.props.question, "temporary");
             this.props.onBlurHandler();
             this.props.setValue(this.props.question, null);

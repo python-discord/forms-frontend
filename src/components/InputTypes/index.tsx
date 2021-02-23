@@ -37,11 +37,11 @@ export default function create_input(props: QuestionProp & QuestionStateProp & Q
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
         case QuestionType.TextArea:
-            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
+            result = <TextArea question={question} handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
             break;
 
         case QuestionType.Checkbox:
-            result = options.map((option, index) => <Checkbox index={index} option={option} handler={handler} key={index}/>);
+            result = options.map((option, index) => <Checkbox question={question} index={index} option={option} handler={handler} key={index}/>);
             break;
 
         case QuestionType.Radio:
@@ -53,7 +53,7 @@ export default function create_input(props: QuestionProp & QuestionStateProp & Q
             break;
 
         case QuestionType.ShortText:
-            result = <ShortText handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref} question={question}/>;
+            result = <ShortText key={props.question.id} handler={handler} onBlurHandler={onBlurHandler} valid={valid} focus_ref={focus_ref} question={question}/>;
             break;
 
         case QuestionType.Range:
@@ -66,7 +66,7 @@ export default function create_input(props: QuestionProp & QuestionStateProp & Q
             break;
 
         default:
-            result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
+            result = <TextArea question={question} handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
     }
     /* eslint-enable react/react-in-jsx-scope */
 

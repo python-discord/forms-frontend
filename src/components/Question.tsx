@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { ChangeEvent } from "react";
-import { connect } from "react-redux";
+import React, {ChangeEvent} from "react";
+import {connect} from "react-redux";
 
-import { Question, QuestionType } from "../api/question";
-import { selectable } from "../commonStyles";
+import {Question, QuestionType} from "../api/question";
+import {selectable} from "../commonStyles";
 import create_input from "./InputTypes";
 import ErrorMessage from "./ErrorMessage";
-import { FormState } from "../store/form/types";
-import { setError, SetErrorAction, setValid, SetValidAction, setValue, SetValueAction } from "../store/form/actions";
+import {FormState} from "../store/form/types";
+import {setError, SetErrorAction, setValid, SetValidAction, setValue, SetValueAction} from "../store/form/actions";
 
 const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
@@ -47,10 +47,14 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
         }
         this.blurHandler = this.blurHandler.bind(this);
 
-        props.setValid(props.question, true);
-        props.setError(props.question, "");
+        if (!(props.question.id in props.valid)) {
+            props.setValid(props.question, true);
+        }
+        if (!(props.question.id in props.errors)) {
+            props.setError(props.question, "");
+        }
 
-        if (!skip_normal_state.includes(props.question.type)) {
+        if (!skip_normal_state.includes(props.question.type) && !(props.question.id in props.values)) {
             props.setValue(props.question, "");
         }
     }
@@ -100,12 +104,6 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
             this.props.setValue(this.props.question, values);
         } else {
             this.props.setValue(this.props.question, value);
-        }
-
-        // Toggle checkbox class
-        if (event.target.type == "checkbox" && event.target.parentElement !== null) {
-            event.target.parentElement.classList.toggle("unselected");
-            event.target.parentElement.classList.toggle("selected");
         }
 
         const options: string | string[] = this.props.question.data["options"];
@@ -194,17 +192,28 @@ export class RenderedQuestion extends React.Component<QuestionProp & QuestionSta
     }
 
     componentDidMount(): void {
+        // We don't want to set if we already have them in values.
+        if (this.props.question.id in this.props.values) {
+            return;
+        }
+
         // Initialize defaults for complex and nested fields
         const options: string | string[] = this.props.question.data["options"];
-        const values = this.props.values[this.props.question.id];
+        let values = this.props.values[this.props.question.id];
 
         switch (this.props.question.type) {
             case QuestionType.Checkbox:
-                if (typeof options === "string" || !(typeof values === "object") || !values) {
+                if (typeof options === "string") {
                     return;
                 }
 
+                if (!(typeof values === "object") || !values) {
+                    values = {};
+                }
+
                 options.forEach((option, index) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     values[`${("000" + index).slice(-4)}. ${option}`] = false;
                 });
                 this.props.setValue(this.props.question, values);

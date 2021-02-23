@@ -3,6 +3,8 @@ import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
 import { hiddenInput, multiSelectInput } from "../../commonStyles";
+import { useSelector } from "react-redux";
+import { FormState } from "../../store/form/types";
 
 interface RangeProps {
     question_id: string,
@@ -97,11 +99,15 @@ const sliderStyles = css`
 `;
 
 export default function Range(props: RangeProps): JSX.Element {
+    const values = useSelector<FormState, FormState["values"]>(
+        state => state.values
+    );
+    const value = values[props.question_id];
     const range = props.options.map((option, index) => {
         return (
             <label css={[selectorStyles, css`width: 1rem`]} key={index}>
                 <span css={optionStyles}>{option}</span>
-                <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler} onBlur={props.onBlurHandler}/>
+                <input type="radio" name={props.question_id} css={hiddenInput} onChange={props.handler} onBlur={props.onBlurHandler} checked={value === option}/>
                 <div css={multiSelectInput}/>
             </label>
         );

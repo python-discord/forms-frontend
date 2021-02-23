@@ -3,6 +3,8 @@ import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
 import { multiSelectInput, hiddenInput } from "../../commonStyles";
+import { useSelector } from "react-redux";
+import { FormState } from "../../store/form/types";
 
 interface RadioProps {
     option: string,
@@ -30,9 +32,13 @@ const styles = css`
 `;
 
 export default function Radio(props: RadioProps): JSX.Element {
+    const values = useSelector<FormState, FormState["values"]>(
+        state => state.values
+    );
+    const value = values[props.question_id];
     return (
         <label css={styles}>
-            <input type="radio" name={props.question_id} onChange={props.handler} css={hiddenInput} onBlur={props.onBlurHandler}/>
+            <input type="radio" name={props.question_id} onChange={props.handler} css={hiddenInput} onBlur={props.onBlurHandler} checked={value === props.option}/>
             <div css={multiSelectInput}/>
             {props.option}<br/>
         </label>

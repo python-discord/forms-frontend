@@ -3,13 +3,15 @@ import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
 import colors from "../../colors";
 import { multiSelectInput, hiddenInput } from "../../commonStyles";
-import {useSelector} from "react-redux";
-import {FormState} from "../../store/form/types";
+import { useSelector } from "react-redux";
+import { FormState } from "../../store/form/types";
+import { Question } from "../../api/question";
 
 interface CheckboxProps {
     index: number,
     option: string,
-    handler: (event: ChangeEvent<HTMLInputElement>) => void
+    handler: (event: ChangeEvent<HTMLInputElement>) => void,
+    question: Question
 }
 
 const generalStyles = css`
@@ -58,10 +60,16 @@ export default function Checkbox(props: CheckboxProps): JSX.Element {
     const values = useSelector<FormState, FormState["values"]>(
         state => state.values
     );
+    let value = values[props.question.id];
+    if (typeof value !== "object" || !value) {
+        value = {};
+    }
+    const checked = value[`${("000" + props.index).slice(-4)}. ${props.option}`];
+
     return (
         <label css={[generalStyles, activeStyles]}>
-            <label className="unselected" css={multiSelectInput}>
-                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler} checked={!!values[`${("000" + props.index).slice(-4)}. ${props.option}`]}/>
+            <label className={checked ? "selected" : "unselected"} css={multiSelectInput}>
+                <input type="checkbox" value={props.option} css={hiddenInput} name={`${("000" + props.index).slice(-4)}. ${props.option}`} onChange={props.handler} checked={checked}/>
                 <span className="checkmark"/>
             </label>
             {props.option}<br/>
