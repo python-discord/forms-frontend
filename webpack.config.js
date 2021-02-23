@@ -93,7 +93,8 @@ module.exports = {
         REACT_APP_SENTRY_DSN: "https://false@notreal.ingest.sentry.io/1234",
         REACT_APP_OAUTH2_CLIENT_ID: "0",
         BACKEND_URL: "https://forms-api.pythondiscord.com/",
-        CONTEXT: "development"
+        CONTEXT: "development",
+        HCAPTCHA_SITEKEY: "10000000-ffff-ffff-ffff-000000000001"
     }), new HtmlWebpackPlugin({
         inject: true,
         template: 'public/index.html'
