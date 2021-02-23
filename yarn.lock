@@ -1296,6 +1296,11 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@hcaptcha/react-hcaptcha@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@hcaptcha/react-hcaptcha/-/react-hcaptcha-0.3.2.tgz#8910ea4c111799336fb64de6aa7b74329a7d7579"
+  integrity sha512-+90hSDwtnKAk3PXJsyABi+wRHS1B+wgWjDO4nz68KpkLnE73rMz/XMdl+ckrwYkFFilzIDKI3o1IqOpMapEwgg==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -2010,6 +2015,13 @@
   integrity sha512-mWA/4zFQhfvOA8zWkXobwJvBD7vzcxgrOQ0J5CH1votGqdq9m7+FwtGaqyCZqC3NyyBkc9z4m+iry4LlqcMWJg==
   dependencies:
     "@types/node" "*"
+
+"@types/hcaptcha__react-hcaptcha@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@types/hcaptcha__react-hcaptcha/-/hcaptcha__react-hcaptcha-0.1.4.tgz#145cab4f0ac29fe8925dc98ab16cf2dffacad7d5"
+  integrity sha512-eqEIBR7yn4Y1fRtxPnFlEP8SAHwX762Z27s/ifd5wfJicviz6HynF8gHCgUPPtfYlaQFHa/A0NkwBA5YNmNCmQ==
+  dependencies:
+    "@types/react" "*"
 
 "@types/history@*":
   version "4.7.8"
