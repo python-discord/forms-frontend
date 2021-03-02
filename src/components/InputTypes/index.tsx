@@ -1,5 +1,5 @@
 import Checkbox from "./Checkbox";
-import Code from "./Code";
+import Code from "./code/Code";
 import Radio from "./Radio";
 import Range from "./Range";
 import Select from "./Select";
@@ -25,6 +25,10 @@ export default function create_input({ question, public_state }: QuestionProp, h
     // eslint-disable-next-line
     // @ts-ignore
     let options: string[] = question.data["options"];
+    // eslint-disable-next-line
+    // @ts-ignore
+    let language: string = question.data["language"] || "python";
+
     let valid = true;
     if (!public_state.get("valid")) {
         valid = false;
@@ -64,7 +68,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
 
         case QuestionType.Code:
             // TODO: Implement
-            result = <Code handler={handler}/>;
+            result = <Code handler={handler} language={language}/>;
             break;
 
         default:
