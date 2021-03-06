@@ -31,16 +31,16 @@ const errorStyles =  css`
   visibility: hidden;
   width: 100%;
   left: 0;
-  
+
   text-align: center;
   white-space: normal;
   box-sizing: border-box;
-  
+
   padding: 0 15rem;
   @media (max-width: 750px) {
     padding: 0 5rem;
   }
-  
+
   color: red;
   margin-top: 2.5rem;
 `;

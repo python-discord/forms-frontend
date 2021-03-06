@@ -96,12 +96,14 @@ class Navigation extends React.Component<NavigationProps> {
         let submit = null;
 
         if (this.props.form_state) {
+            let inner_submit;
             if (this.props.scopes.includes(OAuthScopes.Identify) && !checkScopes(this.props.scopes)) {
                 // Render OAuth button if login is required, and the scopes needed are not available
-                submit = <OAuth2Button scopes={this.props.scopes} rerender={() => this.setState({"logged_in": true})}/>;
+                inner_submit = <OAuth2Button scopes={this.props.scopes} rerender={() => this.setState({"logged_in": true})}/>;
             } else {
-                submit = <button form="form" type="submit">Submit</button>;
+                inner_submit = <button form="form" type="submit">Submit</button>;
             }
+            submit = <div css={submitStyles}>{ inner_submit }</div>;
         }
 
         return (
@@ -110,7 +112,7 @@ class Navigation extends React.Component<NavigationProps> {
                     <Link to="/" css={Navigation.returnStyles}>Return Home</Link>
                 </div>
                 <br css={this.separatorStyles}/>
-                <div css={submitStyles}>{ submit }</div>
+                { submit }
             </div>
         );
     }
