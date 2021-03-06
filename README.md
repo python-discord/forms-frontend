@@ -11,7 +11,8 @@ The project uses [yarn](https://yarnpkg.com/) for dependency and script manageme
 and [webpack](https://webpack.js.org/) for building and development.
 
 A full setup guide is available on [Notion](https://www.notion.so/pythondiscord/Forms-6312360495ff45f487da5b1924184a2d),
-along with a troubleshooting guide.
+along with a troubleshooting guide.<br/>
+Run `yarn install --dev` and `yarn run pre-commit` to setup your dev environment.
 
 ## React & Dependency Info
 ### Project Info
