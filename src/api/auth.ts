@@ -94,7 +94,7 @@ export function checkScopes(scopes?: OAuthScopes[]): boolean {
  * @returns {code, cleanedScopes} The discord authorization code and the scopes the code is granted for.
  * @throws {Error} Indicates that an integrity check failed.
  */
-export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: string, cleanedScopes: OAuthScopes[]}> {
+export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (disable: boolean) => void): Promise<{code: string, cleanedScopes: OAuthScopes[]}> {
     const cleanedScopes = ensureMinimumScopes(scopes, OAuthScopes.Identify);
 
     // Generate a new user state
@@ -114,6 +114,7 @@ export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: stri
     const interval = setInterval(() => {
         if (windowRef?.closed) {
             clearInterval(interval);
+            if (disableFunction) { disableFunction(false); }
         }
     }, 500);
 
@@ -231,7 +232,7 @@ export default async function authorize(scopes: OAuthScopes[] = [], disableFunct
     cookies.remove(CookieNames.Scopes);
 
     if (disableFunction) { disableFunction(true); }
-    await getDiscordCode(scopes).then(async discord_response =>{
+    await getDiscordCode(scopes, disableFunction).then(async discord_response =>{
         await requestBackendJWT(discord_response.code).then(backend_response => {
             const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION, path: "/", expires: new Date(3000, 1)};
             cookies.set(CookieNames.Username, backend_response.username, options);
