@@ -4,7 +4,7 @@ import OAuth2Button from "../../components/OAuth2Button";
 
 test("renders oauth2 sign in button text", () => {
     const { getByText } = render(<OAuth2Button />);
-    const button = getByText(/Sign in with Discord/i);
+    const button = getByText(/Discord Login/i);
     expect(button).toBeInTheDocument();
 });
 

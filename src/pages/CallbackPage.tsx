@@ -7,11 +7,12 @@ export default function CallbackPage(): JSX.Element {
     const params = new URLSearchParams(location.search);
 
     const code = params.get("code");
+    const state = params.get("state");
 
     if (!hasSent) {
         setHasSent(true);
-        window.opener.postMessage(code);
+        window.opener.postMessage({code: code, state: state});
     }
 
-    return <p>Code is {code}</p>;
+    return <div/>;
 }

@@ -51,6 +51,37 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
+const submitStyles = css`
+  text-align: right;
+  white-space: nowrap;
+
+  button:disabled {
+    background-color: ${colors.greyple};
+    cursor: default;
+  }
+
+  button {
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+    font: inherit;
+
+    background-color: ${colors.blurple};
+    transition: background-color 300ms;
+  }
+  
+  button[type="submit"] {
+    padding: 0.55rem 4.25rem;
+  }
+
+  button:enabled:hover {
+    background-color: ${colors.darkerBlurple};
+  }
+`;
+
 const invalidStyles = css`
   .invalid-box {
     -webkit-appearance: none;
@@ -66,5 +97,6 @@ export {
     hiddenInput,
     multiSelectInput,
     textInputs,
+    submitStyles,
     invalidStyles
 };
