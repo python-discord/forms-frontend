@@ -3,21 +3,20 @@ import { render } from "@testing-library/react";
 
 import CallbackPage from "../../pages/CallbackPage";
 
-test("callback page renders provided code", () => {
+test("callback page sends provided code", () => {
     global.opener = {
         postMessage: jest.fn()
     };
 
-    const mockLocation = new URL("https://forms.pythondiscord.com/authorize?code=abcdef");
+    const mockLocation = new URL("https://forms.pythondiscord.com/authorize?code=abcde_code&state=abcde_state");
 
     Object.defineProperty(global, "location", {value: mockLocation});
 
-    const comp = <CallbackPage />;
+    render(<CallbackPage/>);
 
-    const { getByText } = render(comp);
-
-
-    const codeText = getByText(/Code is abcdef/);
-    expect(codeText).toBeInTheDocument();
     expect(global.opener.postMessage).toBeCalledTimes(1);
+    expect(global.opener.postMessage).toBeCalledWith({
+        code: "abcde_code",
+        state: "abcde_state"
+    });
 });
