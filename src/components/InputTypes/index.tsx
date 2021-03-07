@@ -1,5 +1,4 @@
 import Checkbox from "./Checkbox";
-import Code from "./Code";
 import Radio from "./Radio";
 import Range from "./Range";
 import Select from "./Select";
@@ -38,6 +37,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
 
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
+        case QuestionType.Code: // TODO: Implement
         case QuestionType.TextArea:
             result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
             break;
@@ -60,11 +60,6 @@ export default function create_input({ question, public_state }: QuestionProp, h
 
         case QuestionType.Range:
             result = <Range question_id={question.id} options={options} handler={handler} required={question.required} onBlurHandler={onBlurHandler}/>;
-            break;
-
-        case QuestionType.Code:
-            // TODO: Implement
-            result = <Code handler={handler}/>;
             break;
 
         default:
