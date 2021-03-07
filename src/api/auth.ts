@@ -110,6 +110,13 @@ export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: stri
         "height=700,width=500,location=no,menubar=no,resizable=no,status=no,titlebar=no,left=300,top=300"
     );
 
+    // Clean up on login
+    const interval = setInterval(() => {
+        if (windowRef?.closed) {
+            clearInterval(interval);
+        }
+    }, 500);
+
     // Handle response
     const code = await new Promise<string>(resolve => {
         window.onmessage = (message: MessageEvent) => {
@@ -120,6 +127,8 @@ export async function getDiscordCode(scopes: OAuthScopes[]): Promise<{code: stri
 
             if (message.isTrusted) {
                 windowRef?.close();
+
+                clearInterval(interval);
 
                 // State integrity check
                 if (message.data.state !== state.toString()) {
