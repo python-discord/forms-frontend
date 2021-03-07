@@ -14,7 +14,7 @@ interface RadioProps {
 const styles = css`
   div {
     width: 0.7em;
-    height: 0.75em;
+    height: 0.7em;
     top: 0.18rem;
 
     border-radius: 50%;
