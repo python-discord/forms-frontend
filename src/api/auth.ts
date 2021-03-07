@@ -41,27 +41,10 @@ export enum APIErrorMessages {
  * Commented out enums are locked behind whitelists.
  */
 export enum OAuthScopes {
-    Bot = "bot",
     Connections = "connections",
     Email = "email",
     Identify = "identify",
-    Guilds = "guilds",
-    GuildsJoin = "guilds.join",
-    GDMJoin = "gdm.join",
-    MessagesRead = "messages.read",
-    // RPC = "rpc",
-    // RPC_API = "rpc.api",
-    // RPCNotifRead = "rpc.notifications.read",
-    WebhookIncoming = "webhook.incoming",
-    // AppsBuildsUpload = "applications.builds.upload",
-    AppsBuildsRead = "applications.builds.read",
-    AppsStoreUpdate = "applications.store.update",
-    AppsEntitlements = "applications.entitlements",
-    // RelationshipsRead = "relationships.read",
-    // ActivitiesRead = "activities.read",
-    // ActivitiesWrite = "activities.write",
-    AppsCommands = "applications.commands",
-    AppsCommandsUpdate = "applications.commands.update"
+    Guilds = "guilds"
 }
 
 /**
