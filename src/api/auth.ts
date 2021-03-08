@@ -106,8 +106,7 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (d
     // Open login window
     const windowRef = window.open(
         `https://discord.com/api/oauth2/authorize?client_id=${OAUTH2_CLIENT_ID}&state=${state}&response_type=code&scope=${scopeString}&redirect_uri=${redirectURI}&prompt=none`,
-        "Discord_OAuth2",
-        "height=700,width=500,location=no,menubar=no,resizable=no,status=no,titlebar=no,left=300,top=300"
+        "Discord_OAuth2"
     );
 
     // Clean up on login
