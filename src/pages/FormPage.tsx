@@ -2,7 +2,8 @@
 import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
-import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import React, {SyntheticEvent, useEffect, useState, createRef, useRef} from "react";
 import { useParams } from "react-router";
 import { PropagateLoader } from "react-spinners";
 
@@ -143,12 +144,21 @@ const closedHeaderStyles = css`
   }
 `;
 
+const captchaStyles = css`
+  text-align: center;
+  
+  margin-bottom: 1.5rem;
+`;
+
 function FormPage(): JSX.Element {
     const { id } = useParams<PathParams>();
 
     const [form, setForm] = useState<Form>();
     const [sending, setSending] = useState<boolean>();
     const [sent, setSent] = useState<boolean>();
+
+    let captchaToken: string | null = null;
+    const captchaRef = useRef<HCaptcha>(null);
 
     useEffect(() => {
         getForm(id).then(form => {
@@ -197,6 +207,9 @@ function FormPage(): JSX.Element {
 
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
+        // Make copy to avoid losing value on state change.
+        const submitCaptchaToken = captchaToken;
+
         // Client-side required validation
         const invalidFieldIDs: number[] = [];
         questions.forEach((prop, i) => {
@@ -229,6 +242,11 @@ function FormPage(): JSX.Element {
                 }
             }
             return;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (!(FormFeatures.DisableAntispam in form!.features) && !submitCaptchaToken && captchaRef && captchaRef.current) {
+            captchaRef.current.execute();
         }
 
         setSending(true);
@@ -265,7 +283,13 @@ function FormPage(): JSX.Element {
             }
         });
 
-        await ApiClient.post(`forms/submit/${id}`, {response: answers});
+        const data: { [key: string]: unknown } = {response: answers};
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if (!(FormFeatures.DisableAntispam in form!.features)) {
+            data["captcha"] = submitCaptchaToken;
+        }
+
+        await ApiClient.post(`forms/submit/${id}`, data);
         setSending(false);
         setSent(true);
     }
@@ -284,6 +308,25 @@ function FormPage(): JSX.Element {
         closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
     }
 
+    let captcha = null;
+    if (!(FormFeatures.DisableAntispam in form.features) && open) {
+        captcha = (
+            <div css={captchaStyles}>
+                <HCaptcha
+                    sitekey={process.env.HCAPTCHA_SITEKEY ? process.env.HCAPTCHA_SITEKEY : ""}
+                    theme="dark"
+                    onVerify={token => {
+                        captchaToken = token;
+                    }}
+                    onExpire={() => {
+                        captchaToken = null;
+                    }}
+                    ref={captchaRef}
+                />
+            </div>
+        );
+    }
+
     return (
         <div>
             <HeaderBar title={form.name} description={form.description}/>
@@ -293,6 +336,7 @@ function FormPage(): JSX.Element {
                     { closed_header }
                     { questions }
                 </form>
+                { captcha }
                 <Navigation form_state={open} scopes={scopes}/>
             </div>
 
