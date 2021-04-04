@@ -76,7 +76,7 @@
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-resolve": "26.6.2",
     "jest-svg-transformer": "1.0.0",
-    "jest-watch-typeahead": "0.6.1",
+    "jest-watch-typeahead": "0.6.2",
     "webpack-dev-server": "3.11.2"
   }
 }
