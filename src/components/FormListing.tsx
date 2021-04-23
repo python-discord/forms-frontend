@@ -33,7 +33,7 @@ function FormListing({ form }: FormListingProps): JSX.Element {
     }
 
     &:hover {
-      transform: scale(1.01);
+      transform: scale(1.03);
     }
   `;
 
