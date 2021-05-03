@@ -1,0 +1,52 @@
+version: "3.6"
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: forms-backend
+      MONGO_INITDB_ROOT_PASSWORD: forms-backend
+      MONGO_INITDB_DATABASE: pydis_forms
+
+  snekbox:
+    image: ghcr.io/python-discord/snekbox:latest
+    ipc: none
+    ports:
+      - "127.0.0.1:8060:8060"
+    privileged: true
+
+  backend:
+    image: ghcr.io/python-discord/forms-backend
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=mongodb://forms-backend:forms-backend@mongo:27017
+      - SNEKBOX_URL=http://snekbox:8060/eval
+      - OAUTH2_CLIENT_ID
+      - OAUTH2_CLIENT_SECRET
+      - ALLOWED_URL
+      - DEBUG=true
+      - PRODUCTION=false
+    env_file:
+      - .env
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    volumes:
+      - ./public:/app/public:ro
+      - ./src:/app/src:ro
+      - ./.swcrc:/app/.swcrc:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./webpack.config.js:/app/webpack.config.js:ro
+    ports:
+      - 3000:3000
+    environment:
+      - BACKEND_URL=http://localhost:8000/
+    env_file:
+      - .env
