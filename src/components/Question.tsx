@@ -28,6 +28,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         super(props);
         if (props.question.type === QuestionType.TextArea) {
             this.handler = this.text_area_handler.bind(this);
+        } else if (props.question.type === QuestionType.Code) {
+            this.handler = this.code_field_handler.bind(this);
         } else {
             this.handler = this.normal_handler.bind(this);
         }
@@ -47,7 +49,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     // This is here to allow dynamic selection between the general handler, and the textarea handler.
-    handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void {} // eslint-disable-line
+    handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string): void {} // eslint-disable-line
 
     blurHandler(): void {
         if (this.props.question.required) {
@@ -132,6 +134,21 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.setPublicState("value", event.target.value);
     }
 
+    code_field_handler(newContent: string): void {
+        // If content stays same (what means that user have just zoomed in), then don't validate.
+        let validate = false;
+        if (newContent != this.props.public_state.get("value")) {
+            validate = true;
+        }
+
+        this.setPublicState("value", newContent);
+
+        // CodeMirror don't provide onBlur event, so we have to run validation here.
+        if (validate) {
+            this.blurHandler();
+        }
+    }
+
     validateField(): void {
         if (!this.props.question.required) {
             return;
@@ -142,6 +159,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         switch (this.props.question.type) {
             case QuestionType.TextArea:
             case QuestionType.ShortText:
+            case QuestionType.Code:
                 if (this.props.public_state.get("value") === "") {
                     invalid = true;
                 }

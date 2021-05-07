@@ -9,6 +9,7 @@ import React, { ChangeEvent } from "react";
 
 import { QuestionType } from "../../api/question";
 import { QuestionProp } from "../Question";
+import Code from "./Code";
 
 const require_options: Array<QuestionType> = [
     QuestionType.Radio,
@@ -18,7 +19,7 @@ const require_options: Array<QuestionType> = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
+export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
     // eslint-disable-next-line
@@ -37,7 +38,10 @@ export default function create_input({ question, public_state }: QuestionProp, h
 
     /* eslint-disable react/react-in-jsx-scope */
     switch (question.type) {
-        case QuestionType.Code: // TODO: Implement
+        case QuestionType.Code:
+            result = <Code handler={handler} questionId={question.id}/>;
+            break;
+
         case QuestionType.TextArea:
             result = <TextArea handler={handler} valid={valid} onBlurHandler={onBlurHandler} focus_ref={focus_ref}/>;
             break;
