@@ -8413,10 +8413,10 @@ svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swc-loader@0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/swc-loader/-/swc-loader-0.1.12.tgz#f3c336df30a3633cfd3fc7ce29aff178c72fe62a"
-  integrity sha512-DFV2PCxJGaym9S/K2xhUp/sVsTSeNNoPAvjqM/W3eZ9tVteUthjDOFjkQ7wo9TPemskKVBLQ8cTCAqoitXB3GQ==
+swc-loader@0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/swc-loader/-/swc-loader-0.1.13.tgz#26826951aae2fef1ad7eeeb1ee2e6b8e575fdd0a"
+  integrity sha512-ikN0lCbL/YvX7nqoEuS3G3B1N2GiKmuzyiybJ/Twbni/pOorzKEme4Jr2BjOnCXpKKsim6I3yuRnmKw9TdPY5Q==
   dependencies:
     "@swc/core" "^1.1.48"
     loader-utils "^2.0.0"
