@@ -1864,7 +1864,7 @@
   resolved "https://registry.yarnpkg.com/@swc/core-win32-x64-msvc/-/core-win32-x64-msvc-1.2.56.tgz#6869931f6dc8c7f3ca8fac2326709dec581c2834"
   integrity sha512-eSqajMZ6fAfHAy1h9Bh8oN90faCy3zsj3VcgjhEbJQnjUIN32eOLlWb70pAb58ckP+c2pBejaRuRElVjaViVjw==
 
-"@swc/core@1.2.55", "@swc/core@^1.1.48", "@swc/core@^1.2.30":
+"@swc/core@1.2.55", "@swc/core@^1.2.30", "@swc/core@^1.2.52":
   version "1.2.55"
   resolved "https://registry.yarnpkg.com/@swc/core/-/core-1.2.55.tgz#41752178af694e5f2bbe10e5aac096d5d842df92"
   integrity sha512-ZtyxJ0IT0dv4jq0oPrlQytRN9HoSocT5Xig6y/Yx28uFRGJOlqaP1NrkNyZhB65c29gwXoedxN54uVqmXe+aFQ==
@@ -8430,12 +8430,12 @@ svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swc-loader@0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/swc-loader/-/swc-loader-0.1.13.tgz#26826951aae2fef1ad7eeeb1ee2e6b8e575fdd0a"
-  integrity sha512-ikN0lCbL/YvX7nqoEuS3G3B1N2GiKmuzyiybJ/Twbni/pOorzKEme4Jr2BjOnCXpKKsim6I3yuRnmKw9TdPY5Q==
+swc-loader@0.1.14:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/swc-loader/-/swc-loader-0.1.14.tgz#822f45e5cad45137da8f8ac7f54861baf8caefb8"
+  integrity sha512-JNSnwWj2EK5tbSWHELcYe8sJVQEHoezLYZRwRTW6HcelsLgsy+i4V1HFW8x1tcfZLvWyyTyompeVUuwpVudtTQ==
   dependencies:
-    "@swc/core" "^1.1.48"
+    "@swc/core" "^1.2.52"
     loader-utils "^2.0.0"
 
 symbol-tree@^3.2.2, symbol-tree@^3.2.4:
