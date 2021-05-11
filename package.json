@@ -9,7 +9,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.3",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "@sentry/react": "6.3.5",
+    "@sentry/react": "6.3.6",
     "@svgr/webpack": "5.5.0",
     "@swc/core": "1.2.55",
     "axios": "0.21.1",
