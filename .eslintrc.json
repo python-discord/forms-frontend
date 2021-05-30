@@ -28,10 +28,6 @@
                 "SwitchCase": 1
             }
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
         "quotes": [
             "error",
             "double"
@@ -41,7 +37,8 @@
             "always"
         ],
         "no-trailing-spaces": "error",
-        "eol-last": "error"
+        "eol-last": "error",
+        "linebreak-style": "off"
     },
     "settings": {
         "react": {
