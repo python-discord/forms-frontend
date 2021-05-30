@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { jsx, css } from "@emotion/react";
 import React, { useEffect } from "react";
 
 import { basicSetup } from "@codemirror/basic-setup";
@@ -13,15 +13,23 @@ interface CodeProps {
     questionId: string,
 }
 
+const styles = css`
+  border: 3px solid lightgray;
+  border-radius: 5px;
+  overflow:auto;
+  height: 20rem;
+`;
+
 export default function Code(props: CodeProps): JSX.Element {
     const onUpdate = () => EditorView.updateListener.of((v: ViewUpdate) => {
         props.handler(v.state.doc.toString());
+
     });
 
     useEffect(() => {
         const el = document.getElementById(`${props.questionId}-code`);
         const state = EditorState.create({
-            extensions: [basicSetup, python(), onUpdate(), oneDark]
+            extensions: [basicSetup, python(), onUpdate(), oneDark],
         });
         const view = new EditorView({
             state,
@@ -31,7 +39,5 @@ export default function Code(props: CodeProps): JSX.Element {
         return () => view.destroy();
     }, []);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return <div id={`${props.questionId}-code`}/>;
+    return <div id={`${props.questionId}-code`} css={styles} />;
 }

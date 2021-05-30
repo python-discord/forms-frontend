@@ -4,6 +4,11 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
+    "@codemirror/basic-setup": "^0.18.2",
+    "@codemirror/lang-python": "^0.18.0",
+    "@codemirror/state": "^0.18.7",
+    "@codemirror/theme-one-dark": "^0.18.1",
+    "@codemirror/view": "^0.18.14",
     "@emotion/react": "11.4.0",
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-brands-svg-icons": "5.15.3",
