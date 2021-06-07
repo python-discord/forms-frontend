@@ -48,7 +48,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         this.props.public_state.set(target, value);
     }
 
-    // This is here to allow dynamic selection between the general handler, and the textarea handler.
+    // This is here to allow dynamic selection between the general handler, textarea, and code field handlers.
     handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string): void {} // eslint-disable-line
 
     blurHandler(): void {
