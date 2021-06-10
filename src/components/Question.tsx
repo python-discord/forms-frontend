@@ -205,6 +205,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     render(): JSX.Element {
         const question = this.props.question;
 
+        const name = question.name.split("\n").map((line, index) => <span key={index}>{line}<br/></span>);
+        name.push(<span key={name.length - 1}>{name.pop()?.props.children[0]}</span>);
+
         if (question.type === QuestionType.Section) {
             const styles = css`
               h1 {
@@ -227,18 +230,24 @@ class RenderedQuestion extends React.Component<QuestionProp> {
               }
             `;
 
+            const data = question.data["text"];
+            let text;
+
+            if (data && typeof(data) === "string") {
+                text = data.split("\n").map((line, index) => <h3 css={selectable} key={index}>{line}<br/></h3>);
+                text.push(<h3 css={selectable} key={data.length - 1}>{text.pop()?.props.children[0]}</h3>);
+            } else {
+                text = "";
+            }
+
             return <div css={styles}>
-                <h1 css={[selectable, css`line-height: 2.5rem;`]}>{question.name}</h1>
-                { question.data["text"] ? <h3 css={selectable}>{question.data["text"]}</h3> : "" }
+                <h1 css={[selectable, css`line-height: 2.5rem;`]}>{name}</h1>
+                { text }
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
 
         } else {
             const requiredStarStyles = css`
-              span {
-                display: none;
-              }
-
               .required {
                 display: inline-block;
                 position: relative;
@@ -261,7 +270,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
             return <div ref={this.props.scroll_ref}>
                 <h2 css={[selectable, requiredStarStyles]}>
-                    {question.name}<span className={question.required ? "required" : ""}>*</span>
+                    {name}<span css={css`display: none;`} className={question.required ? "required" : ""}>*</span>
                 </h2>
                 { create_input(this.props, this.handler, this.blurHandler, this.props.focus_ref) }
                 <ErrorMessage show={!valid} message={error} />
