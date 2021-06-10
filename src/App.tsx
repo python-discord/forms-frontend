@@ -2,6 +2,7 @@
 /** @global location */
 import React, { Suspense } from "react";
 import { jsx, css, Global } from "@emotion/react";
+import { Helmet } from "react-helmet";
 
 import {
     BrowserRouter as Router,
@@ -38,6 +39,10 @@ function PageLoading() {
 function App(): JSX.Element {
     return (
         <div>
+            <Helmet>
+                <meta name="description" content="Python Discord Forms is the surveying system for the Python Discord server."/>
+            </Helmet>
+
             <Global styles={globalStyles}/>
             <Router>
                 <Route render={({ location }) => (

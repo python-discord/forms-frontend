@@ -21,5 +21,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#7289DA",
-  "background_color": "#23272A"
+  "background_color": "#23272A",
+  "description": "Python Discord Forms is the surveying system for the Python Discord server."
 }
