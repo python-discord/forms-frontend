@@ -3,6 +3,7 @@ import { jsx, css } from "@emotion/react";
 import { Link } from "react-router-dom";
 
 import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
+import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import { PropagateLoader } from "react-spinners";
 
@@ -286,6 +287,11 @@ function FormPage(): JSX.Element {
 
     return (
         <div>
+            <Helmet>
+                <title>{`${form.name} | Python Discord Forms`}</title>
+                <meta name="description" content={form.description}/>
+            </Helmet>
+
             <HeaderBar title={form.name} description={form.description}/>
 
             <div>
