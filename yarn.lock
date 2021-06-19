@@ -1089,7 +1089,7 @@
     "@codemirror/view" "^0.18.0"
     lezer-tree "^0.13.0"
 
-"@codemirror/basic-setup@^0.18.2":
+"@codemirror/basic-setup@0.18.2":
   version "0.18.2"
   resolved "https://registry.yarnpkg.com/@codemirror/basic-setup/-/basic-setup-0.18.2.tgz#a766b7e8898ce5d4cd4782c1ebf87d15a0f1965f"
   integrity sha512-4UNFQ4jhU7wKxJH23AJcZW6Ho54VXUpmbtFnN5amIdtGci4ZLvci4M7JKgKFraHmKfDIYQnSzN8d8ohXR7CRhw==
@@ -1182,7 +1182,7 @@
     "@codemirror/state" "^0.18.3"
     "@codemirror/view" "^0.18.0"
 
-"@codemirror/lang-python@^0.18.0":
+"@codemirror/lang-python@0.18.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@codemirror/lang-python/-/lang-python-0.18.0.tgz#d317566f7c51d906e3df98bf41a3c9a2ce03ef40"
   integrity sha512-SZrt+TXD3uih4Cb8lTm7yt7JLIqehgI77PdGQXlPcYB/LHQdOuOPzXOXf8jqu/K+PRN72BFxfvb13teaxdERaQ==
@@ -1259,7 +1259,7 @@
     "@codemirror/view" "^0.18.0"
     crelt "^1.0.5"
 
-"@codemirror/state@^0.18.0", "@codemirror/state@^0.18.3", "@codemirror/state@^0.18.6", "@codemirror/state@^0.18.7":
+"@codemirror/state@0.18.7", "@codemirror/state@^0.18.0", "@codemirror/state@^0.18.3", "@codemirror/state@^0.18.6":
   version "0.18.7"
   resolved "https://registry.yarnpkg.com/@codemirror/state/-/state-0.18.7.tgz#3339a732387bb2c034987c57ccf0649ef2f7c4c1"
   integrity sha512-cVyTiAC9vv90NKmGOfNtBjyIem3BqKui1L5Hfcxurp8K9votQj2oH9COcgWPnQ2Xs64yC70tEuTt9DF1pj5PFQ==
@@ -1271,7 +1271,7 @@
   resolved "https://registry.yarnpkg.com/@codemirror/text/-/text-0.18.0.tgz#a4a98862989ccef5545e730b269136d524c6a7c7"
   integrity sha512-HMzHNIAbjCiCf3tEJMRg6ul01KPuXxQGNiHlHgAnqPguq/CX+L4Nvj5JlWQAI91Pupk18zhmM1c6eaazX4YeTg==
 
-"@codemirror/theme-one-dark@^0.18.1":
+"@codemirror/theme-one-dark@0.18.1":
   version "0.18.1"
   resolved "https://registry.yarnpkg.com/@codemirror/theme-one-dark/-/theme-one-dark-0.18.1.tgz#fa625db384418e89b778d2ae49824c44d5280e3f"
   integrity sha512-0XRfWYDfwUlPlN8yrO7bDB+EuHFqUNhTJwgp2iIixZWejuZQK0NxKmjuhkiGsEz25w7toM12uUsNJ5mo7iFQcA==
@@ -1288,7 +1288,7 @@
     "@codemirror/state" "^0.18.0"
     "@codemirror/view" "^0.18.0"
 
-"@codemirror/view@^0.18.0", "@codemirror/view@^0.18.14":
+"@codemirror/view@0.18.14", "@codemirror/view@^0.18.0":
   version "0.18.14"
   resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-0.18.14.tgz#509f2a487e1fa62b6b147e3a9db5aab6ce228495"
   integrity sha512-b83favt2XtbV343wzmY4e5lTwYBdpklFZ31jJ/SDGixx6Yj5xTgZd6NU6jkK/XOT40D1rcRoKcQfFbbpjLG1SA==
