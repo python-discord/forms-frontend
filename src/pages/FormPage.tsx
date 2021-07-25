@@ -156,6 +156,31 @@ function FormPage(): JSX.Element {
         });
     }, []);
 
+    // This will prompt the user before they try to exit the page
+    const cancelUnload = (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+        // Not all browsers listen to preventDefault
+        event.returnValue = "";
+        return "";
+    };
+
+    useEffect(() => {
+        window.onbeforeunload = cancelUnload;
+
+        // The function we return is called when the page is unloaded
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (sent) {
+            window.onbeforeunload = null;
+        } else {
+            window.onbeforeunload = cancelUnload;
+        }
+    }, [sent]);
+
     if (form && sent) {
         const thanksStyle = css`font-family: "Uni Sans", "Hind", "Arial", sans-serif; margin-top: 15.5rem;`;
         const divStyle = css`width: 80%;`;
