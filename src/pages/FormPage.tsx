@@ -39,7 +39,6 @@ class Navigation extends React.Component<NavigationProps> {
       > div {
         display: inline-block;
         margin: 2rem auto;
-        width: 50%;
       }
 
       @media (max-width: 870px) {
@@ -108,10 +107,6 @@ class Navigation extends React.Component<NavigationProps> {
 
         return (
             <div css={[unselectable, Navigation.containerStyles]}>
-                <div className={ "return_button" + (this.props.form_state ? "" : " closed") }>
-                    <Link to="/" css={Navigation.returnStyles}>Return Home</Link>
-                </div>
-                <br css={this.separatorStyles}/>
                 { submit }
             </div>
         );
