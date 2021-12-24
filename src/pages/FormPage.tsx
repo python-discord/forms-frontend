@@ -150,6 +150,8 @@ function FormPage(): JSX.Element {
     const [sending, setSending] = useState<boolean>();
     const [sent, setSent] = useState<boolean>();
 
+    const bottomDivRef = createRef<HTMLDivElement>();
+
     useEffect(() => {
         getForm(id).then(form => {
             setForm(form);
@@ -204,6 +206,20 @@ function FormPage(): JSX.Element {
         return <RenderedQuestion ref={questionRef} focus_ref={createRef<any>()} scroll_ref={createRef<HTMLDivElement>()} question={question} public_state={new Map()} key={index + Date.now()}/>;
     });
 
+    const open: boolean = form.features.includes(FormFeatures.Open);
+    const require_auth: boolean = form.features.includes(FormFeatures.RequiresLogin);
+
+    const scopes: OAuthScopes[] = [];
+    if (require_auth) {
+        scopes.push(OAuthScopes.Identify);
+        if (form.features.includes(FormFeatures.CollectEmail)) { scopes.push(OAuthScopes.Email); }
+    }
+
+    let closed_header = null;
+    if (!open) {
+        closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
+    }
+
     async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
         // Client-side required validation
@@ -237,6 +253,13 @@ function FormPage(): JSX.Element {
                     firstErrored.props.focus_ref.current.focus({ preventScroll: true });
                 }
             }
+            return;
+        }
+
+        // Scroll to bottom when OAuth2 required
+        if (scopes.length && !checkScopes(scopes)) {
+            bottomDivRef.current.scrollIntoView({ behavior: "smooth", block: "end"});
+
             return;
         }
 
@@ -279,20 +302,6 @@ function FormPage(): JSX.Element {
         setSent(true);
     }
 
-    const open: boolean = form.features.includes(FormFeatures.Open);
-    const require_auth: boolean = form.features.includes(FormFeatures.RequiresLogin);
-
-    const scopes = [];
-    if (require_auth) {
-        scopes.push(OAuthScopes.Identify);
-        if (form.features.includes(FormFeatures.CollectEmail)) { scopes.push(OAuthScopes.Email); }
-    }
-
-    let closed_header = null;
-    if (!open) {
-        closed_header = <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
-    }
-
     return (
         <div>
             <HeaderBar title={form.name} description={form.description}/>
@@ -305,7 +314,7 @@ function FormPage(): JSX.Element {
                 <Navigation form_state={open} scopes={scopes}/>
             </div>
 
-            <div css={css`margin-bottom: 10rem`}/>
+            <div css={css`margin-bottom: 10rem`} ref={bottomDivRef}/>
             <ScrollToTop/>
         </div>
     );
