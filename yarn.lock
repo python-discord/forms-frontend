@@ -4036,10 +4036,10 @@ dot-case@^3.0.3:
     no-case "^3.0.3"
     tslib "^1.10.0"
 
-dotenv@9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-9.0.0.tgz#2408af4e39378375b7eebe30b7b54989e36d6e46"
-  integrity sha512-yy3x9XjojW8ROTBePD25AcMoHqGHsvHmtfw8QWlpEXyMMXXPj6brUA464AptUvHuTPRmNz6Sd3ZLNLeJl6dHJA==
+dotenv@14.1.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-14.1.0.tgz#66e9c0c448501b006f4dd9f08080c9011c7a5e6c"
+  integrity sha512-h8V+Yfa8m0YSjf3Rgbno51cxWldb4PEixIJVL55VmW7uAfeLQKiaPrEUiBps+ARK9MeqjJgTf269OMmu6lOODQ==
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
