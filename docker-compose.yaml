@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo:latest
     ports:
-      - 27017:27017
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: forms-backend
       MONGO_INITDB_ROOT_PASSWORD: forms-backend
@@ -19,8 +19,11 @@ services:
 
   backend:
     image: ghcr.io/python-discord/forms-backend
+    depends_on:
+      - mongo
+      - snekbox
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - DATABASE_URL=mongodb://forms-backend:forms-backend@mongo:27017
       - SNEKBOX_URL=http://snekbox:8060/eval
@@ -39,13 +42,10 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./public:/app/public:ro
-      - ./src:/app/src:ro
-      - ./.swcrc:/app/.swcrc:ro
-      - ./tsconfig.json:/app/tsconfig.json:ro
-      - ./webpack.config.js:/app/webpack.config.js:ro
+      - .:/app:ro
+      - /app/node_modules  # Ensure dependencies do not collide with a user's local install
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
       - BACKEND_URL=http://localhost:8000/
     env_file:
