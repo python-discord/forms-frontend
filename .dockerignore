@@ -1,0 +1,11 @@
+# Ignore Everything
+*
+
+# Include required files
+!public/
+!src/
+!.swcrc
+!package.json
+!tsconfig.json
+!webpack.config.js
+!yarn.lock
