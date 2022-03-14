@@ -232,6 +232,9 @@ function FormPage(): JSX.Element {
 
             const questionRef = refMap.get(question.id);
             if (questionRef && questionRef.current) {
+                if(questionRef.current.props.question.type == QuestionType.Code){
+                    questionRef.current.props.public_state.set("unittestsFailed", false);
+                }
                 questionRef.current.validateField();
             }
             // In case when field is invalid, add this to invalid fields list.
@@ -263,7 +266,6 @@ function FormPage(): JSX.Element {
             return;
         }
 
-        setSending(true);
 
         const answers: { [key: string]: unknown } = {};
         questions.forEach(prop => {
@@ -297,9 +299,25 @@ function FormPage(): JSX.Element {
             }
         });
 
-        await ApiClient.post(`forms/submit/${id}`, {response: answers});
-        setSending(false);
-        setSent(true);
+        await ApiClient.post(`forms/submit/${id}`, {response: answers})
+            .then(() => {
+                setSending(true);
+                setSending(false);
+                setSent(true);
+            })
+            .catch(err => {
+                // Validation on a submitted code questions
+                const questionId = err.response.data.test_results[0].question_id;
+
+                questions.forEach((prop) => {
+                    const question: Question = prop.props.question;
+                    const questionRef = refMap.get(question.id);
+                    if (question.id === questionId){
+                        prop.props.public_state.set("unittestsFailed", true);
+                        questionRef.current.validateField();
+                    }
+                });
+            });
     }
 
     return (
