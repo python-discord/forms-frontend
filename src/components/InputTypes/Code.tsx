@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/react";
 import React, { useEffect } from "react";
 
-import { basicSetup } from "@codemirror/basic-setup";
+import { basicSetup } from "codemirror";
 import { python } from "@codemirror/lang-python";
 import { EditorState } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
