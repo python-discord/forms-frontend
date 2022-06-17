@@ -19,6 +19,7 @@ services:
 
   backend:
     image: ghcr.io/python-discord/forms-backend
+    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "--debug", "backend:app"]
     depends_on:
       - mongo
       - snekbox
