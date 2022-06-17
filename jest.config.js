@@ -11,5 +11,6 @@ module.exports = {
     ],
     collectCoverage: true,
     coverageProvider: "v8",
-    setupFilesAfterEnv: ["./src/setupTests.ts"]
+    setupFilesAfterEnv: ["./src/setupTests.ts"],
+    testEnvironment: "jest-environment-jsdom"
 }
