@@ -37,6 +37,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         this.setPublicState("valid", true);
         this.setPublicState("error", "");
+        if (props.question.type === QuestionType.Code) {
+            this.setPublicState("unittestsFailed", false);
+        }
 
         if (!skip_normal_state.includes(props.question.type)) {
             this.setPublicState("value", "");
@@ -44,8 +47,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     setPublicState(target: string, value: string | boolean | null, callback?:() => void): void {
-        this.setState({[target]: value}, callback);
         this.props.public_state.set(target, value);
+        this.setState({[target]: value}, callback);
     }
 
     // This is here to allow dynamic selection between the general handler, textarea, and code field handlers.
@@ -155,6 +158,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
 
         let invalid = false;
+        let unittest_failed = false;
         const options: string | string[] = this.props.question.data["options"];
         switch (this.props.question.type) {
             case QuestionType.TextArea:
@@ -162,6 +166,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             case QuestionType.Code:
                 if (this.props.public_state.get("value") === "") {
                     invalid = true;
+                }
+                if (this.props.public_state.get("unittestsFailed")) {
+                    unittest_failed = true;
                 }
                 break;
 
@@ -189,7 +196,11 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         if (invalid) {
             this.setPublicState("error", "Field must be filled.");
             this.setPublicState("valid", false);
-        } else {
+        } else if (unittest_failed) {
+            this.setPublicState("error", "1 or more unittests failed.");
+            this.setPublicState("valid", false);
+        }
+        else {
             this.setPublicState("error", "");
             this.setPublicState("valid", true);
         }
