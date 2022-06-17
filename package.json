@@ -15,7 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@sentry/react": "6.3.5",
-    "@svgr/webpack": "5.5.0",
+    "@svgr/webpack": "6.2.1",
     "@swc/core": "1.2.203",
     "axios": "0.27.2",
     "copy-webpack-plugin": "8.1.1",
