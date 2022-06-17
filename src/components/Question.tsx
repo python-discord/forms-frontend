@@ -47,8 +47,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     setPublicState(target: string, value: string | boolean | null, callback?:() => void): void {
-        this.setState({[target]: value}, callback);
         this.props.public_state.set(target, value);
+        this.setState({[target]: value}, callback);
     }
 
     // This is here to allow dynamic selection between the general handler, textarea, and code field handlers.

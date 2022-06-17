@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import React, { SyntheticEvent, useEffect, useState, createRef } from "react";
 import { useParams } from "react-router";
 import { PropagateLoader } from "react-spinners";
+import { AxiosError } from "axios";
 
 import HeaderBar from "../components/HeaderBar";
 import RenderedQuestion from "../components/Question";
@@ -89,7 +90,7 @@ class Navigation extends React.Component<NavigationProps> {
 
     constructor(props: NavigationProps) {
         super(props);
-        this.setState({"logged_in": false});
+        this.state = {"logged_in": false};
     }
 
     render(): JSX.Element {
@@ -298,28 +299,33 @@ function FormPage(): JSX.Element {
                     answers[question.id] = prop.props.public_state.get("value");
             }
         });
-
-        await ApiClient.post(`forms/submit/${id}`, {response: answers})
+        await ApiClient.post(`forms/submit/${id}`, { response: answers })
             .then(() => {
                 setSending(true);
                 setSending(false);
                 setSent(true);
             })
-            .catch(err => {
-                // Validation on a submitted code questions
-                const questionId = err.response.data.test_results[0].question_id;
-
-                questions.forEach((prop) => {
-                    const question: Question = prop.props.question;
-                    const questionRef = refMap.get(question.id);
-                    if (question.id === questionId){
-                        prop.props.public_state.set("unittestsFailed", true);
-                        questionRef.current.validateField();
+            .catch((err: AxiosError) => {
+                switch (err.response.status) {
+                    case 422: {
+                        // Validation on a submitted code questions
+                        const questionId =
+                            err.response.data.test_results[0].question_id;
+                        questions.forEach((prop) => {
+                            const question: Question = prop.props.question;
+                            const questionRef = refMap.get(question.id);
+                            if (question.id === questionId) {
+                                prop.props.public_state.set("unittestsFailed", true);
+                                questionRef.current.validateField();
+                            }
+                        });
+                        break;
                     }
-                });
+                    default:
+                        throw err;
+                }
             });
     }
-
     return (
         <div>
             <HeaderBar title={form.name} description={form.description}/>
