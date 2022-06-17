@@ -1,7 +1,9 @@
 module.exports = {
     transform: {
         '^.+\\.(t|j)sx?$': ['@swc/jest'],
-        '^.+\\.svg$': ['jest-svg-transformer']
+    },
+    moduleNameMapper: {
+        '\\.svg$': '<rootDir>/src/tests/__mocks__/svg.ts',
     },
     collectCoverageFrom: [
         "src/**/*.{js,jsx,ts,tsx}",
