@@ -1,5 +1,7 @@
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
@@ -33,8 +35,10 @@ console.log(`   SHA: %c ${process.env.COMMIT_REF} `, `padding: 2px; border-radiu
 
 console.log("%cCome join us on Discord! https://discord.gg/python", `font-size: 1.5em; font-family: "Hind", "Arial"; color: ${colors.blurple}`);
 
-/* eslint-disable react/react-in-jsx-scope */
-ReactDOM.render(
+const rootDocument = document.getElementById("root");
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(rootDocument!);
+root.render(
     <React.StrictMode>
         <Sentry.ErrorBoundary
             fallback={<p>An error has occurred with Python Discord Forms. Please let us know in the Discord server at <a href="https://discord.gg/python">discord.gg/python</a></p>}
@@ -47,10 +51,9 @@ ReactDOM.render(
                     console.log(err);
             }}
         >
-            <App />
+            <App/>
         </Sentry.ErrorBoundary>
-    </React.StrictMode>,
-    document.getElementById("root")
+    </React.StrictMode>
 );
 /* eslint-enable react/react-in-jsx-scope */
 
