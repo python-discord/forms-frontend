@@ -15,7 +15,7 @@
     "@fortawesome/react-fontawesome": "0.1.18",
     "@sentry/react": "7.2.0",
     "@svgr/webpack": "6.2.1",
-    "@swc/core": "1.2.203",
+    "@swc/core": "1.2.204",
     "axios": "0.27.2",
     "codemirror": "6.0.0",
     "copy-webpack-plugin": "11.0.0",
