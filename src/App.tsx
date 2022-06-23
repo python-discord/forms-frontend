@@ -3,11 +3,7 @@
 import React, { Suspense } from "react";
 import { jsx, css, Global } from "@emotion/react";
 
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { PropagateLoader } from "react-spinners";
 
@@ -35,31 +31,33 @@ function PageLoading() {
     </div>;
 }
 
+function Routing(): JSX.Element {
+    const renderedRoutes = routes.map(({path, Component}) => (
+        <Route key={path} path={path} element={
+            <Suspense fallback={<PageLoading/>}><Component/></Suspense>
+        }/>
+    ));
+
+    return (
+        <Routes location={location}>
+            {renderedRoutes}
+        </Routes>
+    );
+}
+
 function App(): JSX.Element {
     return (
         <div>
             <Global styles={globalStyles}/>
-            <Router>
-                <Route render={({ location }) => (
-                    <TransitionGroup>
-                        <CSSTransition
-                            key={location.pathname}
-                            classNames="fade"
-                            timeout={300}
-                        >
-                            <Switch location={location}>
-                                {routes.map(({path, Component}) => (
-                                    <Route exact key={path} path={path}>
-                                        <Suspense fallback={<PageLoading/>}>
-                                            <Component/>
-                                        </Suspense>
-                                    </Route>
-                                ))}
-                            </Switch>
-                        </CSSTransition>
-                    </TransitionGroup>
-                )}/>
-            </Router>
+            <TransitionGroup>
+                <CSSTransition key={location.pathname} classNames="fade" timeout={300}>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="*" element={<Routing/>}/>
+                        </Routes>
+                    </BrowserRouter>
+                </CSSTransition>
+            </TransitionGroup>
         </div>
     );
 }

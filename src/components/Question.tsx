@@ -35,14 +35,22 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
         this.blurHandler = this.blurHandler.bind(this);
 
-        this.setPublicState("valid", true);
-        this.setPublicState("error", "");
+        const _state: {[key: string]: string | boolean | null} = {
+            "valid": true,
+            "error": "",
+        };
+
         if (props.question.type === QuestionType.Code) {
-            this.setPublicState("unittestsFailed", false);
+            _state["unittestsFailed"] = false;
         }
 
         if (!skip_normal_state.includes(props.question.type)) {
-            this.setPublicState("value", "");
+            _state["value"] = "";
+        }
+
+        this.state = _state;
+        for (const [key, value] of Object.entries(_state)) {
+            this.props.public_state.set(key, value);
         }
     }
 

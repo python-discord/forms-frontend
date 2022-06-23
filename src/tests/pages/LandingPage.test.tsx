@@ -1,10 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 
 import LandingPage from "../../pages/LandingPage";
 import * as forms from "../../api/forms";
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import { QuestionType } from "../../api/question";
 
 const testingForm: forms.Form = {
@@ -25,13 +25,12 @@ const testingForm: forms.Form = {
     submitted_text: null
 };
 
-test("renders landing page", () => {
-    const setForms = jest.fn(() => [testingForm]);
-    Object.defineProperty(forms, "getForms", setForms);
-    const handleForms = jest.spyOn(React, "useState");
-    handleForms.mockImplementation(() => [[testingForm], setForms]);
-    const { getByText } = render(<Router><LandingPage /></Router>);
-    // If we rendered the headerbar we rendered the landing page.
-    const headerBar = getByText(/Python Discord Forms/);
-    expect(headerBar).toBeInTheDocument();
+test("renders landing page", async () => {
+    jest.spyOn(forms, "getForms").mockImplementation(() => Promise.resolve([testingForm]));
+
+    const { getByText } = render(<LandingPage/>, {wrapper: MemoryRouter});
+    await waitFor(() => {
+        const headerBar = getByText(/Python Discord Forms/);
+        expect(headerBar).toBeInTheDocument();
+    });
 });

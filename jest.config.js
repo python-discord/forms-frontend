@@ -1,7 +1,9 @@
 module.exports = {
     transform: {
         '^.+\\.(t|j)sx?$': ['@swc/jest'],
-        '^.+\\.svg$': ['jest-svg-transformer']
+    },
+    moduleNameMapper: {
+        '\\.svg$': '<rootDir>/src/tests/__mocks__/svg.ts',
     },
     collectCoverageFrom: [
         "src/**/*.{js,jsx,ts,tsx}",
@@ -9,5 +11,6 @@ module.exports = {
     ],
     collectCoverage: true,
     coverageProvider: "v8",
-    setupFilesAfterEnv: ["./src/setupTests.ts"]
+    setupFilesAfterEnv: ["./src/setupTests.ts"],
+    testEnvironment: "jest-environment-jsdom"
 }
