@@ -1,6 +1,6 @@
 # Request joe, HassanAbouelela for all PRs.
-*                              @jb3 @HassanAbouelela
+*                              @HassanAbouelela
 
 # Request ks129 for CI and API related PRs.
 .github/workflows/**           @ks129 @jb3
-src/api/**                     @ks129 @jb3
+src/api/**                     @ks129
