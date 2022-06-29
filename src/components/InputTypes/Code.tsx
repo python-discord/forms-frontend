@@ -8,6 +8,8 @@ import { EditorState } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView, ViewUpdate } from "@codemirror/view";
 
+import { selectable } from "../../commonStyles";
+
 interface CodeProps {
     handler: (newContent: string) => void,
     questionId: string,
@@ -43,5 +45,5 @@ export default function Code(props: CodeProps): JSX.Element {
         return () => view.destroy();
     }, []);
 
-    return <div id={`${props.questionId}-code`} css={styles} />;
+    return <div id={`${props.questionId}-code`} css={[styles, selectable]} />;
 }
