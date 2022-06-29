@@ -11,8 +11,12 @@ interface SelectProps {
 }
 
 const containerStyles = css`
+  display: flex;
   position: relative;
   width: min(20rem, 90%);
+  
+  flex-direction: column;
+  border-bottom: 0;
 
   color: black;
   cursor: pointer;
@@ -84,7 +88,6 @@ const arrowStyles = css`
 
 const optionContainerStyles = css`
   .option_container {
-    position: absolute;
     width: 100%;
     height: 0;
 
@@ -100,16 +103,22 @@ const optionContainerStyles = css`
     border: 0.1rem solid black;
     border-radius: 0 0 8px 8px;
     border-top: none;
+    outline: none;
 
     transition: opacity 200ms, visibility 200ms;
 
     * {
       cursor: pointer;
     }
+    
+    .scrollbar-container {
+      height: 150px;
+      overflow-y: scroll;
+    }
   }
 
   :focus-within .option_container {
-    height: auto;
+    height: 100%;
     visibility: visible;
     opacity: 1;
   }
@@ -198,13 +207,15 @@ class Select extends React.Component<SelectProps> {
                     <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>...</div>
                 </div>
 
-                <div className="option_container" tabIndex={-1} css={css`outline: none;`}>
-                    { this.props.options.map((option, index) => (
-                        <div key={index} css={optionStyles}>
-                            <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
-                            <div>{option}</div>
-                        </div>
-                    )) }
+                <div className="option_container" tabIndex={-1}>
+                    <div className="scrollbar-container">
+                        { this.props.options.map((option, index) => (
+                            <div key={index} css={optionStyles}>
+                                <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)}/>
+                                <div>{option}</div>
+                            </div>
+                        )) }
+                    </div>
                 </div>
             </div>
         );

@@ -1,6 +1,6 @@
 const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const webpack = require("webpack")
 if (process.env.NODE_ENV === "development") { require("dotenv").config(); }
 
@@ -96,5 +96,7 @@ module.exports = {
     }), new HtmlWebpackPlugin({
         inject: true,
         template: 'public/index.html'
+    }), new webpack.SourceMapDevToolPlugin({
+        filename: "[file].map[query]"
     })]
 }
