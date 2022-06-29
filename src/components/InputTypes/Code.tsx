@@ -18,6 +18,10 @@ const styles = css`
   border-radius: 5px;
   overflow:auto;
   height: 20rem;
+  
+  .cm-editor {
+    height: 100%;
+  }
 `;
 
 export default function Code(props: CodeProps): JSX.Element {
