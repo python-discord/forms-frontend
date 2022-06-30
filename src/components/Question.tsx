@@ -239,6 +239,29 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
     }
 
+    generateUnitTestErrorMessage(valid: boolean): JSX.Element {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const failures: string = this.props.public_state.get("error");
+        let inner;
+
+        if (this.props.public_state.get("testFailure")) {
+            inner = <div>
+                {"Unittest Failure:\n"}
+                <ul css={css`font-size: 1rem;`}>
+                    {failures.split(";").map(testName =>
+                        <li css={css`letter-spacing: 0.5px;`} key={testName}>{testName}</li>
+                    )}
+                </ul>
+            </div>;
+        } else {
+            inner = `Unittest Failure:\n\n${failures}`;
+        }
+
+        const element = <div css={css`white-space: pre-wrap; word-wrap: break-word;`}>{inner}</div>;
+        return <ErrorMessage show={!valid} message={""} innerElement={element}/>;
+    }
+
     render(): JSX.Element {
         const question = this.props.question;
 
@@ -299,10 +322,15 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             if (!this.props.public_state.get("valid")) {
                 valid = false;
             }
-            const rawError = this.props.public_state.get("error");
-            let error = "";
-            if (typeof rawError === "string") {
-                error = rawError;
+
+            let error;
+            if (this.props.question.type === QuestionType.Code && this.props.public_state.get("unittestsFailed")) {
+                error = this.generateUnitTestErrorMessage(valid);
+            } else {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                const message: string = this.props.public_state.get("error");
+                error = <ErrorMessage show={!valid} message={message}/>;
             }
 
             return <div ref={this.props.scroll_ref}>
@@ -310,7 +338,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                     {name}<span css={css`display: none;`} className={question.required ? "required" : ""}>*</span>
                 </h2>
                 { create_input(this.props, this.handler, this.blurHandler, this.props.focus_ref) }
-                <ErrorMessage show={!valid} message={error} />
+                {error}
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;
         }
