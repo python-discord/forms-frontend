@@ -16,3 +16,16 @@ export interface Question {
     data: { [key: string]: string | string[] },
     required: boolean
 }
+
+type unittestError = {
+    question_id: string,
+    question_index: number,
+    return_code: number,
+    passed: boolean,
+    result: string,
+}
+
+export interface UnittestFailure {
+    error: string,
+    test_results: unittestError[],
+}
