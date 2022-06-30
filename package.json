@@ -78,9 +78,9 @@
     "eslint-plugin-react": "7.30.0",
     "husky": "8.0.1",
     "jest": "28.1.1",
-    "jest-environment-jsdom": "28.1.1",
+    "jest-environment-jsdom": "28.1.2",
     "jest-resolve": "28.1.1",
     "jest-watch-typeahead": "1.1.0",
-    "webpack-dev-server": "4.9.2"
+    "webpack-dev-server": "4.9.3"
   }
 }
