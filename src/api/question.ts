@@ -17,7 +17,7 @@ export interface Question {
     required: boolean
 }
 
-type unittestError = {
+type UnittestError = {
     question_id: string,
     question_index: number,
     return_code: number,
@@ -27,5 +27,5 @@ type unittestError = {
 
 export interface UnittestFailure {
     error: string,
-    test_results: unittestError[],
+    test_results: UnittestError[],
 }
