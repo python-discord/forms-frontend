@@ -12,7 +12,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import globalStyles from "./globalStyles";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
-const FormPage = React.lazy(() => import("./pages/FormPage"));
+const FormPage = React.lazy(() => import("./pages/FormPage/FormPage"));
 const CallbackPage = React.lazy(() => import("./pages/CallbackPage"));
 
 const routes = [

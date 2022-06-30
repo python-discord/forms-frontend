@@ -40,10 +40,6 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             "error": "",
         };
 
-        if (props.question.type === QuestionType.Code) {
-            _state["unittestsFailed"] = false;
-        }
-
         if (!skip_normal_state.includes(props.question.type)) {
             _state["value"] = "";
         }
@@ -70,6 +66,10 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             } else {
                 this.setPublicState("error", "");
                 this.setPublicState("valid", true);
+
+                if (this.props.question.type === QuestionType.Code) {
+                    this.props.public_state.set("unittestsFailed", false);
+                }
             }
         }
     }
@@ -166,17 +166,14 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
 
         let invalid = false;
-        let unittest_failed = false;
         const options: string | string[] = this.props.question.data["options"];
+
         switch (this.props.question.type) {
             case QuestionType.TextArea:
             case QuestionType.ShortText:
             case QuestionType.Code:
                 if (this.props.public_state.get("value") === "") {
                     invalid = true;
-                }
-                if (this.props.public_state.get("unittestsFailed")) {
-                    unittest_failed = true;
                 }
                 break;
 
@@ -204,11 +201,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         if (invalid) {
             this.setPublicState("error", "Field must be filled.");
             this.setPublicState("valid", false);
-        } else if (unittest_failed) {
-            this.setPublicState("error", "1 or more unittests failed.");
-            this.setPublicState("valid", false);
-        }
-        else {
+        } else {
             this.setPublicState("error", "");
             this.setPublicState("valid", true);
         }
