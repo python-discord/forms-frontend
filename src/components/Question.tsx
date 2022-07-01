@@ -252,7 +252,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
 
         const element = <div css={css`white-space: pre-wrap; word-wrap: break-word;`}>{inner}</div>;
-        return <ErrorMessage show={!valid} message={""} innerElement={element}/>;
+        return <ErrorMessage show={!valid} content={element}/>;
     }
 
     render(): JSX.Element {
@@ -323,7 +323,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 const message: string = this.props.public_state.get("error");
-                error = <ErrorMessage show={!valid} message={message}/>;
+                error = <ErrorMessage show={!valid} content={message}/>;
             }
 
             return <div ref={this.props.scroll_ref}>

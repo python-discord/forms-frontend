@@ -5,8 +5,7 @@ import {selectable} from "../commonStyles";
 
 interface ErrorMessageProps {
     show: boolean,
-    message: string,
-    innerElement?: JSX.Element,
+    content: string | JSX.Element,
 }
 
 export default function ErrorMessage(props: ErrorMessageProps): JSX.Element | null {
@@ -21,15 +20,17 @@ export default function ErrorMessage(props: ErrorMessageProps): JSX.Element | nu
       transition: opacity 200ms, visibility 200ms;
     `;
 
-    // These styles are not applied when inner element is explicitly set
+    // These styles are not applied when content is an element;
     const floatingStyles = css`
       position: absolute;
       z-index: -1;
     `;
 
+    const isString = typeof props.content === "string";
+
     return (
-        <div tabIndex={-1} css={[styles, selectable, props.innerElement ? null : floatingStyles]}>
-            {props.innerElement ? props.innerElement : props.message}
+        <div tabIndex={-1} css={[styles, selectable, isString ? floatingStyles : null]}>
+            {props.content}
         </div>
     );
 }
