@@ -15,15 +15,40 @@ const skip_normal_state: Array<QuestionType> = [
     QuestionType.Range
 ];
 
+export interface QuestionState {
+    // Common keys
+    value: string | null | Map<string, boolean>
+
+    // Validation
+    valid: boolean
+    error: string
+
+    // Unittest-specific validation
+    unittestsFailed: boolean  // This indicates a failure in testing when submitting (i.e not from common validation)
+    testFailure: boolean  // Whether we had failed unittests, or other failures, such as code loading
+}
+
 export type QuestionProp = {
     question: Question,
-    public_state: Map<string, string | boolean | null>,
     scroll_ref: React.RefObject<HTMLDivElement>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    focus_ref: React.RefObject<any>
+    focus_ref: React.RefObject<any>,
+    selfRef: React.RefObject<RenderedQuestion>,
 }
 
 class RenderedQuestion extends React.Component<QuestionProp> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: TS2610
+    state: QuestionState;
+
+    /** The current state of the question components, which may or may not match the state rendered. */
+    public realState: QuestionState;
+
+    setState(state: Partial<QuestionState>): void {
+        this.realState = {...this.realState, ...state};
+        super.setState(state);
+    }
+
     constructor(props: QuestionProp) {
         super(props);
         if (props.question.type === QuestionType.TextArea) {
@@ -35,24 +60,16 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
         this.blurHandler = this.blurHandler.bind(this);
 
-        const _state: {[key: string]: string | boolean | null} = {
-            "valid": true,
-            "error": "",
+        this.state = {
+            value: skip_normal_state.includes(props.question.type) ? null : "",
+            valid: true,
+            error: "",
+
+            unittestsFailed: false,
+            testFailure: false,
         };
 
-        if (!skip_normal_state.includes(props.question.type)) {
-            _state["value"] = "";
-        }
-
-        this.state = _state;
-        for (const [key, value] of Object.entries(_state)) {
-            this.props.public_state.set(key, value);
-        }
-    }
-
-    setPublicState(target: string, value: string | boolean | null, callback?:() => void): void {
-        this.props.public_state.set(target, value);
-        this.setState({[target]: value}, callback);
+        this.realState = this.state;
     }
 
     // This is here to allow dynamic selection between the general handler, textarea, and code field handlers.
@@ -60,49 +77,46 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
     blurHandler(): void {
         if (this.props.question.required) {
-            if (!this.props.public_state.get("value")) {
-                this.setPublicState("error", "Field must be filled.");
-                this.setPublicState("valid", false);
+            if (!this.realState.value) {
+                this.setState({
+                    error: "Field must be filled.",
+                    valid: false
+                });
             } else {
-                this.setPublicState("error", "");
-                this.setPublicState("valid", true);
-
-                if (this.props.question.type === QuestionType.Code) {
-                    this.props.public_state.set("unittestsFailed", false);
-                }
+                this.setState({
+                    error: "",
+                    valid: true,
+                    unittestsFailed: false
+                });
             }
         }
     }
 
     normal_handler(event: ChangeEvent<HTMLInputElement>): void {
-        let target: string;
-        let value: string | boolean;
-
         switch (event.target.type) {
             case "checkbox":
-                target = event.target.name;
-                value = event.target.checked;
+                if (!(this.realState.value instanceof Map)) return;
+                this.realState.value.set(event.target.name, event.target.checked);
                 break;
 
-            case "radio":
-            // This handles radios and ranges, as they are both based on the same fundamental input type
-                target = "value";
+            case "radio": {
+                // This handles radios and ranges, as they are both based on the same fundamental input type
+                let value;
                 if (event.target.parentElement) {
                     value = event.target.parentElement.innerText.trimEnd();
                 } else {
                     value = event.target.value;
                 }
+                this.setState({value: value});
                 break;
+            }
 
             default:
-                target = "value";
-                value = event.target.value;
+                this.setState({value: event.target.value});
         }
 
-        this.setPublicState(target, value);
-
         // Toggle checkbox class
-        if (event.target.type == "checkbox" && event.target.parentElement !== null) {
+        if (event.target.type === "checkbox" && event.target.parentElement !== null) {
             event.target.parentElement.classList.toggle("unselected");
             event.target.parentElement.classList.toggle("selected");
         }
@@ -110,49 +124,48 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         const options: string | string[] = this.props.question.data["options"];
         switch (event.target.type) {
             case "text":
-                this.setPublicState("valid", true);
+                this.setState({valid: true});
                 break;
 
             case "checkbox":
                 // We need to check this here, because checkbox doesn't have onBlur
                 if (this.props.question.required && typeof options !== "string") {
-                    const keys: string[] = [];
-                    options.forEach((val, index) => {
-                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
+                    if (!(this.realState.value instanceof Map)) return;
+                    const valid = Array.from(this.realState.value.values()).includes(true);
+                    this.setState({
+                        error: valid ? "" : "Field must be filled.",
+                        valid: valid
                     });
-                    if (keys.every(v => !this.props.public_state.get(v))) {
-                        this.setPublicState("error", "Field must be filled.");
-                        this.setPublicState("valid", false);
-                    } else {
-                        this.setPublicState("error", "");
-                        this.setPublicState("valid", true);
-                    }
                 }
+
                 break;
 
             case "radio":
-                this.setPublicState("valid", true);
-                this.setPublicState("error", "");
+                this.setState({
+                    valid: true,
+                    error: ""
+                });
                 break;
         }
     }
 
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
         // We will validate again when focusing out.
-        this.setPublicState("valid", true);
-        this.setPublicState("error", "");
-
-        this.setPublicState("value", event.target.value);
+        this.setState({
+            value: event.target.value,
+            valid: true,
+            error: ""
+        });
     }
 
     code_field_handler(newContent: string): void {
         // If content stays same (what means that user have just zoomed in), then don't validate.
         let validate = false;
-        if (newContent != this.props.public_state.get("value")) {
+        if (newContent != this.realState.value) {
             validate = true;
         }
 
-        this.setPublicState("value", newContent);
+        this.setState({value: newContent});
 
         // CodeMirror don't provide onBlur event, so we have to run validation here.
         if (validate) {
@@ -165,94 +178,74 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             return;
         }
 
-        let invalid = false;
+        let valid = true;
         const options: string | string[] = this.props.question.data["options"];
 
         switch (this.props.question.type) {
             case QuestionType.TextArea:
             case QuestionType.ShortText:
             case QuestionType.Code:
-                if (this.props.public_state.get("value") === "") {
-                    invalid = true;
+                if (this.realState.value === "") {
+                    valid = false;
                 }
                 break;
 
             case QuestionType.Select:
             case QuestionType.Range:
             case QuestionType.Radio:
-                if (!this.props.public_state.get("value")) {
-                    invalid = true;
+                if (!this.realState.value) {
+                    valid = false;
                 }
                 break;
 
             case QuestionType.Checkbox:
                 if (typeof options !== "string") {
-                    const keys: string[] = [];
-                    options.forEach((val, index) => {
-                        keys.push(`${("000" + index).slice(-4)}. ${val}`);
-                    });
-                    if (keys.every(v => !this.props.public_state.get(v))) {
-                        invalid = true;
-                    }
+                    if (!(this.realState.value instanceof Map)) return;
+                    valid = Array.from(this.realState.value.values()).includes(true);
                 }
                 break;
         }
 
-        if (invalid) {
-            this.setPublicState("error", "Field must be filled.");
-            this.setPublicState("valid", false);
-        } else {
-            this.setPublicState("error", "");
-            this.setPublicState("valid", true);
-        }
+        this.setState({
+            error: valid ? "" : "Field must be filled",
+            valid: valid
+        });
     }
 
     componentDidMount(): void {
         // Initialize defaults for complex and nested fields
         const options: string | string[] = this.props.question.data["options"];
 
-        if (this.props.public_state.size === 0) {
-            switch (this.props.question.type) {
-                case QuestionType.Checkbox:
-                    if (typeof options === "string") {
-                        return;
-                    }
-
-                    options.forEach((option, index) => {
-                        this.setPublicState(`${("000" + index).slice(-4)}. ${option}`, false);
-                    });
-                    break;
-
-                case QuestionType.Range:
-                case QuestionType.Radio:
-                case QuestionType.Select:
-                    this.setPublicState("value", null);
-                    break;
-            }
+        switch (this.props.question.type) {
+            case QuestionType.Checkbox:
+                if (typeof options === "string") return;
+                this.setState({
+                    value: new Map(options.map((option, index) =>
+                        [`${("000" + index).slice(-4)}. ${option}`, false]
+                    ))
+                });
+                break;
         }
     }
 
-    generateUnitTestErrorMessage(valid: boolean): JSX.Element {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const failures: string = this.props.public_state.get("error");
+    generateUnitTestErrorMessage(): JSX.Element {
         let inner;
 
-        if (this.props.public_state.get("testFailure")) {
+        if (this.realState.testFailure) {
             inner = <div>
                 {"Unittest Failure:\n"}
                 <ul css={css`font-size: 1rem;`}>
-                    {failures.split(";").map(testName =>
+                    {this.realState.error.split(";").map(testName =>
                         <li css={css`letter-spacing: 0.5px;`} key={testName}>{testName}</li>
                     )}
                 </ul>
             </div>;
         } else {
-            inner = `Unittest Failure:\n\n${failures}`;
+            inner = `Unittest Failure:\n\n${this.realState.error}`;
         }
 
         const element = <div css={css`white-space: pre-wrap; word-wrap: break-word;`}>{inner}</div>;
-        return <ErrorMessage show={!valid} content={element}/>;
+        return <ErrorMessage show={!this.realState.valid} content={element}/>;
     }
 
     render(): JSX.Element {
@@ -311,26 +304,18 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 margin-left: 0.2rem;
               }
             `;
-            let valid = true;
-            if (!this.props.public_state.get("valid")) {
-                valid = false;
-            }
-
             let error;
-            if (this.props.question.type === QuestionType.Code && this.props.public_state.get("unittestsFailed")) {
-                error = this.generateUnitTestErrorMessage(valid);
+            if (this.props.question.type === QuestionType.Code && this.realState.unittestsFailed) {
+                error = this.generateUnitTestErrorMessage();
             } else {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                const message: string = this.props.public_state.get("error");
-                error = <ErrorMessage show={!valid} content={message}/>;
+                error = <ErrorMessage show={!this.realState.valid} content={this.realState.error}/>;
             }
 
             return <div ref={this.props.scroll_ref}>
                 <h2 css={[selectable, requiredStarStyles]}>
                     {name}<span css={css`display: none;`} className={question.required ? "required" : ""}>*</span>
                 </h2>
-                { create_input(this.props, this.handler, this.blurHandler, this.props.focus_ref) }
+                { create_input(this, this.handler, this.blurHandler, this.props.focus_ref) }
                 {error}
                 <hr css={css`color: gray; margin: 3rem 0;`}/>
             </div>;

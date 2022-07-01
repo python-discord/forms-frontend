@@ -59,7 +59,7 @@ export default async function handleSubmit(
         // FIXME: Save state while sending
         // setState(FormState.SENDING);
 
-        await ApiClient.post(`forms/submit/${formID}`, {response: parseAnswers(questions)})
+        await ApiClient.post(`forms/submit/${formID}`, {response: parseAnswers(questions, refMap)})
             .then(() => setState(FormState.SENT))
             .catch(error => {
                 if (!error.response) {
@@ -99,10 +99,12 @@ function showUnitTestFailures(refMap: RefMapType, errors: UnittestFailure) {
             throw new Error("Could not find question reference while verifying unittest failure.");
         }
 
-        questionRef.current.setPublicState("valid", false);
-        questionRef.current.setPublicState("unittestsFailed", true);
-        questionRef.current.setPublicState("testFailure", error.return_code === 0);
-        questionRef.current.setPublicState("error", error.result);
+        questionRef.current.setState({
+            valid: false,
+            unittestsFailed: true,
+            testFailure: error.return_code === 0,
+            error: error.result
+        });
     }
 }
 
@@ -117,13 +119,16 @@ function validate(questions: RenderedQuestion[], refMap: RefMapType): boolean {
             return;
         }
 
+        // Add invalid fields to list
         const questionRef = refMap.get(question.id);
         if (questionRef && questionRef.current) {
             questionRef.current.validateField();
-        }
 
-        // In case when field is invalid, add this to invalid fields list.
-        if (prop.props.public_state.get("valid") === false) {
+            if (!questionRef.current.realState.valid) {
+                invalidFieldIDs.push(i);
+            }
+
+        } else {
             invalidFieldIDs.push(i);
         }
     });
@@ -136,9 +141,7 @@ function validate(questions: RenderedQuestion[], refMap: RefMapType): boolean {
                 document.activeElement.blur();
             }
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            firstErrored.props.scroll_ref.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstErrored.props.scroll_ref?.current?.scrollIntoView({ behavior: "smooth", block: "center" });
             if (firstErrored.props.focus_ref && firstErrored.props.focus_ref.current) {
                 firstErrored.props.focus_ref.current.focus({ preventScroll: true });
             }
@@ -153,36 +156,38 @@ function validate(questions: RenderedQuestion[], refMap: RefMapType): boolean {
 /**
  * Parse user answers into a valid submission.
  */
-function parseAnswers(questions: RenderedQuestion[]): { [key: string]: unknown } {
+function parseAnswers(questions: RenderedQuestion[], refMap: RefMapType): { [key: string]: unknown } {
     const answers: { [key: string]: unknown } = {};
 
     questions.forEach(prop => {
         const question: Question = prop.props.question;
-        const options: string | string[] = question.data["options"];
+        const questionRef = refMap.get(question.id);
+
+        if (!questionRef?.current) {
+            throw new Error("Could not find a reference to the current question while submitting.");
+        }
 
         // Parse input from each question
         switch (question.type) {
             case QuestionType.Section:
                 answers[question.id] = false;
                 break;
-
             case QuestionType.Checkbox: {
-                if (typeof options !== "string") {
-                    const keys: Map<string, string> = new Map();
-                    options.forEach((val: string, index) => {
-                        keys.set(val, `${("000" + index).slice(-4)}. ${val}`);
-                    });
-                    const pairs: { [key: string]: boolean } = { };
-                    keys.forEach((val, key) => {
-                        pairs[key] = !!prop.props.public_state.get(val);
-                    });
-                    answers[question.id] = pairs;
-                }
+                const result: {[key: string]: boolean} = {};
+
+                const selected = questionRef.current.realState.value;
+                if (!(selected instanceof Map)) throw new Error("Could not parse checkbox answers.");
+                selected.forEach((value, key) => {
+                    // Remove the index from the key and set its value
+                    result[key.slice(6)] = value;
+                });
+
+                answers[question.id] = result;
                 break;
             }
 
             default:
-                answers[question.id] = prop.props.public_state.get("value");
+                answers[question.id] = questionRef.current.realState.value;
         }
     });
 

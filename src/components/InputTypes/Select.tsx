@@ -1,12 +1,14 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/react";
+import {jsx, css} from "@emotion/react";
 import React from "react";
-import { hiddenInput, invalidStyles } from "../../commonStyles";
+
+import {hiddenInput, invalidStyles} from "../../commonStyles";
+import RenderedQuestion from "../Question";
 
 interface SelectProps {
     options: Array<string>,
-    state_dict: Map<string, string | boolean | null>,
     valid: boolean,
+    question: React.RefObject<RenderedQuestion>
     onBlurHandler: () => void
 }
 
@@ -159,8 +161,12 @@ class Select extends React.Component<SelectProps> {
             return;
         }
 
+        if (!this.props.question?.current) {
+            throw new Error("Missing ref for select question.");
+        }
+
         // Update stored value
-        this.props.state_dict.set("value", option_container.textContent);
+        this.props.question.current.setState({value: option_container.textContent});
 
         // Close the menu
         selected_option.current.focus();
@@ -187,10 +193,14 @@ class Select extends React.Component<SelectProps> {
     }
 
     focusOption(): void {
-        if (!this.props.state_dict.get("value")) {
-            this.props.state_dict.set("value", "temporary");
+        if (!this.props.question?.current) {
+            throw new Error("Missing ref for select question.");
+        }
+
+        if (!this.props.question.current.realState.value) {
+            this.props.question.current.setState({value: "temporary"});
             this.props.onBlurHandler();
-            this.props.state_dict.set("value", null);
+            this.props.question.current.setState({value: null});
         }
     }
 

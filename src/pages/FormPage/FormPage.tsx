@@ -97,10 +97,10 @@ function FormPage(): JSX.Element {
 
         return <RenderedQuestion
             question={question}
-            public_state={new Map()}
             scroll_ref={createRef<HTMLDivElement>()}
             focus_ref={createRef<any>()} // eslint-disable-line @typescript-eslint/no-explicit-any
             key={index + Date.now()}
+            selfRef={questionRef}
             ref={questionRef}
         />;
     });
