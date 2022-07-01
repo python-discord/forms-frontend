@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 import React from "react";
 
 import HeaderBar from "../../components/HeaderBar";
-import RenderedQuestion from "../../components/Question";
 
 import {Form} from "../../api/forms";
 import {selectable, submitStyles, unselectable} from "../../commonStyles";
@@ -14,7 +13,6 @@ import Navigation from "./Navigation";
 
 interface ErrorProps {
     form: Form
-    questions: RenderedQuestion[]
     message: string
 }
 

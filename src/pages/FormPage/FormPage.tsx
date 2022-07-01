@@ -120,7 +120,7 @@ function FormPage(): JSX.Element {
 
         case FormState.UNKNOWN_ERROR:
             return <ErrorPage
-                form={form} questions={questions}
+                form={form}
                 message="An unknown error occurred, please contact the forms team or try again."
             />;
     }
