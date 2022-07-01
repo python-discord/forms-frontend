@@ -5,33 +5,26 @@ import Select from "./Select";
 import ShortText from "./ShortText";
 import TextArea from "./TextArea";
 
-import React, { ChangeEvent } from "react";
+import React, {ChangeEvent} from "react";
 
-import { QuestionType } from "../../api/question";
-import { QuestionProp } from "../Question";
+import {QuestionType} from "../../api/question";
+import RenderedQuestion from "../Question";
 import Code from "./Code";
 
-const require_options: Array<QuestionType> = [
-    QuestionType.Radio,
-    QuestionType.Checkbox,
-    QuestionType.Select,
-    QuestionType.Range
-];
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function create_input({ question, public_state }: QuestionProp, handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => void, onBlurHandler: () => void, focus_ref: React.RefObject<any>): JSX.Element | JSX.Element[] {
+export default function create_input(
+    {props: renderedQuestionProps, realState}: RenderedQuestion,
+    handler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string) => void, onBlurHandler: () => void,
+    focus_ref: React.RefObject<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+): JSX.Element | JSX.Element[] {
     let result: JSX.Element | JSX.Element[];
 
-    // eslint-disable-next-line
-    // @ts-ignore
-    let options: string[] = question.data["options"];
-    let valid = true;
-    if (!public_state.get("valid")) {
-        valid = false;
-    }
+    const question = renderedQuestionProps.question;
+    const valid = realState.valid;
+
+    let options = question.data["options"];
 
     // Catch input types that require options but don't have any
-    if ((options === undefined || typeof options !== "object") && require_options.includes(question.type)) {
+    if (!(options instanceof Array)) {
         // TODO: Implement some sort of warning here
         options = [];
     }
@@ -55,7 +48,7 @@ export default function create_input({ question, public_state }: QuestionProp, h
             break;
 
         case QuestionType.Select:
-            result = <Select options={options} state_dict={public_state} valid={valid} onBlurHandler={onBlurHandler}/>;
+            result = <Select question={renderedQuestionProps.selfRef} valid={valid} options={options} onBlurHandler={onBlurHandler}/>;
             break;
 
         case QuestionType.ShortText:
