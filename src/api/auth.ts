@@ -204,7 +204,7 @@ export async function refreshBackendJWT(): Promise<boolean> {
         cookies.set(CookieNames.Username, response.data.username, {sameSite: "strict", secure: PRODUCTION, path: "/", expires: new Date(3000, 1)});
 
         const expiry = Date.parse(response.data.expiry);
-        setTimeout(refreshBackendJWT, (expiry * 0.9));
+        setTimeout(refreshBackendJWT, ((expiry - Date.now()) / 1000 * 0.9));
     }).catch(() => {
         pass = false;
         cookies.remove(CookieNames.Scopes);
