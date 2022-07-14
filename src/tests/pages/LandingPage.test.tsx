@@ -25,8 +25,12 @@ const testingForm: forms.Form = {
     submitted_text: null
 };
 
+jest.mock("../../api/forms", () => ({
+    ...jest.requireActual("../../api/forms"),
+    getForms: jest.fn(() => Promise.resolve([testingForm]))
+}));
+
 test("renders landing page", async () => {
-    jest.spyOn(forms, "getForms").mockImplementation(() => Promise.resolve([testingForm]));
     act(() => { render(<LandingPage/>, {wrapper: MemoryRouter}); });
     const headerBar = await screen.findByText(/Python Discord Forms/);
     expect(headerBar).toBeInTheDocument();
