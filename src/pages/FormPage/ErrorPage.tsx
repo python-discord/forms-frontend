@@ -6,6 +6,7 @@ import React from "react";
 import HeaderBar from "../../components/HeaderBar";
 
 import {Form} from "../../api/forms";
+import {clearAuth} from "../../api/auth";
 import {selectable, submitStyles, unselectable} from "../../commonStyles";
 
 import Navigation from "./Navigation";
@@ -22,6 +23,8 @@ const refreshStyles = css`
 
 
 export default function ErrorPage(props: ErrorProps): JSX.Element {
+    clearAuth();
+
     return (
         <div>
             <HeaderBar title={props.form.name} description={props.form.description}/>

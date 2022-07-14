@@ -207,10 +207,19 @@ export async function refreshBackendJWT(): Promise<boolean> {
         setTimeout(refreshBackendJWT, ((expiry - Date.now()) / 1000 * 0.9));
     }).catch(() => {
         pass = false;
-        cookies.remove(CookieNames.Scopes);
+        cookies.remove(CookieNames.Scopes, {path: "/"});
     });
 
     return new Promise(resolve => resolve(pass));
+}
+
+/**
+ * Clear the auth state.
+ */
+export function clearAuth(): void {
+    const cookies = new Cookies();
+    cookies.remove(CookieNames.Scopes, {path: "/"});
+    cookies.remove(CookieNames.Username, {path: "/"});
 }
 
 /**
@@ -228,7 +237,7 @@ export default async function authorize(scopes: OAuthScopes[] = [], disableFunct
     }
 
     const cookies = new Cookies;
-    cookies.remove(CookieNames.Scopes);
+    cookies.remove(CookieNames.Scopes, {path: "/"});
 
     if (disableFunction) { disableFunction(true); }
     await getDiscordCode(scopes, disableFunction).then(async discord_response =>{
