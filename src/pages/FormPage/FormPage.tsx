@@ -1,9 +1,11 @@
 /** @jsx jsx */
+/** @jsxFrag */
 import {jsx, css} from "@emotion/react";
 
 import React, {createRef, SyntheticEvent, useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {PropagateLoader} from "react-spinners";
+import {AxiosError} from "axios";
 
 import HeaderBar from "../../components/HeaderBar";
 import RenderedQuestion from "../../components/Question";
@@ -19,6 +21,7 @@ import handleSubmit, {FormState} from "./submit";
 import Navigation from "./Navigation";
 import Success from "./SuccessPage";
 import ErrorPage from "./ErrorPage";
+import NotFound from "../NotFound";
 
 
 export type RefMapType =  Map<string, React.RefObject<RenderedQuestion>>;
@@ -49,24 +52,47 @@ const closedHeaderStyles = css`
   }
 `;
 
+enum LoadingState {
+    Pending,
+    Found,
+    Missing
+}
+
 function FormPage(): JSX.Element {
     const {id} = useParams<{id: string}>();
 
     const [form, setForm] = useState<Form>();
+    const [formLoading, setFormLoading] = useState<LoadingState>(LoadingState.Pending);
     const [state, setState] = useState<string>(FormState.INITIAL);
 
     const OAuthRef = createRef<HTMLDivElement>();
 
     useEffect(() => {
-        // This can't be null due to the routing to get here
+        // ID can't be null due to the routing to get here
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         getForm(id!).then(form => {
             setForm(form);
+            setFormLoading(LoadingState.Found);
+        }).catch((error: AxiosError) => {
+            if (error.response?.status === 404) {
+                setFormLoading(LoadingState.Missing);
+                return;
+            }
+
+            throw error;
         });
     }, []);
 
+    switch (formLoading) {
+        case LoadingState.Pending:
+            return <Loading/>;
+        case LoadingState.Missing:
+            return <NotFound message={"Could not find a matching form. Make sure the requested form exists and is open."}/>;
+    }
+
     if (!form) {
-        return <Loading/>;
+        // This should be an impossible state
+        throw Error("Form was not set despite loading state being set to found.");
     }
 
     const refMap: RefMapType = new Map();
@@ -88,9 +114,6 @@ function FormPage(): JSX.Element {
             <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
     }
 
-    // FIXME: Remove this ignore
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const questions: RenderedQuestion[] = form.questions.map((question, index) => {
         const questionRef = createRef<RenderedQuestion>();
         refMap.set(question.id, questionRef);
@@ -102,7 +125,7 @@ function FormPage(): JSX.Element {
             key={index + Date.now()}
             selfRef={questionRef}
             ref={questionRef}
-        />;
+        /> as unknown as RenderedQuestion; // Annotations for JSX elements resolve to a generic ReactElement
     });
 
     switch (state) {
@@ -133,8 +156,10 @@ function FormPage(): JSX.Element {
 
             <div>
                 <form id="form" onSubmit={handler} css={[formStyles, unselectable]}>
-                    {closed_header}
-                    {questions}
+                    <>
+                        {closed_header}
+                        {questions}
+                    </>
                 </form>
                 <Navigation form_state={open} scopes={scopes}/>
             </div>

@@ -11,7 +11,7 @@ import { selectable } from "../commonStyles";
 
 interface OAuth2ButtonProps {
     scopes?: OAuthScopes[],
-    rerender: () => void
+    rerender?: () => void
 }
 
 const iconStyles = css`
@@ -59,7 +59,7 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
         throw reason.Error;
     });
 
-    if (checkScopes(props.scopes)) {
+    if (checkScopes(props.scopes) && props.rerender) {
         props.rerender();
     }
 }
@@ -71,7 +71,7 @@ function OAuth2Button(props: OAuth2ButtonProps): JSX.Element {
     return <span>
         <button disabled={disabled} onClick={() => login(props, errorDialog, setDisabled)}>
             <FontAwesomeIcon icon={faDiscord} css={iconStyles}/>
-            <span css={textStyles}>Discord Login</span>
+            <span css={textStyles}>Login To Submit</span>
         </button>
         <div css={[errorStyles, selectable]} ref={errorDialog}/>
     </span>;

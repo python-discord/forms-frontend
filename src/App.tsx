@@ -10,6 +10,7 @@ import { PropagateLoader } from "react-spinners";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import globalStyles from "./globalStyles";
+import NotFound from "./pages/NotFound";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 const FormPage = React.lazy(() => import("./pages/FormPage/FormPage"));
@@ -41,6 +42,7 @@ function Routing(): JSX.Element {
     return (
         <Routes location={location}>
             {renderedRoutes}
+            <Route path="*" element={<NotFound message={"404: This page does not exist"}/>}/>
         </Routes>
     );
 }
