@@ -51,8 +51,7 @@ const textInputs = css`
   border-radius: 8px;
 `;
 
-const submitStyles = css`
-  text-align: right;
+const actionButtonStyles = css`
   white-space: nowrap;
 
   button:disabled {
@@ -61,6 +60,7 @@ const submitStyles = css`
   }
 
   button {
+    width: 100%;
     cursor: pointer;
 
     border: none;
@@ -91,12 +91,65 @@ const invalidStyles = css`
   }
 `;
 
+const mainTextStyles = css`
+  margin: auto;
+  width: 50%;
+
+  text-align: center;
+  font-size: 1.5rem;
+
+  > div {
+    margin: 2rem auto;
+  }
+
+  @media (max-width: 800px) {
+    width: 80%;
+  }
+`;
+
+const navigationStyles = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+
+  column-gap: 20px;
+  row-gap: 20px;
+  
+  > * {
+    // Make all elements the same size
+    flex: 0 1 16rem;
+  }
+`;
+
+const returnButtonStyles = css`
+  font-size: 1.5rem;
+  text-align: center;
+
+  color: white;
+  text-decoration: none;
+  background-color: ${colors.greyple};
+
+  padding: 0.5rem 0;
+  border-radius: 8px;
+
+  transition: background-color 300ms;
+
+  :hover {
+    background-color: ${colors.darkerGreyple};
+  }
+`;
+
 export {
     selectable,
     unselectable,
     hiddenInput,
     multiSelectInput,
     textInputs,
-    submitStyles,
-    invalidStyles
+    actionButtonStyles,
+    invalidStyles,
+    mainTextStyles,
+    returnButtonStyles,
+    navigationStyles,
 };

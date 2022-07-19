@@ -3,8 +3,8 @@ import { render } from "@testing-library/react";
 import OAuth2Button from "../../components/OAuth2Button";
 
 test("renders oauth2 sign in button text", () => {
-    const { getByText } = render(<OAuth2Button />);
-    const button = getByText(/Discord Login/i);
+    const { getByText } = render(<OAuth2Button/>);
+    const button = getByText(/Login To Submit/i);
     expect(button).toBeInTheDocument();
 });
 

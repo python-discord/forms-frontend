@@ -4,9 +4,7 @@ import {Link} from "react-router-dom";
 
 import {Form} from "../../api/forms";
 import HeaderBar from "../../components/HeaderBar";
-import {unselectable} from "../../commonStyles";
-
-import Navigation from "./Navigation";
+import {returnButtonStyles, navigationStyles, unselectable, mainTextStyles} from "../../commonStyles";
 
 
 interface SuccessProps {
@@ -34,10 +32,10 @@ export default function Success(props: SuccessProps): JSX.Element {
     return (
         <div>
             <HeaderBar title={props.form.name} description={props.form.description}/>
-            <div css={[unselectable, Navigation.containerStyles, divStyle]}>
+            <div css={[unselectable, mainTextStyles, divStyle]}>
                 <h3 css={thanksStyle}>{submitted_text}</h3>
-                <div className={"return_button closed"}>
-                    <Link to="/" css={Navigation.returnStyles}>Return Home</Link>
+                <div css={navigationStyles}>
+                    <Link to="/" css={returnButtonStyles}>Return Home</Link>
                 </div>
             </div>
         </div>
