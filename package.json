@@ -7,7 +7,7 @@
     "@codemirror/lang-python": "6.0.0",
     "@codemirror/state": "6.0.1",
     "@codemirror/theme-one-dark": "6.0.0",
-    "@codemirror/view": "6.0.1",
+    "@codemirror/view": "6.1.1",
     "@emotion/react": "11.9.3",
     "@fortawesome/fontawesome-svg-core": "6.1.1",
     "@fortawesome/free-brands-svg-icons": "6.1.1",
