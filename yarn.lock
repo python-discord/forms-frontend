@@ -6216,10 +6216,10 @@ react-router@6.3.0:
   dependencies:
     history "^5.2.0"
 
-react-spinners@0.13.2:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.13.2.tgz#a333cb345cbe0846084789a291e545eb80d472b1"
-  integrity sha512-GrtgDlHHMl9DbPgO9NByRyMDCHbrUoW37xwo+bdac9lPFnwlp7DW5uTykSayf/j47YiBAvrQybS9AuM9T+WLeA==
+react-spinners@0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/react-spinners/-/react-spinners-0.13.4.tgz#20f7435e5cb3a2bde23110efa8b7dfbe485373e9"
+  integrity sha512-V6IURjYOwomhdngMfuVxBp4utCF6v21sjQ6r4K2JoKl8fwXZp1UeHMBLf+2SU+cts8hAVj9rHOJ8kdT5UqqaJw==
 
 react-transition-group@4.4.2:
   version "4.4.2"
