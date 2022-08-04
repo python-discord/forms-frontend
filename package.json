@@ -35,7 +35,7 @@
     "webpack": "5.74.0",
     "webpack-cli": "4.10.0",
     "webpack-manifest-plugin": "5.0.0",
-    "workbox-webpack-plugin": "6.5.3"
+    "workbox-webpack-plugin": "6.5.4"
   },
   "scripts": {
     "start": "webpack serve --node-env=development",
@@ -63,7 +63,7 @@
     "@swc/jest": "0.2.21",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.3.0",
-    "@testing-library/user-event": "14.2.1",
+    "@testing-library/user-event": "14.4.1",
     "@types/jest": "28.1.2",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
