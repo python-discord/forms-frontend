@@ -67,7 +67,7 @@
     "@types/jest": "28.1.2",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
-    "@types/react-dom": "18.0.5",
+    "@types/react-dom": "18.0.6",
     "@types/react-router-dom": "5.3.3",
     "@types/react-transition-group": "4.4.5",
     "@types/smoothscroll-polyfill": "0.3.1",
