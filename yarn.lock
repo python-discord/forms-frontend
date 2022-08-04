@@ -1186,10 +1186,10 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
 
-"@codemirror/lang-python@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/lang-python/-/lang-python-6.0.0.tgz#75860ce18bcc57f1152a5f2c1f94a7ee2621817b"
-  integrity sha512-wI448yup4Y2Xxq/7r3Q4eEmth74ud263ABcexumEFEcoU+0c1k5XRKXp1aT5PrrVavlAKxWQMEvgi+x+HBU4zQ==
+"@codemirror/lang-python@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-python/-/lang-python-6.0.1.tgz#396825391f4bf78224160e79cd3765df774597e4"
+  integrity sha512-w2jTSY+LgXnK7iIBLgMxk6xtJhZHkcxcGGveuq9zYmncURmOTFXKnDvBaBClNIHKgjkHXZqGK8ZduCMK23hZPA==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@lezer/python" "^1.0.0"
@@ -3323,10 +3323,10 @@ co@^4.6.0:
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
 
-codemirror@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-6.0.0.tgz#48aac6370d188f0761807ad9c3b62da7e7f72446"
-  integrity sha512-c4XR9QtDn+NhKLM2FBsnRn9SFdRH7G6594DYC/fyKKIsTOcdLF0WNWRd+f6kNyd5j1vgYPucbIeq2XkywYCwhA==
+codemirror@6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-6.0.1.tgz#62b91142d45904547ee3e0e0e4c1a79158035a29"
+  integrity sha512-J8j+nZ+CdWmIeFIGXEFbFPtpiYacFMDR8GlHK3IyHQJMCaVRfGx9NT+Hxivv1ckLWPvNdZqndbr/7lVhrf/Svg==
   dependencies:
     "@codemirror/autocomplete" "^6.0.0"
     "@codemirror/commands" "^6.0.0"
