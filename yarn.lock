@@ -1224,10 +1224,15 @@
     "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
-"@codemirror/state@6.1.1", "@codemirror/state@^6.0.0":
+"@codemirror/state@6.1.1":
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@codemirror/state/-/state-6.1.1.tgz#4f512e5e34ea23a5e10b2c1fe43f6195e90417bb"
   integrity sha512-2s+aXsxmAwnR3Rd+JDHPG/1lw0YsA9PEwl7Re88gHJHGfxyfEzKBmsN4rr53RyPIR4lzbbhJX0DCq0WlqlBIRw==
+
+"@codemirror/state@^6.0.0", "@codemirror/state@^6.1.4":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/state/-/state-6.2.0.tgz#a0fb08403ced8c2a68d1d0acee926bd20be922f2"
+  integrity sha512-69QXtcrsc3RYtOtd+GsvczJ319udtBf1PTrr2KbLWM/e2CXUPnh0Nz9AUo8WfhSQ7GeL8dPVNUmhQVgpmuaNGA==
 
 "@codemirror/theme-one-dark@6.0.0":
   version "6.0.0"
@@ -1239,12 +1244,12 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/highlight" "^1.0.0"
 
-"@codemirror/view@6.1.4", "@codemirror/view@^6.0.0":
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.1.4.tgz#c4b7ca6ea6920e206f6b3de89b17da1b66675fd7"
-  integrity sha512-pekgUX+0hL4ri2JV7/bu7jhhwOgOhU1eRc1/ZyAQYCWcCI4TPB1qLrPE3cD/qW9yjBcYiN9MN0XI1tjK7Yw05Q==
+"@codemirror/view@6.7.2", "@codemirror/view@^6.0.0":
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.7.2.tgz#13830dd6366af15d48e34a5518ab26bb42c440cb"
+  integrity sha512-HeK2GyycxceaQVyvYVYXmn1vUKYYBsHCcfGRSsFO+3fRRtwXx2STK0YiFBmiWx2vtU9gUAJgIUXUN8a0osI8Ng==
   dependencies:
-    "@codemirror/state" "^6.0.0"
+    "@codemirror/state" "^6.1.4"
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
