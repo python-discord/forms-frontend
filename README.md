@@ -10,7 +10,7 @@ with the whole thing broken down into smallish TypeScript components.
 The project uses [yarn](https://yarnpkg.com/) for dependency and script management,
 and [webpack](https://webpack.js.org/) for building and development.
 
-A full setup guide is available on [Notion](https://www.notion.so/pythondiscord/Forms-6312360495ff45f487da5b1924184a2d),
+A full setup guide is available on [Notion](https://pythondiscord.notion.site/Get-Started-30458bfb32ce4a0e9c489ea66daf0323),
 along with a troubleshooting guide.<br/>
 
 ## React & Dependency Info
