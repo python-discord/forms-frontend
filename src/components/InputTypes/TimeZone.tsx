@@ -292,9 +292,9 @@ class TimeZone extends React.Component<TimeZoneProps> {
         return (
             <>
                 <div css={copyStyles}>
-                    {tz ? FOUND_COPY : NOT_FOUND_COPY}
+                    <p>{tz ? FOUND_COPY : NOT_FOUND_COPY}</p>
 
-          Timezones are displayed as offsets from UTC. For example, UTC+1 is one hour ahead of UTC, and UTC-5 is five hours behind UTC.
+                    <p>Timezones are displayed as offsets from UTC. For example, UTC+1 is one hour ahead of UTC, and UTC-5 is five hours behind UTC.</p>
                 </div>
                 <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} onFocus={this.focusOption.bind(this)} ref={container_ref} onBlur={this.props.onBlurHandler}>
                     <div css={mainWindowStyles} className={!this.props.valid ? "invalid-box selected_container" : "selected_container"}>
