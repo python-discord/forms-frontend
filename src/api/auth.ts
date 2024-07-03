@@ -125,6 +125,11 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (d
                 return;
             }
 
+            if (message.data.pydis_source !== "oauth2_callback") {
+                // Ignore messages not from the callback
+                return;
+            }
+
             if (message.isTrusted) {
                 windowRef?.close();
 

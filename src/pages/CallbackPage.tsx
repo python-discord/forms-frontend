@@ -11,7 +11,7 @@ export default function CallbackPage(): JSX.Element {
 
     if (!hasSent) {
         setHasSent(true);
-        window.opener.postMessage({code: code, state: state});
+        window.opener.postMessage({code: code, state: state, pydis_source: "oauth2_callback"});
     }
 
     return <div/>;
