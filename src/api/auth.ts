@@ -133,7 +133,7 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (d
                 // State integrity check
                 if (message.data.state !== state.toString()) {
                     // This indicates a lack of integrity
-                    throw Error("Integrity check failed.");
+                    throw Error(`Integrity check failed. Expected ${state}, received ${message.data.state}`);
                 }
 
                 // Remove handler
