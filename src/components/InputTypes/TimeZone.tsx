@@ -276,10 +276,6 @@ const TimeZone: React.FC<TimeZoneProps> = ({ question, valid, onBlurHandler }) =
         if (tz) {
             if (!question.current) {
                 console.warn("No ref to question component in TimeZone.");
-
-                setTimeout(() => {
-                    console.log(question);
-                }, 5000);
             } else {
                 question.current.setState({ value: tz });
             }
