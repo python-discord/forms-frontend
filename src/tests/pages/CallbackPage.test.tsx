@@ -18,6 +18,7 @@ test("callback page sends provided code", () => {
     expect(global.opener.postMessage).toBeCalledTimes(1);
     expect(global.opener.postMessage).toBeCalledWith({
         code: "abcde_code",
-        state: "abcde_state"
+        state: "abcde_state",
+        pydis_source: "oauth2_callback"
     });
 });
