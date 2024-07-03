@@ -56,9 +56,9 @@ const offsetToText = (offset: number) => {
 };
 
 interface TimeZoneProps {
-  valid: boolean,
-  question: React.RefObject<RenderedQuestion>
-  onBlurHandler: () => void
+    valid: boolean,
+    question: React.RefObject<RenderedQuestion>
+    onBlurHandler: () => void
 }
 
 const containerStyles = css`
@@ -272,7 +272,11 @@ class TimeZone extends React.Component<TimeZoneProps> {
         const tz = getTZ();
 
         if (tz) {
-            this.props.question.current?.setState({ value: tz });
+            if (!this.props.question.current) {
+                console.warn("No ref to question component in TimeZone.");
+            } else {
+                this.props.question.current.setState({ value: tz });
+            }
         }
     }
 
