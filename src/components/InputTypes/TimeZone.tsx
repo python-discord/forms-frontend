@@ -1,7 +1,7 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 import { jsx, css } from "@emotion/react";
-import React from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 
 import { hiddenInput, invalidStyles } from "../../commonStyles";
 import RenderedQuestion from "../Question";
@@ -216,110 +216,127 @@ const getTZ = () => {
     return recognisedZone ? guessedTimeZoneOffset : false;
 };
 
-class TimeZone extends React.Component<TimeZoneProps> {
-    selected_option: React.RefObject<HTMLDivElement> | null = null;
+const TimeZone: React.FC<TimeZoneProps> = ({ question, valid, onBlurHandler }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const selectedOptionRef = useRef<HTMLDivElement>(null);
 
-    handler(selected_option: React.RefObject<HTMLDivElement>, event: React.ChangeEvent<HTMLInputElement>): void {
-        const option_container = event.target.parentElement;
-        if (!option_container || !option_container.parentElement || !selected_option.current) {
+    const handler = (selectedOption: MutableRefObject<HTMLDivElement | null>, event: React.ChangeEvent<HTMLInputElement>) => {
+        const optionContainer = event.target.parentElement;
+        if (!optionContainer || !optionContainer.parentElement || !selectedOption.current) {
             return;
         }
 
-        if (!this.props.question?.current) {
+        if (!question?.current) {
             throw new Error("Missing ref for select question.");
         }
 
         // Update stored value
-        this.props.question.current.setState({ value: option_container.textContent });
+        question.current.setState({ value: optionContainer.textContent });
 
         // Close the menu
-        selected_option.current.focus();
-        selected_option.current.blur();
-        selected_option.current.textContent = option_container.textContent;
-    }
+        selectedOption.current.focus();
+        selectedOption.current.blur();
+        selectedOption.current.textContent = optionContainer.textContent;
+    };
 
-    handle_click(
-        container: React.RefObject<HTMLDivElement>,
-        selected_option: React.RefObject<HTMLDivElement>,
-        event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-    ): void {
-        if (!container.current || !selected_option.current || (event.type === "keydown" && (event as React.KeyboardEvent).code !== "Space")) {
+    const handleClick = (container: MutableRefObject<HTMLDivElement | null>, selectedOption: MutableRefObject<HTMLDivElement | null>, event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+        if (!container.current || !selectedOption.current) {
+            return;
+        }
+
+        // if it is a keyboard event and it is not the space key, return
+        if (event.type === "keydown" && (event as React.KeyboardEvent).code !== "Space") {
             return;
         }
 
         // Check if menu is open
         if (container.current.contains(document.activeElement)) {
             // Close menu
-            selected_option.current.focus();
-            selected_option.current.blur();
+            selectedOption.current.focus();
+            selectedOption.current.blur();
             event.preventDefault();
         }
-    }
+    };
 
-    focusOption(): void {
-        if (!this.props.question?.current) {
+    const focusOption = () => {
+        if (!question?.current) {
             throw new Error("Missing ref for select question.");
         }
 
-        if (!this.props.question.current.realState.value) {
-            this.props.question.current.setState({ value: "temporary" });
-            this.props.onBlurHandler();
-            this.props.question.current.setState({ value: null });
+        if (!question.current.realState.value) {
+            question.current.setState({ value: "temporary" });
+            onBlurHandler();
+            question.current.setState({ value: null });
         }
-    }
+    };
 
-    componentDidMount() {
+    useEffect(() => {
         const tz = getTZ();
 
         if (tz) {
-            if (!this.props.question.current) {
+            if (!question.current) {
                 console.warn("No ref to question component in TimeZone.");
+
+                setTimeout(() => {
+                    console.log(question);
+                }, 5000);
             } else {
-                this.props.question.current.setState({ value: tz });
+                question.current.setState({ value: tz });
             }
         }
-    }
+    }, [question]);
 
-    render(): JSX.Element {
-        const container_ref: React.RefObject<HTMLDivElement> = React.createRef();
-        const selected_option_ref: React.RefObject<HTMLDivElement> = React.createRef();
+    const tz = getTZ();
 
-        this.selected_option = selected_option_ref;
+    const FOUND_COPY = "We have tried to guess your timezone based on your system settings. If this is incorrect, please select the correct timezone from the list below.";
+    const NOT_FOUND_COPY = "We could not automatically detect your timezone. Please select it from the list below.";
 
-        const handle_click = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => this.handle_click(container_ref, selected_option_ref, event);
+    return (
+        <>
+            <div css={copyStyles}>
+                <p>{tz ? FOUND_COPY : NOT_FOUND_COPY}</p>
 
-        const tz = getTZ();
-
-        const FOUND_COPY = "We have tried to guess your timezone based on your system settings. If this is incorrect, please select the correct timezone from the list below.";
-        const NOT_FOUND_COPY = "We could not automatically detect your timezone. Please select it from the list below.";
-
-        return (
-            <>
-                <div css={copyStyles}>
-                    <p>{tz ? FOUND_COPY : NOT_FOUND_COPY}</p>
-
-                    <p>Timezones are displayed as offsets from UTC. For example, UTC+1 is one hour ahead of UTC, and UTC-5 is five hours behind UTC.</p>
-                </div>
-                <div css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]} onFocus={this.focusOption.bind(this)} ref={container_ref} onBlur={this.props.onBlurHandler}>
-                    <div css={mainWindowStyles} className={!this.props.valid ? "invalid-box selected_container" : "selected_container"}>
-                        <span className="arrow" />
-                        <div tabIndex={0} className="selected_option" ref={selected_option_ref} onMouseDown={handle_click} onKeyDown={handle_click}>{tz ? tz : "..."}</div>
-                    </div>
-
-                    <div className="option_container" tabIndex={-1}>
-                        <div className="scrollbar-container">
-                            {TIMEZONE_OFFSETS.map((option, index) => (
-                                <div key={index} css={optionStyles}>
-                                    <input type="checkbox" css={[hiddenInput, inputStyles]} onChange={event => this.handler.call(this, selected_option_ref, event)} />
-                                    <div>{option}</div>
-                                </div>
-                            ))}
-                        </div>
+                <p>Timezones are displayed as offsets from UTC. For example, UTC+1 is one hour ahead of UTC, and UTC-5 is five hours behind UTC.</p>
+            </div>
+            <div
+                css={[containerStyles, arrowStyles, optionContainerStyles, invalidStyles]}
+                onFocus={focusOption}
+                ref={containerRef}
+                onBlur={onBlurHandler}
+            >
+                <div
+                    css={mainWindowStyles}
+                    className={!valid ? "invalid-box selected_container" : "selected_container"}
+                >
+                    <span className="arrow" />
+                    <div
+                        tabIndex={0}
+                        className="selected_option"
+                        ref={selectedOptionRef}
+                        onMouseDown={(event) => handleClick(containerRef, selectedOptionRef, event)}
+                        onKeyDown={(event) => handleClick(containerRef, selectedOptionRef, event)}
+                    >
+                        {tz ? tz : "..."}
                     </div>
                 </div>
-            </>
-        );
-    }
-}
+
+                <div className="option_container" tabIndex={-1}>
+                    <div className="scrollbar-container">
+                        {TIMEZONE_OFFSETS.map((option, index) => (
+                            <div key={index} css={optionStyles}>
+                                <input
+                                    type="checkbox"
+                                    css={[hiddenInput, inputStyles]}
+                                    onChange={(event) => handler(selectedOptionRef, event)}
+                                />
+                                <div>{option}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
 
 export default TimeZone;
