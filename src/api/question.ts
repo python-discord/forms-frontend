@@ -6,7 +6,8 @@ export enum QuestionType {
     Select = "select",
     ShortText = "short_text",
     Range = "range",
-    Section = "section"
+    Section = "section",
+    TimeZone = "timezone",
 }
 
 export interface Question {
