@@ -62,7 +62,7 @@ test("renders form listing with background green colour for open", () => {
 
     if (elem) {
         const style = window.getComputedStyle(elem);
-        expect(style.backgroundColor).toBe("rgb(67, 181, 129)");
+        expect(style.backgroundColor).toBe("rgb(55, 128, 94)");
     }
 });
 
