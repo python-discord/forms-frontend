@@ -6,5 +6,5 @@ export default {
     greyple: "#99AAB5",
     darkerGreyple: "#6E7D88",
     error: "#f04747",
-    success: "#43b581"
+    success: "#37805e"
 };
