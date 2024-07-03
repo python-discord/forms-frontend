@@ -10,6 +10,7 @@ import React, {ChangeEvent} from "react";
 import {QuestionType} from "../../api/question";
 import RenderedQuestion from "../Question";
 import Code from "./Code";
+import TimeZone from "./TimeZone";
 
 export default function create_input(
     {props: renderedQuestionProps, realState}: RenderedQuestion,
@@ -57,6 +58,10 @@ export default function create_input(
 
         case QuestionType.Range:
             result = <Range question_id={question.id} options={options} handler={handler} required={question.required} onBlurHandler={onBlurHandler}/>;
+            break;
+
+        case QuestionType.TimeZone:
+            result = <TimeZone question={renderedQuestionProps.selfRef} valid={valid} onBlurHandler={onBlurHandler}/>;
             break;
 
         default:

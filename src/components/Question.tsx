@@ -11,6 +11,7 @@ const skip_normal_state: Array<QuestionType> = [
     QuestionType.Radio,
     QuestionType.Checkbox,
     QuestionType.Select,
+    QuestionType.TimeZone,
     QuestionType.Section,
     QuestionType.Range
 ];
@@ -192,6 +193,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
             case QuestionType.Select:
             case QuestionType.Range:
+            case QuestionType.TimeZone:
             case QuestionType.Radio:
                 if (!this.realState.value) {
                     valid = false;
