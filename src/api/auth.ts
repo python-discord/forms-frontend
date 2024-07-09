@@ -36,6 +36,7 @@ export enum APIErrorMessages {
     BackendValidationDev = "Backend could not authorize with Discord, possibly due to being on a preview branch. Please contact the forms team.",
     BackendUnresponsive = "Unable to reach the backend, please retry, or contact the forms team.",
     BadResponse = "The server returned a bad response, please contact the forms team.",
+    AccessRejected = "Authorization was cancelled.",
     Unknown = "An unknown error occurred, please contact the forms team."
 }
 
@@ -98,7 +99,7 @@ export function checkScopes(scopes?: OAuthScopes[]): boolean {
  * @returns {code, cleanedScopes} The discord authorization code and the scopes the code is granted for.
  * @throws {Error} Indicates that an integrity check failed.
  */
-export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (disable: boolean) => void): Promise<{code: string, cleanedScopes: OAuthScopes[]}> {
+export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (disable: boolean) => void): Promise<{code: string | null, cleanedScopes: OAuthScopes[]}> {
     const cleanedScopes = ensureMinimumScopes(scopes, OAuthScopes.Identify);
 
     // Generate a new user state
@@ -267,6 +268,12 @@ export default async function authorize(scopes: OAuthScopes[] = [], disableFunct
 
     if (disableFunction) { disableFunction(true); }
     await getDiscordCode(scopes, disableFunction).then(async discord_response =>{
+        if (!discord_response.code) {
+            throw {
+                Message: APIErrorMessages.AccessRejected,
+                Error: null
+            };
+        }
         await requestBackendJWT(discord_response.code).then(backend_response => {
             const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION, path: "/", expires: new Date(3000, 1)};
             cookies.set(CookieNames.Username, backend_response.username, options);

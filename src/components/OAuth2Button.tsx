@@ -55,8 +55,10 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
         }
 
         // Propagate to sentry
-        reason.Error.stack = new Error(`OAuth: ${reason.Message}`).stack + "\n" + reason.Error.stack;
-        throw reason.Error;
+        if (reason.Error) {
+            reason.Error.stack = new Error(`OAuth: ${reason.Message}`).stack + "\n" + reason.Error.stack;
+            throw reason.Error;
+        }
     });
 
     if (checkScopes(props.scopes) && props.rerender) {
