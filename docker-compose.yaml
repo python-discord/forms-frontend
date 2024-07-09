@@ -1,5 +1,3 @@
-version: "3.6"
-
 services:
   mongo:
     image: mongo:latest
@@ -19,7 +17,7 @@ services:
 
   backend:
     image: ghcr.io/python-discord/forms-backend
-    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "--debug", "backend:app"]
+    command: ["uvicorn", "--reload", "--host", "0.0.0.0", "backend:app"]
     depends_on:
       - mongo
       - snekbox
@@ -44,7 +42,7 @@ services:
       - backend
     volumes:
       - .:/app:ro
-      - /app/node_modules  # Ensure dependencies do not collide with a user's local install
+      - /app/node_modules # Ensure dependencies do not collide with a user's local install
     ports:
       - "3000:3000"
     environment:
