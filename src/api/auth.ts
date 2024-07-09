@@ -1,10 +1,14 @@
 import Cookies, { CookieSetOptions } from "universal-cookie";
 import { AxiosResponse } from "axios";
 
+import { startAuthorizing, finishAuthorizing } from "../slices/authorization";
+import formsStore from "../store";
+
 import APIClient from "./client";
 
 const OAUTH2_CLIENT_ID = process.env.REACT_APP_OAUTH2_CLIENT_ID;
 const PRODUCTION = process.env.NODE_ENV !== "development";
+const STATE_LENGTH = 64;
 
 /**
  * Authorization result as returned from the backend.
@@ -98,21 +102,36 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (d
     const cleanedScopes = ensureMinimumScopes(scopes, OAuthScopes.Identify);
 
     // Generate a new user state
-    const state = crypto.getRandomValues(new Uint32Array(1))[0];
+    const stateBytes = new Uint8Array(STATE_LENGTH);
+    crypto.getRandomValues(stateBytes);
+
+    let state = "";
+    for (let i = 0; i < stateBytes.length; i++) {
+        state += stateBytes[i].toString(16).padStart(2, "0");
+    }
 
     const scopeString = encodeURIComponent(cleanedScopes.join(" "));
     const redirectURI = encodeURIComponent(document.location.protocol + "//" + document.location.host + "/callback");
 
+    const windowHeight = screen.availHeight;
+    const windowWidth = screen.availWidth;
+    const requestHeight = Math.floor(windowHeight * 0.75);
+    const requestWidth = Math.floor(windowWidth * 0.4);
+
     // Open login window
     const windowRef = window.open(
         `https://discord.com/api/oauth2/authorize?client_id=${OAUTH2_CLIENT_ID}&state=${state}&response_type=code&scope=${scopeString}&redirect_uri=${redirectURI}&prompt=consent`,
-        "Discord_OAuth2"
+        "_blank",
+        `popup=true,height=${requestHeight},left=0,top=0,width=${requestWidth}`
     );
+
+    formsStore.dispatch(startAuthorizing());
 
     // Clean up on login
     const interval = setInterval(() => {
         if (windowRef?.closed) {
             clearInterval(interval);
+            formsStore.dispatch(finishAuthorizing());
             if (disableFunction) { disableFunction(false); }
         }
     }, 500);
@@ -132,6 +151,8 @@ export async function getDiscordCode(scopes: OAuthScopes[], disableFunction?: (d
 
             if (message.isTrusted) {
                 windowRef?.close();
+
+                formsStore.dispatch(finishAuthorizing());
 
                 clearInterval(interval);
 
