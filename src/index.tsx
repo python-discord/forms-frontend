@@ -36,7 +36,7 @@ console.log(`   SHA: %c ${process.env.COMMIT_REF} `, `padding: 2px; border-radiu
 console.log("%cCome join us on Discord! https://discord.gg/python", `font-size: 1.5em; font-family: "Hind", "Arial"; color: ${colors.blurple}`);
 
 const rootDocument = document.getElementById("root");
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
 const root = createRoot(rootDocument!);
 root.render(
     <React.StrictMode>
@@ -55,6 +55,5 @@ root.render(
         </Sentry.ErrorBoundary>
     </React.StrictMode>
 );
-/* eslint-enable react/react-in-jsx-scope */
 
 serviceWorker.unregister();

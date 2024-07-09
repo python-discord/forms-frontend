@@ -69,7 +69,6 @@ function FormPage(): JSX.Element {
 
     useEffect(() => {
         // ID can't be null due to the routing to get here
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         getForm(id!).then(form => {
             setForm(form);
             setFormLoading(LoadingState.Found);
