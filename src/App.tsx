@@ -7,6 +7,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { PropagateLoader } from "react-spinners";
 
+import AuthorizationSplash from "./components/AuthorizationSplash";
+
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import globalStyles from "./globalStyles";
@@ -51,6 +53,7 @@ function App(): JSX.Element {
     return (
         <div>
             <Global styles={globalStyles}/>
+            <AuthorizationSplash/>
             <TransitionGroup>
                 <CSSTransition key={location.pathname} classNames="fade" timeout={300}>
                     <BrowserRouter>
