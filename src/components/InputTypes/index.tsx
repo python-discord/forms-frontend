@@ -45,7 +45,10 @@ export default function create_input(
             break;
 
         case QuestionType.Radio:
-            result = options.map((option, index) => <Radio option={option} question_id={question.id} handler={handler} key={index} onBlurHandler={onBlurHandler}/>);
+            result = [
+                <p key={"instruction"}>Select one option:</p>,
+                ...options.map((option, index) => <Radio option={option} index={index} question_id={question.id} handler={handler} key={index} onBlurHandler={onBlurHandler}/>)
+            ];
             break;
 
         case QuestionType.Select:

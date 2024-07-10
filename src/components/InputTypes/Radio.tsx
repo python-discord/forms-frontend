@@ -1,40 +1,61 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import colors from "../../colors";
-import { multiSelectInput, hiddenInput } from "../../commonStyles";
 
 interface RadioProps {
     option: string,
     question_id: string,
     handler: (event: ChangeEvent<HTMLInputElement>) => void,
-    onBlurHandler: () => void
+    onBlurHandler: () => void,
+    index: number,
 }
 
-const styles = css`
-  div {
-    width: 0.7em;
-    height: 0.7em;
-    top: 0.18rem;
+const containerStyles = css`
+position: relative;
+margin-bottom: 10px;
+`;
 
-    border-radius: 50%;
-  }
+const inputStyles = css`
+position: absolute;
+opacity: 0;
+&:checked + label {
+    background-color: ${colors.success};
+}
+`;
 
-  :hover div, :focus-within div {
-    background-color: lightgray;
-  }
+const labelStyles = css`
+display: flex;
+align-items: center;
+background-color: ${colors.darkerGreyple};
+padding: 10px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.25s ease, transform 0.25s ease;
+transform: none;
 
-  input:checked+div {
-    background-color: ${colors.blurple};
-  }
+:hover {
+    background-color: ${colors.greyple};
+    transform: translateX(5px);
+}
 `;
 
 export default function Radio(props: RadioProps): JSX.Element {
+    const calculatedID = `${props.question_id}-${props.index}`;
+
     return (
-        <label css={styles}>
-            <input type="radio" name={props.question_id} onChange={props.handler} css={hiddenInput} onBlur={props.onBlurHandler}/>
-            <div css={multiSelectInput}/>
-            {props.option}<br/>
-        </label>
+        <div css={containerStyles}>
+            <input
+                type="radio"
+                id={calculatedID}
+                name={props.question_id}
+                onChange={props.handler}
+                css={inputStyles}
+                onBlur={props.onBlurHandler}
+            />
+            <label htmlFor={calculatedID} css={labelStyles}>
+                {props.option}
+            </label>
+        </div>
     );
 }
