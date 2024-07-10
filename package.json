@@ -14,7 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "6.5.2",
     "@fortawesome/react-fontawesome": "0.2.2",
     "@reduxjs/toolkit": "^2.2.6",
-    "@sentry/react": "8.16.0",
+    "@sentry/react": "8.17.0",
     "@svgr/webpack": "8.1.0",
     "@swc/core": "1.6.13",
     "@uiw/codemirror-theme-atomone": "^4.23.0",
