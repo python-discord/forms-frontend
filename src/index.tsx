@@ -5,6 +5,9 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import formsStore from "./store";
+import { Provider } from "react-redux";
+
 import * as Sentry from "@sentry/react";
 
 import {
@@ -71,7 +74,9 @@ root.render(
                     console.log(err);
             }}
         >
-            <App/>
+            <Provider store={formsStore}>
+                <App/>
+            </Provider>
         </Sentry.ErrorBoundary>
     </React.StrictMode>
 );
