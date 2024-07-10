@@ -23,7 +23,7 @@ interface AuthResult {
 /**
  * Name properties for authorization cookies.
  */
-enum CookieNames {
+export enum CookieNames {
     Scopes = "DiscordOAuthScopes",
     Username = "DiscordUsername"
 }
