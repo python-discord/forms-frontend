@@ -1,12 +1,10 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { basicSetup } from "codemirror";
+import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
-import { EditorState } from "@codemirror/state";
-import { oneDark } from "@codemirror/theme-one-dark";
-import { EditorView, ViewUpdate } from "@codemirror/view";
+import { atomone } from "@uiw/codemirror-theme-atomone";
 
 import { selectable } from "../../commonStyles";
 
@@ -27,23 +25,9 @@ const styles = css`
 `;
 
 export default function Code(props: CodeProps): JSX.Element {
-    const onUpdate = () => EditorView.updateListener.of((v: ViewUpdate) => {
-        props.handler(v.state.doc.toString());
-
-    });
-
-    useEffect(() => {
-        const el = document.getElementById(`${props.questionId}-code`);
-        const state = EditorState.create({
-            extensions: [basicSetup, python(), onUpdate(), oneDark],
-        });
-        const view = new EditorView({
-            state,
-            parent: el as Element
-        });
-
-        return () => view.destroy();
+    const onChange = React.useCallback((val: string) => {
+        props.handler(val);
     }, []);
 
-    return <div id={`${props.questionId}-code`} css={[styles, selectable]} />;
+    return <CodeMirror value="" css={[styles, selectable]} height="20rem" theme={atomone} extensions={[python()]} onChange={onChange} />;
 }
