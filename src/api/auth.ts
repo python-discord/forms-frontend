@@ -4,6 +4,8 @@ import { AxiosResponse } from "axios";
 import { startAuthorizing, finishAuthorizing } from "../slices/authorization";
 import formsStore from "../store";
 
+import * as Sentry from "@sentry/react";
+
 import APIClient from "./client";
 
 const OAUTH2_CLIENT_ID = process.env.REACT_APP_OAUTH2_CLIENT_ID;
@@ -230,6 +232,10 @@ export async function refreshBackendJWT(): Promise<boolean> {
     APIClient.post("/auth/refresh").then((response: AxiosResponse<AuthResult>) => {
         cookies.set(CookieNames.Username, response.data.username, {sameSite: "strict", secure: PRODUCTION, path: "/", expires: new Date(3000, 1)});
 
+        Sentry.setUser({
+            username: response.data.username
+        });
+
         const expiry = Date.parse(response.data.expiry);
         setTimeout(refreshBackendJWT, ((expiry - Date.now()) / 1000 * 0.9));
     }).catch(() => {
@@ -245,6 +251,7 @@ export async function refreshBackendJWT(): Promise<boolean> {
  */
 export function clearAuth(): void {
     const cookies = new Cookies();
+    Sentry.setUser(null);
     cookies.remove(CookieNames.Scopes, {path: "/"});
     cookies.remove(CookieNames.Username, {path: "/"});
 }
@@ -277,6 +284,10 @@ export default async function authorize(scopes: OAuthScopes[] = [], disableFunct
         await requestBackendJWT(discord_response.code).then(backend_response => {
             const options: CookieSetOptions = {sameSite: "strict", secure: PRODUCTION, path: "/", expires: new Date(3000, 1)};
             cookies.set(CookieNames.Username, backend_response.username, options);
+
+            Sentry.setUser({
+                username: backend_response.username,
+            });
 
             options.maxAge = backend_response.maxAge;
             cookies.set(CookieNames.Scopes, discord_response.cleanedScopes, options);
