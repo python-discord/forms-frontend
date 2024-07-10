@@ -11,6 +11,8 @@ import AuthorizationSplash from "./components/AuthorizationSplash";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import Logo from "./images/logo.svg";
+
 import globalStyles from "./globalStyles";
 import NotFound from "./pages/NotFound";
 
@@ -24,13 +26,22 @@ const routes = [
     { path: "/callback", Component: CallbackPage }
 ];
 
+const pageLoadingStyles = css`
+display: flex;
+justify-content: center;
+margin-top: 10%;
+align-items: center;
+flex-direction: column;
+
+svg {
+  transform: scale(0.35);
+}
+`;
+
 function PageLoading() {
-    return <div css={css`
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  `}>
-        <PropagateLoader color="white" size={100}/>
+    return <div css={pageLoadingStyles}>
+        <Logo/>
+        <PropagateLoader color="white"/>
     </div>;
 }
 
