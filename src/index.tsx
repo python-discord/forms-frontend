@@ -1,20 +1,40 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import * as Sentry from "@sentry/react";
 
+import {
+    createRoutesFromChildren,
+    matchRoutes,
+    useLocation,
+    useNavigationType,
+} from "react-router-dom";
+
+
 import colors from "./colors";
 
 if (process.env.NODE_ENV === "production") {
     Sentry.init({
         dsn: process.env.REACT_APP_SENTRY_DSN,
-        tracesSampleRate: 0.25,
+        tracesSampleRate: 0.5,
         release: `forms-frontend@${process.env.COMMIT_REF}`,
-        environment: process.env.CONTEXT
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+        environment: process.env.CONTEXT,
+        integrations: [
+            Sentry.reactRouterV6BrowserTracingIntegration({
+                useEffect,
+                useLocation,
+                useNavigationType,
+                createRoutesFromChildren,
+                matchRoutes,
+            }),
+            Sentry.replayIntegration(),
+        ]
     });
 
     // Set tag as PR number, "main", or if unavailable, "unknown"
@@ -23,7 +43,7 @@ if (process.env.NODE_ENV === "production") {
     Sentry.setTag(branch_name === "main" ? "branch" : "pull_request", branch_name);
 }
 
-console.log("%c  Python Discord Forms  ", `font-size: 6em; font-family: "Hind", "Arial"; font-weight: 900; background-color: ${colors.blurple}; border-radius: 10px;`);
+console.log("%c  Python Discord Forms  ", `font-size: 4em; font-family: "Hind", "Arial"; font-weight: 900; background-color: ${colors.blurple}; border-radius: 10px;`);
 console.log("%cWelcome to Python Discord Forms", "font-size: 3em; font-family: \"Hind\", \"Arial\";");
 
 console.log(`   Environment: %c ${process.env.NODE_ENV} `, `padding: 2px; border-radius: 5px; background-color: ${process.env.NODE_ENV === "production" ? colors.success : colors.error}`);
