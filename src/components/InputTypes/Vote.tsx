@@ -146,10 +146,12 @@ const CardList = React.memo(function CardList({
     cards,
     questionId,
     handler,
+    reverseMap
 }: {
     cards: string[];
     questionId: string;
     handler: VoteProps["handler"];
+    reverseMap: Record<string, string>;
 }) {
     const votes = useSelector<
         { vote: VoteSliceState },
@@ -161,7 +163,15 @@ const CardList = React.memo(function CardList({
     });
 
     useEffect(() => {
-        handler(votes);
+        if (!votes) {
+            return;
+        }
+
+        const updated = Object.fromEntries(
+            Object.entries(votes).map(([slug, vote]) => [reverseMap[slug], vote])
+        );
+
+        handler(updated);
     }, [votes]);
 
     if (votes) {
@@ -211,6 +221,10 @@ export default function Vote(props: VoteProps): JSX.Element {
         );
     }, [props.questionId]);
 
+    const reverseMap = Object.fromEntries(props.options.map(value => {
+        return [slugify(value), value];
+    }));
+
     const COPY = "Use the buttons to organise options into your preferred order. You can have multiple options with the same ranking. Additionally, you can leave some or all options as \"No preference\" if you do not wish to order them.";
 
     return (
@@ -220,6 +234,7 @@ export default function Vote(props: VoteProps): JSX.Element {
                 questionId={props.questionId}
                 handler={props.handler}
                 cards={state.cards}
+                reverseMap={reverseMap}
             />
         </div>
     );
