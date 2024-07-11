@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import authorizationReducer from "./slices/authorization";
+import voteReducer from "./slices/votes";
 
 const rootReducer = combineReducers({
-    authorization: authorizationReducer
+    authorization: authorizationReducer,
+    vote: voteReducer
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
