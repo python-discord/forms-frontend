@@ -11,6 +11,7 @@ import {QuestionType} from "../../api/question";
 import RenderedQuestion from "../Question";
 import Code from "./Code";
 import TimeZone from "./TimeZone";
+import Vote from "./Vote";
 
 export default function create_input(
     {props: renderedQuestionProps, realState}: RenderedQuestion,
@@ -65,6 +66,10 @@ export default function create_input(
 
         case QuestionType.TimeZone:
             result = <TimeZone question={renderedQuestionProps.selfRef} valid={valid} onBlurHandler={onBlurHandler}/>;
+            break;
+
+        case QuestionType.Vote:
+            result = <Vote question={renderedQuestionProps.selfRef} handler={handler} questionId={question.id} valid={valid} options={options}/>;
             break;
 
         default:

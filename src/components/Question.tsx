@@ -13,12 +13,13 @@ const skip_normal_state: Array<QuestionType> = [
     QuestionType.Select,
     QuestionType.TimeZone,
     QuestionType.Section,
-    QuestionType.Range
+    QuestionType.Range,
+    QuestionType.Vote
 ];
 
 export interface QuestionState {
     // Common keys
-    value: string | null | Map<string, boolean>
+    value: string | null | Map<string, boolean> | Record<string, number | null>
 
     // Validation
     valid: boolean
@@ -56,6 +57,8 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             this.handler = this.text_area_handler.bind(this);
         } else if (props.question.type === QuestionType.Code) {
             this.handler = this.code_field_handler.bind(this);
+        } else if (props.question.type === QuestionType.Vote) {
+            this.handler = this.vote_handler.bind(this);
         } else {
             this.handler = this.normal_handler.bind(this);
         }
@@ -74,7 +77,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
     }
 
     // This is here to allow dynamic selection between the general handler, textarea, and code field handlers.
-    handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string): void {} // eslint-disable-line
+    handler(_: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | string | Record<string, number | null>): void {} // eslint-disable-line
 
     blurHandler(): void {
         if (this.props.question.required) {
@@ -150,6 +153,14 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         }
     }
 
+    vote_handler(event: Record<string, number | null>) {
+        this.setState({
+            value: event,
+            valid: true,
+            error: ""
+        });
+    }
+
     text_area_handler(event: ChangeEvent<HTMLTextAreaElement>): void {
         // We will validate again when focusing out.
         this.setState({
@@ -194,6 +205,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             case QuestionType.Select:
             case QuestionType.Range:
             case QuestionType.TimeZone:
+            case QuestionType.Vote:
             case QuestionType.Radio:
                 if (!this.realState.value) {
                     valid = false;

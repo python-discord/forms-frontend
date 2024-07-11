@@ -62,23 +62,21 @@ const rootDocument = document.getElementById("root");
 
 const root = createRoot(rootDocument!);
 root.render(
-    <React.StrictMode>
-        <Sentry.ErrorBoundary
-            fallback={<p>An error has occurred with Python Discord Forms. Please let us know in the Discord server at <a href="https://discord.gg/python">discord.gg/python</a></p>}
-            showDialog={true}
-            dialogOptions={{
-                title: "You've found a bug in PyDis forms!"
-            }}
-            onError={(err) => {
-                if(process.env.NODE_ENV === "development")
-                    console.log(err);
-            }}
-        >
-            <Provider store={formsStore}>
-                <App/>
-            </Provider>
-        </Sentry.ErrorBoundary>
-    </React.StrictMode>
+    <Sentry.ErrorBoundary
+        fallback={<p>An error has occurred with Python Discord Forms. Please let us know in the Discord server at <a href="https://discord.gg/python">discord.gg/python</a></p>}
+        showDialog={true}
+        dialogOptions={{
+            title: "You've found a bug in PyDis forms!"
+        }}
+        onError={(err) => {
+            if(process.env.NODE_ENV === "development")
+                console.log(err);
+        }}
+    >
+        <Provider store={formsStore}>
+            <App/>
+        </Provider>
+    </Sentry.ErrorBoundary>
 );
 
 serviceWorker.unregister();
