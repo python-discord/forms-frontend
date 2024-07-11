@@ -8,6 +8,7 @@ export enum QuestionType {
     Range = "range",
     Section = "section",
     TimeZone = "timezone",
+    Vote = "vote"
 }
 
 export interface Question {
