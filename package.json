@@ -79,7 +79,7 @@
     "@types/react-router-dom": "5.3.3",
     "@types/react-transition-group": "4.4.10",
     "@types/smoothscroll-polyfill": "0.3.4",
-    "@typescript-eslint/eslint-plugin": "7.16.0",
+    "@typescript-eslint/eslint-plugin": "7.16.1",
     "@typescript-eslint/parser": "7.16.0",
     "dotenv": "16.4.5",
     "eslint": "9.6.0",
