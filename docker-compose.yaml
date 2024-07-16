@@ -2,7 +2,7 @@ services:
   mongo:
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: forms-backend
       MONGO_INITDB_ROOT_PASSWORD: forms-backend
@@ -22,7 +22,7 @@ services:
       - mongo
       - snekbox
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     environment:
       - DATABASE_URL=mongodb://forms-backend:forms-backend@mongo:27017
       - SNEKBOX_URL=http://snekbox:8060/eval
