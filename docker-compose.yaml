@@ -15,12 +15,18 @@ services:
       - "127.0.0.1:8060:8060"
     privileged: true
 
+  redis:
+    image: redis:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+
   backend:
     image: ghcr.io/python-discord/forms-backend
     command: ["uvicorn", "--reload", "--host", "0.0.0.0", "backend:app"]
     depends_on:
       - mongo
       - snekbox
+      - redis
     ports:
       - "127.0.0.1:8000:8000"
     environment:
@@ -31,6 +37,7 @@ services:
       - ALLOWED_URL
       - DEBUG=true
       - PRODUCTION=false
+      - REDIS_URL=redis://redis:6379
     env_file:
       - .env
 
