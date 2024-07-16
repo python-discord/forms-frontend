@@ -42,9 +42,7 @@ services:
       - .env
 
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     depends_on:
       - backend
     volumes:
