@@ -269,9 +269,9 @@ class RenderedQuestion extends React.Component<QuestionProp> {
         name.push(<span key={name.length - 1}>{name.pop()?.props.children[0]}</span>);
 
         if (question.type === QuestionType.Section) {
-            const styles = css`
+            let styles = css`
               h1 {
-                margin-bottom: 0;
+                margin-bottom: 0.5rem;
               }
 
               h3 {
@@ -289,6 +289,17 @@ class RenderedQuestion extends React.Component<QuestionProp> {
                 }
               }
             `;
+
+            if (question.data["align"] === "left") {
+                styles = css`
+                    ${styles};
+
+                    h1, h3 {
+                        text-align: left;
+                        padding: 0 0rem;
+                    }
+                `;
+            };
 
             const data = question.data["text"];
             let text;
