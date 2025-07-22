@@ -24,6 +24,7 @@ const iconStyles = css`
 const textStyles = css`
   display: inline-block;
   padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+  font-weight: bolder;
 `;
 
 const errorStyles =  css`

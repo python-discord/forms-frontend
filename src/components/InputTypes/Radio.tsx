@@ -33,6 +33,7 @@ border-radius: 5px;
 cursor: pointer;
 transition: background-color 0.25s ease, transform 0.25s ease;
 transform: none;
+font-weight: bolder;
 
 :hover {
     background-color: ${colors.greyple};

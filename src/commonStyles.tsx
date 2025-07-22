@@ -53,6 +53,7 @@ const textInputs = css`
 
 const actionButtonStyles = css`
   white-space: nowrap;
+  font-weight: bolder;
 
   button:disabled {
     background-color: ${colors.greyple};
@@ -126,6 +127,7 @@ const navigationStyles = css`
 const returnButtonStyles = css`
   font-size: 1.5rem;
   text-align: center;
+  font-weight: bolder;
 
   color: white;
   text-decoration: none;
