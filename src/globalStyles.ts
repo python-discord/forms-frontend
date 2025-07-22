@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import colors from "./colors";
 
 export default css`
-@import url('https://fonts.googleapis.com/css2?family=Hind:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap');
 
 @font-face {
     font-family: 'Uni Sans';
