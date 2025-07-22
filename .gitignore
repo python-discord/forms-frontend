@@ -28,3 +28,4 @@ yarn-error.log*
 
 # Compose override files
 docker-compose.override.yml
+.yarn/
