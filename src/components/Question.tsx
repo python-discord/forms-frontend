@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/react";
 import React, { ChangeEvent } from "react";
+import ReactMarkdown from "react-markdown";
 
 import { Question, QuestionType } from "../api/question";
 import { selectable } from "../commonStyles";
@@ -270,33 +271,22 @@ class RenderedQuestion extends React.Component<QuestionProp> {
 
         if (question.type === QuestionType.Section) {
             let styles = css`
-              h1 {
-                margin-bottom: 0.5rem;
-              }
-
-              h3 {
-                margin-top: 0;
-              }
-
-              h1, h3 {
-                text-align: center;
-                padding: 0 2rem;
-              }
+              text-align: center;
+              padding: 0 2rem;
 
               @media (max-width: 500px) {
-                h1, h3 {
-                  padding: 0;
-                }
+                padding: 0;
               }
             `;
 
             if (question.data["align"] === "left") {
                 styles = css`
                     ${styles};
+                    text-align: left;
+                    padding: 0;
 
-                    h1, h3 {
-                        text-align: left;
-                        padding: 0 0rem;
+                    a {
+                      color: #bbbbff;
                     }
                 `;
             };
@@ -305,8 +295,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             let text;
 
             if (data && typeof(data) === "string") {
-                text = data.split("\n").map((line, index) => <h3 css={selectable} key={index}>{line}<br/></h3>);
-                text.push(<h3 css={selectable} key={data.length - 1}>{text.pop()?.props.children[0]}</h3>);
+                text = <ReactMarkdown>{data}</ReactMarkdown>
             } else {
                 text = "";
             }
