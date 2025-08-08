@@ -4,6 +4,7 @@ module.exports = {
     },
     moduleNameMapper: {
         '\\.svg$': '<rootDir>/src/tests/__mocks__/svg.ts',
+        "^react-markdown$": "<rootDir>/src/__mocks__/react-markdown.tsx",
     },
     collectCoverageFrom: [
         "src/**/*.{js,jsx,ts,tsx}",
