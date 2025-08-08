@@ -12,6 +12,9 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Install dependencies
         run: yarn install --prod
 
