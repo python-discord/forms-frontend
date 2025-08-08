@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
+import { jsx } from "@emotion/react";
 import styled from "@emotion/styled";
 
 interface PrecheckProps {
@@ -11,10 +11,10 @@ const BACKGROUNDS = {
     secondary: "#7e7c7cff",
     warning: "#a09b53ff",
     danger: "#b4747aff"
-}
+};
 
 interface PrecheckBoxProps {
-    severity: PrecheckProps['severity']
+    severity: PrecheckProps["severity"]
 }
 
 

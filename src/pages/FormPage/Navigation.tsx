@@ -24,7 +24,7 @@ export default function Navigation(props: NavigationProps): JSX.Element {
     } else {
         innerElement = <button disabled={!props.can_submit} form="form" type="submit">Submit</button>;
     }
-    let submit = <div css={styles.actionButtonStyles}>{innerElement}</div>;
+    const submit = <div css={styles.actionButtonStyles}>{innerElement}</div>;
 
     return (
         <div css={[styles.unselectable, styles.mainTextStyles]}>

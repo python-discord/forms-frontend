@@ -295,7 +295,7 @@ class RenderedQuestion extends React.Component<QuestionProp> {
             let text;
 
             if (data && typeof(data) === "string") {
-                text = <ReactMarkdown>{data}</ReactMarkdown>
+                text = <ReactMarkdown>{data}</ReactMarkdown>;
             } else {
                 text = "";
             }

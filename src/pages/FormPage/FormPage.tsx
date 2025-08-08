@@ -12,9 +12,8 @@ import RenderedQuestion from "../../components/Question";
 import Loading from "../../components/Loading";
 import ScrollToTop from "../../components/ScrollToTop";
 
-import {Form, FormFeatures, FormWithAncillaryData, getForm} from "../../api/forms";
+import {FormFeatures, FormWithAncillaryData, getForm} from "../../api/forms";
 import {OAuthScopes} from "../../api/auth";
-import colors from "../../colors";
 import {unselectable} from "../../commonStyles";
 
 import handleSubmit, {FormState} from "./submit";
