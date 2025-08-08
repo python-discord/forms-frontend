@@ -11,7 +11,8 @@ import { selectable } from "../commonStyles";
 
 interface OAuth2ButtonProps {
     scopes?: OAuthScopes[],
-    rerender?: () => void
+    rerender?: () => void,
+    disabled: boolean,
 }
 
 const iconStyles = css`
@@ -68,7 +69,7 @@ async function login(props: OAuth2ButtonProps, errorDialog: React.RefObject<HTML
 }
 
 function OAuth2Button(props: OAuth2ButtonProps): JSX.Element {
-    const [disabled, setDisabled] = useState<boolean>(false);
+    const [disabled, setDisabled] = useState<boolean>(props.disabled);
     const errorDialog: React.RefObject<HTMLDivElement> = React.useRef(null);
 
     return <span>
