@@ -12,7 +12,7 @@ import RenderedQuestion from "../../components/Question";
 import Loading from "../../components/Loading";
 import ScrollToTop from "../../components/ScrollToTop";
 
-import {Form, FormFeatures, getForm} from "../../api/forms";
+import {Form, FormFeatures, FormWithAncillaryData, getForm} from "../../api/forms";
 import {OAuthScopes} from "../../api/auth";
 import colors from "../../colors";
 import {unselectable} from "../../commonStyles";
@@ -22,6 +22,7 @@ import Navigation from "./Navigation";
 import Success from "./SuccessPage";
 import ErrorPage from "./ErrorPage";
 import NotFound from "../NotFound";
+import PrecheckBox from "../../components/PrecheckBox";
 
 
 export type RefMapType =  Map<string, React.RefObject<RenderedQuestion>>;
@@ -37,21 +38,6 @@ const formStyles = css`
   }
 `;
 
-const closedHeaderStyles = css`
-  margin-bottom: 2rem;
-  padding: 1rem 4rem;
-  border-radius: 8px;
-
-  text-align: center;
-  font-size: 1.5rem;
-
-  background-color: ${colors.error};
-
-  @media (max-width: 500px) {
-    padding: 1rem 1.5rem;
-  }
-`;
-
 enum LoadingState {
     Pending,
     Found,
@@ -61,7 +47,7 @@ enum LoadingState {
 function FormPage(): JSX.Element {
     const {id} = useParams<{id: string}>();
 
-    const [form, setForm] = useState<Form>();
+    const [form, setForm] = useState<FormWithAncillaryData>();
     const [formLoading, setFormLoading] = useState<LoadingState>(LoadingState.Pending);
     const [state, setState] = useState<string>(FormState.INITIAL);
 
@@ -106,11 +92,9 @@ function FormPage(): JSX.Element {
         }
     }
 
-    const open: boolean = form.features.includes(FormFeatures.Open);
-    let closed_header = null;
-    if (!open) {
-        closed_header =
-            <div css={closedHeaderStyles}>This form is now closed. You will not be able to submit your response.</div>;
+    const prechecks: JSX.Element[] = [];
+    for (const precheck of form.submission_precheck.problems) {
+        prechecks.push(<PrecheckBox message={precheck.message} severity={precheck.severity} key={precheck.message}/>);
     }
 
     const questions: RenderedQuestion[] = form.questions.map((question, index) => {
@@ -156,11 +140,11 @@ function FormPage(): JSX.Element {
             <div>
                 <form id="form" onSubmit={handler} css={[formStyles, unselectable]}>
                     <>
-                        {closed_header}
+                        {...prechecks}
                         {questions}
                     </>
                 </form>
-                <Navigation form_state={open} scopes={scopes}/>
+                <Navigation can_submit={form.submission_precheck.can_submit} scopes={scopes}/>
             </div>
 
             <div css={css`margin-bottom: 10rem`}/>
