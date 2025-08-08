@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: EgorDm/gha-yarn-node-cache@v1
-
       - name: Install dependencies
         run: yarn install --prod
 
@@ -24,9 +21,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: EgorDm/gha-yarn-node-cache@v1
-
       - name: Install dependencies
         run: yarn install
 
@@ -37,9 +31,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: EgorDm/gha-yarn-node-cache@v1
-
       - name: Install dependencies
         run: yarn install
 

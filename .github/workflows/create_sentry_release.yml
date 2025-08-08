@@ -12,9 +12,6 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: EgorDm/gha-yarn-node-cache@v1
-
       - name: Install dependencies
         run: yarn install --prod
 
