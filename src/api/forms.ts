@@ -20,6 +20,20 @@ export interface Form {
     submitted_text: string | null
 }
 
+export interface Precheck {
+    severity: "warning" | "danger" | "secondary",
+    message: string
+}
+
+export interface SubmissionPrecheck {
+    can_submit: boolean,
+    problems: Array<Precheck>
+}
+
+export interface FormWithAncillaryData extends Form {
+    submission_precheck: SubmissionPrecheck
+}
+
 export interface WebHook {
     url: string,
     message: string | null
@@ -30,7 +44,7 @@ export async function getForms(): Promise<Form[]> {
     return fetch_response.data;
 }
 
-export async function getForm(id: string): Promise<Form> {
+export async function getForm(id: string): Promise<FormWithAncillaryData> {
     const fetch_response = await ApiClient.get(`forms/${id}`);
     return fetch_response.data;
 }
