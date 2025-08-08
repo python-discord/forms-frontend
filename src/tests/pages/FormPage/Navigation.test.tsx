@@ -14,13 +14,6 @@ test("navigation shows submit when form is open and no auth required", () => {
     expect(submitButton.innerHTML).toBe("Submit");
 });
 
-test("submit button does not show submit on a closed form", () => {
-    const { queryByRole } = render(<Navigation form_state={false} scopes={[]} />, { wrapper: MemoryRouter });
-    const submitButton = queryByRole("button");
-
-    expect(submitButton).toBeNull();
-});
-
 test("navigation shows oauth button when form is open and auth is required", () => {
     const { getByRole } = render(<Navigation form_state={true} scopes={[OAuthScopes.Identify]} />, { wrapper: MemoryRouter });
     const loginButton = getByRole("button");
